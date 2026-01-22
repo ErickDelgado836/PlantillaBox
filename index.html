@@ -31,8 +31,21 @@
     position:sticky;top:0;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);z-index:140;
   }
   .brand{display:flex;gap:12px;align-items:center}
-  .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:800;color:#012;position:relative;box-shadow:0 10px 40px rgba(62,198,245,0.06)}
+  .logo{
+    width:56px;height:56px;border-radius:12px;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:flex;align-items:center;justify-content:center;font-weight:800;color:#012;
+    position:relative;box-shadow:0 10px 40px rgba(62,198,245,0.06);
+  }
   .logoStrong{box-shadow:0 18px 80px rgba(62,198,245,0.12)}
+  .logoEmoji{
+    display:inline-flex;align-items:center;justify-content:center;font-size:22px;line-height:1;
+    width:40px;height:40px;border-radius:10px;
+    background: linear-gradient(90deg,#ffd89b,#ffb86b);
+    box-shadow: 0 10px 30px rgba(255,184,107,0.18), 0 2px 6px rgba(0,0,0,0.45);
+    transform: translateZ(0); transition: transform 220ms ease, box-shadow 220ms ease;
+  }
+  .logoEmoji:hover{ transform: translateY(-3px) scale(1.03); box-shadow: 0 16px 44px rgba(255,184,107,0.22), 0 4px 8px rgba(0,0,0,0.45); }
   h1{font-size:18px;margin:0}
   .hint{font-size:12px;color:var(--muted)}
 
@@ -46,7 +59,12 @@
   main{padding:18px;max-width:1100px;margin:18px auto}
   .topbar{display:flex;gap:12px;align-items:center;margin-bottom:14px}
   .stats{color:var(--muted);font-size:13px}
-  .templates{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+  .templates{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;transition: all 220ms ease;}
+
+  /* selection bar */
+  #selectionBar{ display:none; align-items:center; gap:10px; margin-bottom:12px; }
+  #selectionBar .count{ color:var(--accent-2); font-weight:700; margin-right:8px; }
+  #selectionBar .selectAllBtn{ background: linear-gradient(90deg,#2dd4bf,#60e8ff); color:#001; border-radius:8px; padding:8px; cursor:pointer; border:0; font-weight:700; }
 
   /* Card */
   .card{
@@ -60,6 +78,8 @@
     will-change: transform, box-shadow, border-color;
   }
   .card:hover{ transform:translateY(-6px); box-shadow:0 18px 40px rgba(0,0,0,0.6) }
+
+  .card.selected { outline: 2px solid rgba(62,198,245,0.12); box-shadow: 0 12px 28px rgba(62,198,245,0.04); }
 
   /* Chat-like active effect */
   .card.active{
@@ -90,6 +110,17 @@
 
   @keyframes popIn {0%{transform:scale(.9);opacity:0}60%{transform:scale(1.03);opacity:1}100%{transform:scale(1);opacity:1}}
   .card.new-item{ animation: popIn 320ms cubic-bezier(.2,.9,.3,1); }
+
+  /* New: slide-in animation for improved add transition */
+  @keyframes slideIn {
+    0% { transform: translateY(-18px) scale(.98); opacity:0; }
+    60% { transform: translateY(6px) scale(1.02); opacity:1; }
+    100% { transform: translateY(0) scale(1); opacity:1; }
+  }
+  .card.slide-in { animation: slideIn 420ms cubic-bezier(.2,.9,.3,1); }
+
+  /* Pre-push used on existing items before insert, removed to animate back to position */
+  .pre-push { transform: translateY(10px); transition: transform 320ms cubic-bezier(.2,.9,.3,1); }
 
   .row{display:flex;gap:8px;align-items:center}
   input.title{background:transparent;border:1px dashed rgba(255,255,255,0.03);color:#dff7ee;padding:8px;border-radius:8px;flex:1;transition: box-shadow var(--trans-fast), border-color var(--trans-fast)}
@@ -123,26 +154,21 @@
   .tab-selected{ transform: translateY(-4px); box-shadow: 0 14px 40px rgba(0,0,0,0.45); border-radius:10px; }
 
   /* Distinct colors for each tab when selected */
-  /* Ingresar (login) - purple/indigo (distinct from guest and register) */
   #tabLogin.tab-selected {
     background: linear-gradient(90deg,#7c3aed,#a78bfa);
     color: #fff;
     box-shadow: 0 12px 30px rgba(124,58,237,0.08);
   }
-  /* Registrar - cyan/blue */
   #tabRegister.tab-selected {
     background: linear-gradient(90deg,#34aef0,#60e8ff);
     color: #012;
     box-shadow: 0 12px 30px rgba(34,174,240,0.08);
   }
-  /* Invitado - amber/orange */
   #tabGuest.tab-selected {
     background: linear-gradient(90deg,#ffd89b,#ffb86b);
     color: #042;
     box-shadow: 0 12px 30px rgba(255,184,107,0.08);
   }
-
-  /* Dim non-selected tabs to emphasize selected one */
   .tab-dim { opacity: 0.55; filter: grayscale(0.06); transform: translateY(0); }
 
   .input-with-toggle{ position:relative; display:flex; align-items:center; }
@@ -154,7 +180,7 @@
   .search{padding:10px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.02);color:var(--muted);min-width:220px}
   .empty{opacity:0.6;padding:18px;border-radius:12px;border:1px dashed rgba(255,255,255,0.03);text-align:center}
 
-  /* Pin bounce animation at the end of pin flow */
+  /* Pin bounce animation at end of pin flow */
   @keyframes pinBounce {
     0%   { transform: translateY(0) scale(1); }
     45%  { transform: translateY(-10px) scale(1.03); }
@@ -162,6 +188,17 @@
     100% { transform: translateY(0)  scale(1); }
   }
   .pin-bounce { animation: pinBounce 420ms cubic-bezier(.25,.9,.35,1); }
+
+  /* Copy flash animation */
+  @keyframes copyFlash {
+    0% { box-shadow: 0 6px 18px rgba(62,198,245,0.12); transform: translateY(0) scale(1); }
+    50% { box-shadow: 0 18px 40px rgba(62,198,245,0.18); transform: translateY(-3px) scale(1.02); }
+    100% { box-shadow: 0 6px 18px rgba(62,198,245,0.12); transform: translateY(0) scale(1); }
+  }
+  .flash { animation: copyFlash 420ms ease; }
+
+  /* checkbox styling */
+  .tpl-select { width:18px; height:18px; margin-right:8px; accent-color: var(--accent-2); }
 
   @media (max-width:880px) { .card .actions{ display:none; } .side-actions{ display:flex; } }
   @media (min-width:881px) { .side-actions{ display:none; } }
@@ -171,7 +208,9 @@
 <body>
 <header>
   <div class="brand">
-    <div class="logo" id="logoEl" aria-hidden><div style="font-size:18px">PB</div></div>
+    <div class="logo" id="logoEl" aria-hidden>
+      <span class="logoEmoji" aria-hidden>🐫</span>
+    </div>
     <div>
       <h1>PlantillaBox</h1>
       <div class="hint">Plantillas rápidas — Copia y pega al instante</div>
@@ -195,6 +234,15 @@
     <div class="stats" id="stats">0 plantillas</div>
     <div style="flex:1"></div>
     <input class="search" id="searchInput" placeholder="Buscar título o contenido..." />
+  </div>
+
+  <!-- Selection bar (hidden until selection active) -->
+  <div id="selectionBar">
+    <span class="count"><span id="selectedCount">0</span> seleccionada(s)</span>
+    <button id="selectAllBtn" class="selectAllBtn">Seleccionar todo</button>
+    <button id="shelfSelectedBtn" class="btn small">Guardar seleccionadas</button>
+    <button id="delSelectedBtn" class="btn small danger">Eliminar seleccionadas</button>
+    <button id="clearSelectionBtn" class="btn small">Cancelar</button>
   </div>
 
   <section class="templates" id="templatesContainer"></section>
@@ -232,7 +280,14 @@
   const currentUserText = document.getElementById('currentUserText');
   const userDot = document.getElementById('userDot');
   const footerInfo = document.getElementById('footerInfo');
-  const logoEl = document.getElementById('logoEl');
+
+  // selection bar elements
+  const selectionBar = document.getElementById('selectionBar');
+  const selectedCountEl = document.getElementById('selectedCount');
+  const selectAllBtn = document.getElementById('selectAllBtn');
+  const shelfSelectedBtn = document.getElementById('shelfSelectedBtn');
+  const delSelectedBtn = document.getElementById('delSelectedBtn');
+  const clearSelectionBtn = document.getElementById('clearSelectionBtn');
 
   // state
   let user = sessionStorage.getItem(CURRENT_KEY) || 'guest';
@@ -240,6 +295,9 @@
   let templates = loadTemplatesFor(user);
   let shelf = loadShelfFor(user);
   let activeCardId = null;
+
+  // selection state
+  const selectedIds = new Set();
 
   // id generator
   function generateId() { return 'tpl_' + Math.random().toString(36).slice(2,9); }
@@ -256,6 +314,12 @@
   btnImport.addEventListener('click', openImportModal);
   btnShelf.addEventListener('click', openShelfModal);
   searchInput.addEventListener('input', render);
+
+  // selection bar events
+  selectAllBtn.addEventListener('click', toggleSelectAllVisible);
+  shelfSelectedBtn.addEventListener('click', () => { handleShelfSelected(); });
+  delSelectedBtn.addEventListener('click', () => { handleDeleteSelected(); });
+  clearSelectionBtn.addEventListener('click', () => { clearSelection(); });
 
   // allow drop to shelf
   btnShelf.addEventListener('dragover', (e) => { e.preventDefault(); btnShelf.classList.add('pressed'); });
@@ -306,13 +370,56 @@
   function updateStats(){ stats.textContent = templates.length + (templates.length === 1 ? ' plantilla' : ' plantillas'); emptyState.style.display = templates.length ? 'none' : 'block'; }
   function id(){ return generateId(); }
 
-  // add template
+  // Robust copy helper with fallback and toast notifications
+  async function robustCopy(text) {
+    if (!text) { showToast('Nada para copiar'); return false; }
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+        showToast('Copiado al portapapeles');
+        return true;
+      }
+    } catch (e) {}
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, ta.value.length);
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      if (ok) { showToast('Copiado (fallback)'); return true; }
+    } catch (err) {}
+    showToast('No se pudo copiar');
+    return false;
+  }
+
+  // add template - improved movement transitions:
   function addTemplate(prefill = {title:'',content:''}, save=true){
+    // mark existing cards for a "push" (pre-push) so we can animate them back into place
+    const existingCards = Array.from(document.querySelectorAll('.templates .card'));
+    existingCards.forEach(c => c.classList.add('pre-push'));
+
     const t = { id: id(), title: prefill.title || '', content: prefill.content || '', modified: Date.now(), pinned:false };
     templates.unshift(t);
     if (save) saveTemplates();
     render();
-    setTimeout(()=>{ const el = document.querySelector(`.card[data-id="${t.id}"]`); if (el){ el.classList.add('new-item'); setTimeout(()=>el.classList.remove('new-item'),420); const ta = el.querySelector('textarea'); if(ta){ ta.focus(); setActiveCard(t.id); } } }, 60);
+
+    // after render, remove pre-push so they animate back, and apply slide-in to new card
+    requestAnimationFrame(() => {
+      document.querySelectorAll('.pre-push').forEach(c => {
+        c.classList.remove('pre-push');
+      });
+      const el = document.querySelector(`.card[data-id="${t.id}"]`);
+      if (el){
+        el.classList.add('slide-in');
+        setTimeout(()=> el.classList.remove('slide-in'), 520);
+        const ta = el.querySelector('textarea');
+        if(ta){ ta.focus(); setActiveCard(t.id); }
+      }
+    });
   }
 
   function setActiveCard(tid){
@@ -328,51 +435,80 @@
 
   function reorderPinned(){ const pinned = templates.filter(t=>t.pinned); const rest = templates.filter(t=>!t.pinned); templates = pinned.concat(rest); }
 
-  // helper animation: animate a card to the top of the templates container
-  function animatePinToTop(cardEl) {
-    return new Promise((resolve) => {
-      try {
-        const rect = cardEl.getBoundingClientRect();
-        const targetRect = templatesContainer.getBoundingClientRect();
-        // destination: near top of templates container (padding 10)
-        const destX = (targetRect.left + 12) - rect.left;
-        const destY = (targetRect.top + 12) - rect.top;
+  // Selection helpers
+  function updateSelectionBar(){
+    const count = selectedIds.size;
+    if (count === 0) {
+      selectionBar.style.display = 'none';
+    } else {
+      selectionBar.style.display = 'flex';
+      selectedCountEl.textContent = String(count);
+      // update selectAllBtn label depending on if all visible are selected
+      const visibleIds = Array.from(document.querySelectorAll('.card')).map(c => c.getAttribute('data-id'));
+      const allVisibleSelected = visibleIds.every(id => selectedIds.has(id)) && visibleIds.length > 0;
+      selectAllBtn.textContent = allVisibleSelected ? 'Deseleccionar todo' : 'Seleccionar todo';
+    }
+  }
+  function clearSelection(){
+    selectedIds.clear();
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+    updateSelectionBar();
+  }
+  function toggleSelectAllVisible(){
+    const visibleCards = Array.from(document.querySelectorAll('.card'));
+    const visibleIds = visibleCards.map(c => c.getAttribute('data-id'));
+    const allSelected = visibleIds.every(id => selectedIds.has(id)) && visibleIds.length>0;
+    if (allSelected) {
+      // deselect visible
+      visibleIds.forEach(id => selectedIds.delete(id));
+    } else {
+      visibleIds.forEach(id => selectedIds.add(id));
+    }
+    // reflect UI
+    visibleCards.forEach(c => {
+      const idv = c.getAttribute('data-id');
+      if (selectedIds.has(idv)) c.classList.add('selected'); else c.classList.remove('selected');
+      const cb = c.querySelector('.tpl-select');
+      if (cb) cb.checked = selectedIds.has(idv);
+    });
+    updateSelectionBar();
+  }
 
-        // clone
-        const clone = cardEl.cloneNode(true);
-        clone.style.position = 'fixed';
-        clone.style.left = rect.left + 'px';
-        clone.style.top = rect.top + 'px';
-        clone.style.width = rect.width + 'px';
-        clone.style.margin = '0';
-        clone.style.zIndex = 9999;
-        clone.style.pointerEvents = 'none';
-        clone.style.transition = 'transform 520ms cubic-bezier(.2,.9,.3,1), opacity 520ms ease';
-        document.body.appendChild(clone);
-
-        // dim original while animating
-        cardEl.style.transition = 'opacity 180ms ease';
-        cardEl.style.opacity = '0.28';
-
-        requestAnimationFrame(() => {
-          clone.style.transform = `translate(${destX}px, ${destY}px) scale(.95) rotate(-2deg)`;
-          clone.style.opacity = '0.95';
+  async function handleDeleteSelected(){
+    if (selectedIds.size === 0) return;
+    openModal({
+      title: 'Eliminar plantillas seleccionadas',
+      body: `<p>¿Eliminar ${selectedIds.size} plantilla(s)? Esta acción no se puede deshacer.</p>`,
+      cancelText: 'Cancelar',
+      confirmText: 'Eliminar',
+      onConfirm: () => {
+        // animate removal
+        Array.from(selectedIds).forEach(idv => {
+          const el = document.querySelector(`.card[data-id="${idv}"]`);
+          if (el) el.classList.add('removing');
         });
-
-        // cleanup after animation
-        setTimeout(() => {
-          clone.style.opacity = '0';
-          setTimeout(() => {
-            if (clone.parentNode) clone.parentNode.removeChild(clone);
-            cardEl.style.opacity = '';
-            resolve();
-          }, 140);
-        }, 540);
-      } catch (err) {
-        // fallback immediately
-        resolve();
+        setTimeout(()=> {
+          templates = templates.filter(t => !selectedIds.has(t.id));
+          saveTemplates();
+          clearSelection();
+          render();
+          showToast('Plantillas eliminadas');
+        }, 420);
       }
     });
+  }
+
+  function handleShelfSelected(){
+    if (selectedIds.size === 0) return;
+    const toMove = templates.filter(t => selectedIds.has(t.id));
+    if (toMove.length === 0) return;
+    // move
+    shelf = toMove.concat(shelf);
+    templates = templates.filter(t => !selectedIds.has(t.id));
+    saveShelf(); saveTemplates();
+    clearSelection();
+    render();
+    showToast('Guardadas en estantería');
   }
 
   // render templates
@@ -382,12 +518,15 @@
     const q = (searchInput.value || '').trim().toLowerCase();
     const filtered = templates.filter(t => !q || (t.title||'').toLowerCase().includes(q) || (t.content||'').toLowerCase().includes(q));
     filtered.forEach(t => {
+      const checked = selectedIds.has(t.id);
       const card = document.createElement('article');
       card.className = 'card';
+      if (checked) card.classList.add('selected');
       card.setAttribute('data-id', t.id);
       card.setAttribute('draggable', 'true');
       card.innerHTML = `
         <div class="row">
+          <input type="checkbox" class="tpl-select" ${checked ? 'checked' : ''} aria-label="Seleccionar plantilla" />
           <input class="title" placeholder="Título (opcional)" value="${escapeAttr(t.title||'')}" />
           <div style="display:flex;gap:8px;align-items:center">
             <div class="side-actions" aria-hidden>
@@ -416,15 +555,35 @@
       // elements
       const inp = card.querySelector('.title');
       const ta = card.querySelector('textarea');
-      // Attach pin handlers to BOTH possible pin buttons (side and inline) so visible button always works
+      const tplCheckbox = card.querySelector('.tpl-select');
       const btnPinEls = card.querySelectorAll('.btnPin, .btnPinInline');
-      const btnCopy = card.querySelector('.btnCopy') || card.querySelector('.btnCopyInline');
+      const btnCopyEls = card.querySelectorAll('.btnCopy, .btnCopyInline');
       const btnMore = card.querySelector('.btnMore');
       const btnDup = card.querySelector('.btnDupInline');
       const btnDel = card.querySelector('.btnDelInline');
       const btnShelfInline = card.querySelector('.btnShelfInline');
       const charsEl = card.querySelector('.chars');
       const modEl = card.querySelector('.modified');
+
+      // checkbox handling
+      tplCheckbox.addEventListener('change', (e) => {
+        const isChecked = e.target.checked;
+        if (isChecked) selectedIds.add(t.id); else selectedIds.delete(t.id);
+        if (isChecked) card.classList.add('selected'); else card.classList.remove('selected');
+        updateSelectionBar();
+      });
+
+      // clicking card selects it (not interfering with inputs)
+      card.addEventListener('click', (ev) => {
+        // ignore clicks inside inputs, buttons, textarea or checkboxes
+        const ignore = ev.target.closest('input, textarea, button, .iconBtn, .moreMenu, .actions');
+        if (ignore) return;
+        // toggle selection
+        const was = selectedIds.has(t.id);
+        if (was) { selectedIds.delete(t.id); card.classList.remove('selected'); if (tplCheckbox) tplCheckbox.checked = false; }
+        else { selectedIds.add(t.id); card.classList.add('selected'); if (tplCheckbox) tplCheckbox.checked = true; }
+        updateSelectionBar();
+      });
 
       // more menu
       function openMoreMenu(){
@@ -439,9 +598,9 @@
         `;
         card.appendChild(menu);
         menu.querySelectorAll('button').forEach(b => {
-          b.addEventListener('click', () => {
+          b.addEventListener('click', async () => {
             const a = b.getAttribute('data-act');
-            if (a === 'copy') doCopy();
+            if (a === 'copy') { b.classList.add('flash'); setTimeout(()=>b.classList.remove('flash'),460); await robustCopy(t.content||''); }
             if (a === 'dup') doDup();
             if (a === 'pin') doPin();
             if (a === 'shelf') doShelf();
@@ -455,16 +614,14 @@
       function closeAllMoreMenus(){ document.querySelectorAll('.moreMenu').forEach(m=>m.remove()); }
 
       // actions
-      async function doCopy(){ try{ await navigator.clipboard.writeText(t.content||''); showToast('Copiado al portapapeles'); } catch(e){ const tmp=document.createElement('textarea'); tmp.value=t.content||''; document.body.appendChild(tmp); tmp.select(); document.execCommand('copy'); document.body.removeChild(tmp); showToast('Copiado (fallback)'); } }
+      async function doCopy(el){ if (el){ el.classList.add('flash'); setTimeout(()=> el.classList.remove('flash'), 460); } await robustCopy(t.content||''); }
       function doDup(){ addTemplate({title: t.title + ' (copia)', content: t.content}); showToast('Plantilla duplicada'); }
       function doShelf(){ shelf.unshift(Object.assign({}, t)); templates = templates.filter(x=>x.id !== t.id); saveShelf(); saveTemplates(); render(); showToast('Guardada en estantería'); }
       function doDel(){ confirmDelete(t.id); }
 
-      // improved doPin with animation when pinning to top and final bounce
       function doPin(){
         const willPin = !t.pinned;
         if (!willPin) {
-          // unpin quickly
           t.pinned = false;
           reorderPinned();
           saveTemplates();
@@ -472,7 +629,6 @@
           showToast('Desanclada');
           return;
         }
-        // animate pin to top, then set pinned and re-render, then add final bounce
         const cardElement = document.querySelector(`.card[data-id="${t.id}"]`);
         if (!cardElement) {
           t.pinned = true;
@@ -487,24 +643,25 @@
           reorderPinned();
           saveTemplates();
           render();
-          // final bounce on newly pinned card
           const newEl = document.querySelector(`.card[data-id="${t.id}"]`);
-          if (newEl) {
-            newEl.classList.add('pin-bounce');
-            // ensure removal after animation
-            setTimeout(()=> newEl.classList.remove('pin-bounce'), 520);
-          }
+          if (newEl) { newEl.classList.add('pin-bounce'); setTimeout(()=> newEl.classList.remove('pin-bounce'), 520); }
           showToast('Anclada');
         });
       }
 
-      // attach handlers to all pin elements (fix for "no fija" bug)
-      btnPinEls.forEach(el => el.addEventListener('click', () => {
-        doPin();
-      }));
+      // attach handlers to all pin elements
+      btnPinEls.forEach(el => el.addEventListener('click', () => { doPin(); }));
+
+      // attach copy handlers
+      btnCopyEls.forEach(el => {
+        el.addEventListener('click', async (ev) => {
+          el.classList.add('flash');
+          setTimeout(()=> el.classList.remove('flash'), 460);
+          await robustCopy(t.content || '');
+        });
+      });
 
       // attach other handlers
-      if (btnCopy) btnCopy.addEventListener('click', doCopy);
       if (btnDup) btnDup.addEventListener('click', doDup);
       if (btnDel) btnDel.addEventListener('click', doDel);
       if (btnShelfInline) btnShelfInline.addEventListener('click', doShelf);
@@ -523,6 +680,7 @@
       if (t.id === activeCardId) card.classList.add('active','focus-outline');
     });
     updateStats();
+    updateSelectionBar();
   }
 
   // confirm delete centered bounce + animate removal
