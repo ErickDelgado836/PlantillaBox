@@ -396,6 +396,83 @@
     return false;
   }
 
+  // helper animation: animate a card to the top of the templates container
+  function animatePinToTop(cardEl) {
+    return new Promise((resolve) => {
+      try {
+        const rect = cardEl.getBoundingClientRect();
+        const targetRect = templatesContainer.getBoundingClientRect();
+        // destination: near top of templates container (padding 10)
+        const destX = (targetRect.left + 12) - rect.left;
+        const destY = (targetRect.top + 12) - rect.top;
+
+        // clone
+        const clone = cardEl.cloneNode(true);
+        clone.style.position = 'fixed';
+        clone.style.left = rect.left + 'px';
+        clone.style.top = rect.top + 'px';
+        clone.style.width = rect.width + 'px';
+        clone.style.margin = '0';
+        clone.style.zIndex = 9999;
+        clone.style.pointerEvents = 'none';
+        clone.style.transition = 'transform 520ms cubic-bezier(.2,.9,.3,1), opacity 520ms ease';
+        document.body.appendChild(clone);
+
+        // dim original while animating
+        cardEl.style.transition = 'opacity 180ms ease';
+        cardEl.style.opacity = '0.28';
+
+        requestAnimationFrame(() => {
+          clone.style.transform = `translate(${destX}px, ${destY}px) scale(.95) rotate(-2deg)`;
+          clone.style.opacity = '0.95';
+        });
+
+        // cleanup after animation
+        setTimeout(() => {
+          clone.style.opacity = '0';
+          setTimeout(() => {
+            if (clone.parentNode) clone.parentNode.removeChild(clone);
+            cardEl.style.opacity = '';
+            resolve();
+          }, 140);
+        }, 540);
+      } catch (err) {
+        // fallback immediately
+        resolve();
+      }
+    });
+  }
+
+  // CENTRAL pin toggler (fixes the "no fija" bug). Use this from card handlers.
+  async function togglePinById(id) {
+    const idx = templates.findIndex(t => t.id === id);
+    if (idx === -1) return;
+    const willPin = !templates[idx].pinned;
+    const cardEl = document.querySelector(`.card[data-id="${id}"]`);
+    if (willPin && cardEl) {
+      // animate current card moving to top, then set pinned and re-render with final bounce
+      await animatePinToTop(cardEl).catch(()=>{/*ignore*/});
+      templates[idx].pinned = true;
+      reorderPinned();
+      saveTemplates();
+      render();
+      // final bounce
+      const newEl = document.querySelector(`.card[data-id="${id}"]`);
+      if (newEl) {
+        newEl.classList.add('pin-bounce');
+        setTimeout(()=> newEl.classList.remove('pin-bounce'), 520);
+      }
+      showToast('Anclada');
+    } else {
+      // unpin or couldn't animate; just toggle and re-render
+      templates[idx].pinned = false;
+      reorderPinned();
+      saveTemplates();
+      render();
+      showToast('Desanclada');
+    }
+  }
+
   // add template - improved movement transitions:
   function addTemplate(prefill = {title:'',content:''}, save=true){
     // mark existing cards for a "push" (pre-push) so we can animate them back into place
@@ -443,7 +520,6 @@
     } else {
       selectionBar.style.display = 'flex';
       selectedCountEl.textContent = String(count);
-      // update selectAllBtn label depending on if all visible are selected
       const visibleIds = Array.from(document.querySelectorAll('.card')).map(c => c.getAttribute('data-id'));
       const allVisibleSelected = visibleIds.every(id => selectedIds.has(id)) && visibleIds.length > 0;
       selectAllBtn.textContent = allVisibleSelected ? 'Deseleccionar todo' : 'Seleccionar todo';
@@ -459,12 +535,10 @@
     const visibleIds = visibleCards.map(c => c.getAttribute('data-id'));
     const allSelected = visibleIds.every(id => selectedIds.has(id)) && visibleIds.length>0;
     if (allSelected) {
-      // deselect visible
       visibleIds.forEach(id => selectedIds.delete(id));
     } else {
       visibleIds.forEach(id => selectedIds.add(id));
     }
-    // reflect UI
     visibleCards.forEach(c => {
       const idv = c.getAttribute('data-id');
       if (selectedIds.has(idv)) c.classList.add('selected'); else c.classList.remove('selected');
@@ -482,7 +556,6 @@
       cancelText: 'Cancelar',
       confirmText: 'Eliminar',
       onConfirm: () => {
-        // animate removal
         Array.from(selectedIds).forEach(idv => {
           const el = document.querySelector(`.card[data-id="${idv}"]`);
           if (el) el.classList.add('removing');
@@ -502,7 +575,6 @@
     if (selectedIds.size === 0) return;
     const toMove = templates.filter(t => selectedIds.has(t.id));
     if (toMove.length === 0) return;
-    // move
     shelf = toMove.concat(shelf);
     templates = templates.filter(t => !selectedIds.has(t.id));
     saveShelf(); saveTemplates();
@@ -575,10 +647,8 @@
 
       // clicking card selects it (not interfering with inputs)
       card.addEventListener('click', (ev) => {
-        // ignore clicks inside inputs, buttons, textarea or checkboxes
         const ignore = ev.target.closest('input, textarea, button, .iconBtn, .moreMenu, .actions');
         if (ignore) return;
-        // toggle selection
         const was = selectedIds.has(t.id);
         if (was) { selectedIds.delete(t.id); card.classList.remove('selected'); if (tplCheckbox) tplCheckbox.checked = false; }
         else { selectedIds.add(t.id); card.classList.add('selected'); if (tplCheckbox) tplCheckbox.checked = true; }
@@ -602,7 +672,7 @@
             const a = b.getAttribute('data-act');
             if (a === 'copy') { b.classList.add('flash'); setTimeout(()=>b.classList.remove('flash'),460); await robustCopy(t.content||''); }
             if (a === 'dup') doDup();
-            if (a === 'pin') doPin();
+            if (a === 'pin') togglePinById(t.id);
             if (a === 'shelf') doShelf();
             if (a === 'del') doDel();
             closeAllMoreMenus();
@@ -619,35 +689,8 @@
       function doShelf(){ shelf.unshift(Object.assign({}, t)); templates = templates.filter(x=>x.id !== t.id); saveShelf(); saveTemplates(); render(); showToast('Guardada en estantería'); }
       function doDel(){ confirmDelete(t.id); }
 
-      function doPin(){
-        const willPin = !t.pinned;
-        if (!willPin) {
-          t.pinned = false;
-          reorderPinned();
-          saveTemplates();
-          render();
-          showToast('Desanclada');
-          return;
-        }
-        const cardElement = document.querySelector(`.card[data-id="${t.id}"]`);
-        if (!cardElement) {
-          t.pinned = true;
-          reorderPinned();
-          saveTemplates();
-          render();
-          showToast('Anclada');
-          return;
-        }
-        animatePinToTop(cardElement).then(() => {
-          t.pinned = true;
-          reorderPinned();
-          saveTemplates();
-          render();
-          const newEl = document.querySelector(`.card[data-id="${t.id}"]`);
-          if (newEl) { newEl.classList.add('pin-bounce'); setTimeout(()=> newEl.classList.remove('pin-bounce'), 520); }
-          showToast('Anclada');
-        });
-      }
+      // pin uses central toggler
+      function doPin(){ togglePinById(t.id); }
 
       // attach handlers to all pin elements
       btnPinEls.forEach(el => el.addEventListener('click', () => { doPin(); }));
