@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>PlantillaBox — Plantillas rápidas</title>
+<style>
+  :root{
+    --bg:#0b0d11; --card:#0f1418; --muted:#9aa3b2; --accent:#6be3b1; --accent-2:#3ec6f5;
+    --danger:#ff6b6b; --glass: rgba(255,255,255,0.02);
+    --active-neon: var(--accent-2);
+    --active-neon-glow: rgba(62,198,245,0.10);
+    --focus-neon: rgba(62,198,245,0.09);
+    --trans-fast: 160ms;
+    --trans-medium: 260ms;
+    --trans-smooth: 360ms;
+    --compact-action-size: 36px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(800px 400px at 10% 10%, rgba(62,198,245,0.03), transparent 8%),
+                linear-gradient(180deg,#050607 0%, #0b0d11 70%);
+    color:#e6eef6; min-height:100vh; -webkit-font-smoothing:antialiased; padding-bottom:80px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  header{
+    display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,0.02);
+    position:sticky;top:0;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);z-index:140;
+  }
+  .brand{display:flex;gap:12px;align-items:center}
+  .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:800;color:#012;position:relative;box-shadow:0 10px 40px rgba(62,198,245,0.06)}
+  .logoStrong{box-shadow:0 18px 80px rgba(62,198,245,0.12)}
+  h1{font-size:18px;margin:0}
+  .hint{font-size:12px;color:var(--muted)}
+
+  .controls{display:flex;gap:10px;align-items:center}
+  .btn{background:var(--glass);color:var(--accent);border:1px solid rgba(255,255,255,0.03);padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:700;position:relative;overflow:hidden;transition: transform var(--trans-fast) ease, box-shadow var(--trans-fast) ease, filter var(--trans-fast) ease;}
+  .btn:hover{ transform: translateY(-3px); box-shadow: 0 12px 36px rgba(62,198,245,0.06) }
+  .btn:active{ transform: translateY(0) scale(.985); }
+  .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;border:0}
+  .btn.ghost{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04)}
+
+  main{padding:18px;max-width:1100px;margin:18px auto}
+  .topbar{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+  .stats{color:var(--muted);font-size:13px}
+  .templates{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+
+  /* Card */
+  .card{
+    position:relative;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.006));
+    padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);
+    display:flex;flex-direction:column;gap:8px;min-height:120px;
+    transition: transform var(--trans-medium) cubic-bezier(.2,.9,.3,1),
+                box-shadow var(--trans-medium),
+                border-color var(--trans-medium),
+                background-color var(--trans-medium);
+    will-change: transform, box-shadow, border-color;
+  }
+  .card:hover{ transform:translateY(-6px); box-shadow:0 18px 40px rgba(0,0,0,0.6) }
+
+  /* Chat-like active effect */
+  .card.active{
+    border: 1.5px solid rgba(62,198,245,0.95);
+    background: linear-gradient(180deg, rgba(8,12,16,0.92), rgba(10,14,18,0.95));
+    box-shadow: 0 8px 24px rgba(2,8,10,0.45);
+  }
+
+  .card::after{
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border-radius: 16px;
+    pointer-events: none;
+    background: radial-gradient(60% 40% at 50% 0%, rgba(62,198,245,0.10), transparent 40%);
+    opacity: 0;
+    transition: opacity 360ms ease, transform 360ms ease;
+    transform: scale(0.98);
+    filter: blur(6px);
+    mix-blend-mode: screen;
+  }
+  .card.active::after{
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .card.removing{ transform: scale(.92) rotate(-4deg); opacity:0; filter:grayscale(.5) blur(.6px); transition: transform .42s cubic-bezier(.2,.9,.3,1), opacity .42s ease; }
+
+  @keyframes popIn {0%{transform:scale(.9);opacity:0}60%{transform:scale(1.03);opacity:1}100%{transform:scale(1);opacity:1}}
+  .card.new-item{ animation: popIn 320ms cubic-bezier(.2,.9,.3,1); }
+
+  .row{display:flex;gap:8px;align-items:center}
+  input.title{background:transparent;border:1px dashed rgba(255,255,255,0.03);color:#dff7ee;padding:8px;border-radius:8px;flex:1;transition: box-shadow var(--trans-fast), border-color var(--trans-fast)}
+  input.title:focus{ box-shadow: 0 8px 30px rgba(62,198,245,0.04); border-color: rgba(62,198,245,0.10); outline:none }
+  textarea{ background:transparent;border:1px solid rgba(255,255,255,0.02); color:#eaf7f0;padding:10px;border-radius:8px; resize:vertical; min-height:72px; font-family:inherit; transition: box-shadow var(--trans-fast)}
+  textarea:focus{ box-shadow: 0 12px 40px rgba(62,198,245,0.04); border-color: rgba(62,198,245,0.10); outline:none }
+
+  .meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px;margin-top:6px}
+  .actions{display:flex;gap:8px;flex-wrap:wrap}
+  .small{padding:6px 8px;border-radius:8px}
+  .danger{background:linear-gradient(90deg,#ff6868,#ff4f4f);color:#fff;border:0}
+
+  /* side actions */
+  .side-actions{ position:absolute; top:10px; right:10px; display:flex; flex-direction:column; gap:8px; z-index:6; }
+  .iconBtn{ width:var(--compact-action-size); height:var(--compact-action-size); padding:6px; border-radius:8px; display:inline-flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.02); color:var(--muted); border:1px solid rgba(255,255,255,0.03); cursor:pointer; transition: transform var(--trans-fast), box-shadow var(--trans-fast) }
+  .iconBtn:hover{ transform: translateY(-4px); color:var(--accent-2); box-shadow: 0 10px 30px rgba(62,198,245,0.05) }
+
+  .moreMenu{ position:absolute; top:36px; right:10px; background:#071017; border-radius:8px; padding:8px; box-shadow:0 10px 40px rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.04); z-index:100; min-width:160px; }
+  .moreMenu button{ display:flex; gap:8px; align-items:center; width:100%; padding:8px; border-radius:8px; background:transparent; border:0; color:var(--muted); text-align:left; cursor:pointer; }
+  .moreMenu button:hover{ color:var(--accent-2); background:rgba(255,255,255,0.02) }
+
+  /* modal bounce */
+  @keyframes bounceIn { 0%{ transform: translateY(-30px) scale(.96); opacity:0 } 60%{ transform: translateY(6px) scale(1.02); opacity:1 } 100%{ transform: translateY(0) scale(1); opacity:1 } }
+  .modal.animate-bounce { animation: bounceIn 420ms cubic-bezier(.2,.9,.3,1); }
+
+  .modal-backdrop{position:fixed;inset:0;background:linear-gradient(180deg, rgba(2,4,6,0.6), rgba(2,4,6,0.55));display:flex;align-items:center;justify-content:center;z-index:200}
+  .modal{background:linear-gradient(180deg,#0e1518,#071017);padding:18px;border-radius:14px;max-width:640px;width:94%;border:1px solid rgba(255,255,255,0.04); box-shadow: 0 30px 120px rgba(2,6,10,0.7); position:relative; overflow:hidden}
+  .modal .accentBar{position:absolute; inset:auto 0 0 0; height:6px; background: linear-gradient(90deg,var(--accent),var(--accent-2)); opacity:0.98}
+  .tabBtns{display:flex;gap:8px;margin-bottom:12px}
+  .tabBtns .btn{ padding:8px 12px; font-weight:600 }
+  .tab-selected{ transform: translateY(-4px); box-shadow: 0 14px 40px rgba(0,0,0,0.45); border-radius:10px; }
+
+  /* Distinct colors for each tab when selected */
+  /* Ingresar (login) - purple/indigo (distinct from guest and register) */
+  #tabLogin.tab-selected {
+    background: linear-gradient(90deg,#7c3aed,#a78bfa);
+    color: #fff;
+    box-shadow: 0 12px 30px rgba(124,58,237,0.08);
+  }
+  /* Registrar - cyan/blue */
+  #tabRegister.tab-selected {
+    background: linear-gradient(90deg,#34aef0,#60e8ff);
+    color: #012;
+    box-shadow: 0 12px 30px rgba(34,174,240,0.08);
+  }
+  /* Invitado - amber/orange */
+  #tabGuest.tab-selected {
+    background: linear-gradient(90deg,#ffd89b,#ffb86b);
+    color: #042;
+    box-shadow: 0 12px 30px rgba(255,184,107,0.08);
+  }
+
+  /* Dim non-selected tabs to emphasize selected one */
+  .tab-dim { opacity: 0.55; filter: grayscale(0.06); transform: translateY(0); }
+
+  .input-with-toggle{ position:relative; display:flex; align-items:center; }
+  .input-with-toggle button{ position:absolute; right:8px; background:transparent; border:0; color:var(--muted); cursor:pointer; padding:6px; }
+
+  .toast{position:fixed;right:20px;bottom:20px;background:linear-gradient(90deg,#062421,#072b2a);padding:12px 16px;border-radius:10px;color:var(--accent);box-shadow:0 8px 40px rgba(2,8,10,0.6);z-index:260;transform:translateY(16px);opacity:0;transition:all var(--trans-medium)}
+  .toast.show{ transform:translateY(0); opacity:1 }
+
+  .search{padding:10px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.02);color:var(--muted);min-width:220px}
+  .empty{opacity:0.6;padding:18px;border-radius:12px;border:1px dashed rgba(255,255,255,0.03);text-align:center}
+
+  @media (max-width:880px) { .card .actions{ display:none; } .side-actions{ display:flex; } }
+  @media (min-width:881px) { .side-actions{ display:none; } }
+  @media (max-width:640px){ header{flex-direction:column;align-items:flex-start;gap:8px} .templates{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px} }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="logo" id="logoEl" aria-hidden><div style="font-size:18px">PB</div></div>
+    <div>
+      <h1>PlantillaBox</h1>
+      <div class="hint">Plantillas rápidas — Copia y pega al instante</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="chip" id="currentUser"><span id="userDot" style="width:10px;height:10px;border-radius:999px;background:linear-gradient(180deg,var(--accent),var(--accent-2));display:inline-block;margin-right:8px"></span><span id="currentUserText">Invitado</span></div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="btn" id="btnShelf" title="Estantería (arrastra aquí para guardar)">Estantería</button>
+      <button class="btn" id="btnExport">Exportar</button>
+      <button class="btn" id="btnImport">Importar</button>
+      <button class="btn primary" id="btnNew">+ Añadir plantilla</button>
+      <button class="btn ghost" id="btnLogin">Iniciar / Registrar</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="topbar">
+    <div class="stats" id="stats">0 plantillas</div>
+    <div style="flex:1"></div>
+    <input class="search" id="searchInput" placeholder="Buscar título o contenido..." />
+  </div>
+
+  <section class="templates" id="templatesContainer"></section>
+  <div id="emptyState" class="empty" style="display:none;margin-top:14px">No tienes plantillas aún. Haz clic en "+ Añadir plantilla".</div>
+</main>
+
+<footer>
+  PlantillaBox — tus respuestas rápidas guardadas localmente. <span id="footerInfo"></span>
+</footer>
+
+<div id="modalRoot" style="display:none"></div>
+<div id="toastRoot" style="display:none"></div>
+
+<script>
+(() => {
+  const APP_PREFIX = 'plantillabox';
+  const USERS_KEY = APP_PREFIX + '_users_obj';
+  const CURRENT_KEY = APP_PREFIX + '_current';
+  const GUEST_KEY = APP_PREFIX + '_guest_session';
+  const SHELF_KEY = (u) => APP_PREFIX + '_shelf_' + u;
+  const TEMPL_KEY = (user) => APP_PREFIX + '_tpls_' + user;
+
+  // DOM
+  const templatesContainer = document.getElementById('templatesContainer');
+  const stats = document.getElementById('stats');
+  const emptyState = document.getElementById('emptyState');
+  const btnNew = document.getElementById('btnNew');
+  const btnLogin = document.getElementById('btnLogin');
+  const btnExport = document.getElementById('btnExport');
+  const btnImport = document.getElementById('btnImport');
+  const btnShelf = document.getElementById('btnShelf');
+  const searchInput = document.getElementById('searchInput');
+  const modalRoot = document.getElementById('modalRoot');
+  const toastRoot = document.getElementById('toastRoot');
+  const currentUserText = document.getElementById('currentUserText');
+  const userDot = document.getElementById('userDot');
+  const footerInfo = document.getElementById('footerInfo');
+  const logoEl = document.getElementById('logoEl');
+
+  // state
+  let user = sessionStorage.getItem(CURRENT_KEY) || 'guest';
+  if (!sessionStorage.getItem(CURRENT_KEY)) sessionStorage.setItem(CURRENT_KEY, 'guest');
+  let templates = loadTemplatesFor(user);
+  let shelf = loadShelfFor(user);
+  let activeCardId = null;
+
+  // id generator
+  function generateId() { return 'tpl_' + Math.random().toString(36).slice(2,9); }
+
+  // initial UI
+  updateUserUI();
+  reorderPinned();
+  render();
+
+  // events
+  btnNew.addEventListener('click', () => { btnNew.classList.add('pressed'); setTimeout(()=>btnNew.classList.remove('pressed'),160); addTemplate(); });
+  btnLogin.addEventListener('click', openAuthModal);
+  btnExport.addEventListener('click', exportJSON);
+  btnImport.addEventListener('click', openImportModal);
+  btnShelf.addEventListener('click', openShelfModal);
+  searchInput.addEventListener('input', render);
+
+  // allow drop to shelf
+  btnShelf.addEventListener('dragover', (e) => { e.preventDefault(); btnShelf.classList.add('pressed'); });
+  btnShelf.addEventListener('dragleave', () => { btnShelf.classList.remove('pressed'); });
+  btnShelf.addEventListener('drop', (e) => {
+    e.preventDefault();
+    btnShelf.classList.remove('pressed');
+    const idDropped = e.dataTransfer.getData('text/plain');
+    if (!idDropped) return;
+    const idx = templates.findIndex(t=> t.id === idDropped);
+    if (idx === -1) return;
+    const item = templates.splice(idx,1)[0];
+    shelf.unshift(item);
+    saveShelf(); saveTemplates(); render(); showToast('Guardada en estantería');
+  });
+
+  // pressed feedback for buttons
+  document.addEventListener('pointerdown', (e) => {
+    const el = e.target.closest('.btn, button, .iconBtn');
+    if (!el) return;
+    el.classList.add('pressed');
+    setTimeout(()=> el.classList.remove('pressed'), 160);
+  });
+
+  // storage helpers
+  function getUsersObj(){ const s = localStorage.getItem(USERS_KEY); return s ? JSON.parse(s) : {}; }
+  function saveUsersObj(o){ localStorage.setItem(USERS_KEY, JSON.stringify(o)); }
+
+  function loadTemplatesFor(u){ if (u === 'guest'){ const s = sessionStorage.getItem(GUEST_KEY); return s ? JSON.parse(s) : []; } const s = localStorage.getItem(TEMPL_KEY(u)); return s ? JSON.parse(s) : []; }
+  function saveTemplates(){ if (user === 'guest') sessionStorage.setItem(GUEST_KEY, JSON.stringify(templates)); else localStorage.setItem(TEMPL_KEY(user), JSON.stringify(templates)); updateStats(); }
+
+  function loadShelfFor(u){ if (u === 'guest'){ const s = sessionStorage.getItem(SHELF_KEY('guest')); return s ? JSON.parse(s) : []; } const s = localStorage.getItem(SHELF_KEY(u)); return s ? JSON.parse(s) : []; }
+  function saveShelf(){ if (user === 'guest') sessionStorage.setItem(SHELF_KEY('guest'), JSON.stringify(shelf)); else localStorage.setItem(SHELF_KEY(user), JSON.stringify(shelf)); }
+
+  async function hashPassword(password){
+    if (!password) return '';
+    if (window.crypto && crypto.subtle && crypto.subtle.digest){
+      const enc = new TextEncoder(); const data = enc.encode(password);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      return Array.from(new Uint8Array(hashBuffer)).map(b=>b.toString(16).padStart(2,'0')).join('');
+    }
+    let h=0; for (let i=0;i<password.length;i++) h=(h*31+password.charCodeAt(i))>>>0;
+    let hex=''; for (let i=0;i<8;i++) hex += ('00000000'+((h ^ (i*2654435761))>>>0).toString(16)).slice(-8); return hex;
+  }
+
+  // UI helpers
+  function updateUserUI(){ currentUserText.textContent = (user === 'guest') ? 'Invitado' : user; footerInfo.textContent = (user === 'guest') ? 'Modo invitado (no persistente al cerrar).' : 'Sesión guardada en este navegador.'; if (user === 'guest'){ userDot.style.opacity = '0.6'; logoEl.classList.remove('logoStrong'); } else { userDot.style.opacity = '1'; logoEl.classList.add('logoStrong'); } }
+  function updateStats(){ stats.textContent = templates.length + (templates.length === 1 ? ' plantilla' : ' plantillas'); emptyState.style.display = templates.length ? 'none' : 'block'; }
+  function id(){ return generateId(); }
+
+  // add template
+  function addTemplate(prefill = {title:'',content:''}, save=true){
+    const t = { id: id(), title: prefill.title || '', content: prefill.content || '', modified: Date.now(), pinned:false };
+    templates.unshift(t);
+    if (save) saveTemplates();
+    render();
+    setTimeout(()=>{ const el = document.querySelector(`.card[data-id="${t.id}"]`); if (el){ el.classList.add('new-item'); setTimeout(()=>el.classList.remove('new-item'),420); const ta = el.querySelector('textarea'); if(ta){ ta.focus(); setActiveCard(t.id); } } }, 60);
+  }
+
+  function setActiveCard(tid){
+    if (!tid) return;
+    if (activeCardId === tid) return;
+    const prev = document.querySelector(`.card[data-id="${activeCardId}"]`);
+    if (prev) prev.classList.remove('active','focus-outline');
+    activeCardId = tid;
+    const cur = document.querySelector(`.card[data-id="${activeCardId}"]`);
+    if (cur) cur.classList.add('active','focus-outline');
+    document.querySelectorAll('.card').forEach(c => { if (c.getAttribute('data-id') !== activeCardId) c.classList.remove('focus-outline'); });
+  }
+
+  function reorderPinned(){ const pinned = templates.filter(t=>t.pinned); const rest = templates.filter(t=>!t.pinned); templates = pinned.concat(rest); }
+
+  // render templates
+  function render(){
+    templatesContainer.innerHTML = '';
+    reorderPinned();
+    const q = (searchInput.value || '').trim().toLowerCase();
+    const filtered = templates.filter(t => !q || (t.title||'').toLowerCase().includes(q) || (t.content||'').toLowerCase().includes(q));
+    filtered.forEach(t => {
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.setAttribute('data-id', t.id);
+      card.setAttribute('draggable', 'true');
+      card.innerHTML = `
+        <div class="row">
+          <input class="title" placeholder="Título (opcional)" value="${escapeAttr(t.title||'')}" />
+          <div style="display:flex;gap:8px;align-items:center">
+            <div class="side-actions" aria-hidden>
+              <button class="iconBtn btnPin" title="${t.pinned ? 'Desanclar' : 'Anclar'}">${t.pinned ? '📌' : '📍'}</button>
+              <button class="iconBtn btnCopy" title="Copiar">📋</button>
+              <button class="iconBtn btnMore" title="Más">⋯</button>
+            </div>
+            <div class="actions">
+              <button class="small muted btnPinInline">${t.pinned ? '📌' : '📍'}</button>
+              <button class="small small-ghost btnCopyInline">Copiar</button>
+              <button class="small btnDupInline">Duplicar</button>
+              <button class="small muted btnShelfInline">🗄️ Guardar</button>
+              <button class="small danger btnDelInline">-</button>
+            </div>
+          </div>
+        </div>
+        <textarea placeholder="Escribe tu plantilla..." spellcheck="false">${escapeHtml(t.content||'')}</textarea>
+        <div class="meta"><span class="chars">${(t.content||'').length} caracteres</span><span class="modified">${t.modified ? 'Última: ' + formatDate(t.modified) : ''}</span></div>
+      `;
+      templatesContainer.appendChild(card);
+
+      // dragstart -> allow drop to shelf
+      card.addEventListener('dragstart', (ev) => { ev.dataTransfer.setData('text/plain', t.id); card.classList.add('dragging'); });
+      card.addEventListener('dragend', () => card.classList.remove('dragging'));
+
+      // elements
+      const inp = card.querySelector('.title');
+      const ta = card.querySelector('textarea');
+      const btnPin = card.querySelector('.btnPin') || card.querySelector('.btnPinInline');
+      const btnCopy = card.querySelector('.btnCopy') || card.querySelector('.btnCopyInline');
+      const btnMore = card.querySelector('.btnMore');
+      const btnDup = card.querySelector('.btnDupInline');
+      const btnDel = card.querySelector('.btnDelInline');
+      const btnShelfInline = card.querySelector('.btnShelfInline');
+      const charsEl = card.querySelector('.chars');
+      const modEl = card.querySelector('.modified');
+
+      // more menu
+      function openMoreMenu(){
+        closeAllMoreMenus();
+        const menu = document.createElement('div'); menu.className = 'moreMenu';
+        menu.innerHTML = `
+          <button data-act="copy">📋 Copiar</button>
+          <button data-act="dup">✳️ Duplicar</button>
+          <button data-act="pin">${t.pinned ? '📌 Desanclar' : '📍 Anclar'}</button>
+          <button data-act="shelf">🗄️ Guardar en estantería</button>
+          <button data-act="del" style="color:var(--danger)">🗑️ Eliminar</button>
+        `;
+        card.appendChild(menu);
+        menu.querySelectorAll('button').forEach(b => {
+          b.addEventListener('click', () => {
+            const a = b.getAttribute('data-act');
+            if (a === 'copy') doCopy();
+            if (a === 'dup') doDup();
+            if (a === 'pin') doPin();
+            if (a === 'shelf') doShelf();
+            if (a === 'del') doDel();
+            closeAllMoreMenus();
+          });
+        });
+        setTimeout(()=> document.addEventListener('pointerdown', outsideHandler));
+        function outsideHandler(ev){ if (!menu.contains(ev.target)) { menu.remove(); document.removeEventListener('pointerdown', outsideHandler); } }
+      }
+      function closeAllMoreMenus(){ document.querySelectorAll('.moreMenu').forEach(m=>m.remove()); }
+
+      // actions
+      async function doCopy(){ try{ await navigator.clipboard.writeText(t.content||''); showToast('Copiado al portapapeles'); } catch(e){ const tmp=document.createElement('textarea'); tmp.value=t.content||''; document.body.appendChild(tmp); tmp.select(); document.execCommand('copy'); document.body.removeChild(tmp); showToast('Copiado (fallback)'); } }
+      function doDup(){ addTemplate({title: t.title + ' (copia)', content: t.content}); showToast('Plantilla duplicada'); }
+      function doPin(){ t.pinned = !t.pinned; reorderPinned(); saveTemplates(); render(); showToast(t.pinned ? 'Anclada' : 'Desanclada'); }
+      function doShelf(){ shelf.unshift(Object.assign({}, t)); templates = templates.filter(x=>x.id !== t.id); saveShelf(); saveTemplates(); render(); showToast('Guardada en estantería'); }
+      function doDel(){ confirmDelete(t.id); }
+
+      // attach
+      if (btnMore) btnMore.addEventListener('click', openMoreMenu);
+      if (btnPin) btnPin.addEventListener('click', doPin);
+      if (btnCopy) btnCopy.addEventListener('click', doCopy);
+      if (btnDup) btnDup.addEventListener('click', doDup);
+      if (btnDel) btnDel.addEventListener('click', doDel);
+      if (btnShelfInline) btnShelfInline.addEventListener('click', doShelf);
+
+      // pointer/focus behavior
+      card.addEventListener('pointerdown', ()=> { setActiveCard(t.id); try{ if (navigator.vibrate) navigator.vibrate(8); } catch(e){} });
+      inp.addEventListener('focus', ()=> setActiveCard(t.id));
+      ta.addEventListener('focus', ()=> setActiveCard(t.id));
+      card.addEventListener('focusin', () => card.classList.add('focus-outline'));
+      card.addEventListener('focusout', () => { if (card.getAttribute('data-id') !== activeCardId) card.classList.remove('focus-outline'); });
+
+      inp.addEventListener('input', (e) => { t.title = e.target.value; t.modified = Date.now(); saveTemplates(); if (modEl) modEl.textContent = 'Última: ' + formatDate(t.modified); });
+      ta.addEventListener('input', (e) => { t.content = e.target.value; t.modified = Date.now(); saveTemplates(); if (charsEl) charsEl.textContent = (t.content||'').length + ' caracteres'; if (modEl) modEl.textContent = 'Última: ' + formatDate(t.modified); });
+
+      if (t.id === activeCardId) card.classList.add('active','focus-outline');
+    });
+    updateStats();
+  }
+
+  // confirm delete centered bounce + animate removal
+  function confirmDelete(tid){
+    openModal({
+      title: 'Eliminar plantilla',
+      body: `<p style="margin:0 0 8px 0">¿Estás seguro? Esta acción no se puede deshacer.</p><div style="text-align:center;font-size:28px;opacity:0.9">🗑️</div>`,
+      cancelText: 'Cancelar',
+      confirmText: 'Eliminar',
+      mode: 'register',
+      animation: 'bounce',
+      onConfirm: () => {
+        const cardEl = document.querySelector(`.card[data-id="${tid}"]`);
+        if (cardEl) {
+          cardEl.classList.add('removing');
+          const rect = cardEl.getBoundingClientRect();
+          const trash = document.createElement('div');
+          trash.textContent = '🗑️';
+          trash.style.position = 'fixed';
+          trash.style.left = (rect.left + rect.width/2) + 'px';
+          trash.style.top = (rect.top + rect.height/2) + 'px';
+          trash.style.fontSize = '32px';
+          trash.style.zIndex = 9999;
+          trash.style.transition = 'transform 420ms ease, opacity 420ms';
+          document.body.appendChild(trash);
+          requestAnimationFrame(()=> {
+            trash.style.transform = 'translateY(-140px) translateX(40px) rotate(30deg) scale(.6)';
+            trash.style.opacity = '0';
+          });
+          setTimeout(()=> { if (trash && trash.parentNode) trash.parentNode.removeChild(trash); }, 480);
+          setTimeout(()=> {
+            templates = templates.filter(x => x.id !== tid);
+            saveTemplates();
+            render();
+            showToast('Plantilla eliminada');
+          }, 420);
+        } else {
+          templates = templates.filter(x => x.id !== tid);
+          saveTemplates();
+          render();
+          showToast('Plantilla eliminada');
+        }
+      }
+    });
+  }
+
+  // openModal center with optional bounce
+  function openModal({title='Atención', body='', confirmText='Aceptar', cancelText='Cancelar', onConfirm=null, mode='neutral', animation=''}) {
+    modalRoot.style.display = 'block';
+    modalRoot.innerHTML = `
+      <div class="modal-backdrop" id="modalBackdrop">
+        <div class="modal ${animation === 'bounce' ? 'animate-bounce' : ''} mode-${mode}" role="dialog" aria-modal="true">
+          <h3 style="margin-top:0">${title}</h3>
+          <div style="margin:12px 0">${body}</div>
+          <div style="display:flex;gap:8px;justify-content:flex-end">
+            <button class="btn muted" id="modalCancel">${cancelText}</button>
+            <button class="btn danger" id="modalConfirm">${confirmText}</button>
+          </div>
+        </div>
+      </div>
+    `;
+    const modalEl = modalRoot.querySelector('.modal');
+    const accent = document.createElement('div'); accent.className = 'accentBar';
+    if (mode === 'login') accent.style.background = 'linear-gradient(90deg,var(--accent-2), var(--accent))';
+    else if (mode === 'register') accent.style.background = 'linear-gradient(90deg,var(--accent), var(--accent-2))';
+    else if (mode === 'guest') accent.style.background = 'linear-gradient(90deg,#ffd89b,#ffb86b)';
+    else accent.style.background = 'linear-gradient(90deg,var(--accent),var(--accent-2))';
+    modalEl.appendChild(accent);
+
+    document.getElementById('modalCancel').addEventListener('click', closeModal);
+    document.getElementById('modalBackdrop').addEventListener('click', (e) => { if (e.target.id === 'modalBackdrop') closeModal(); });
+    document.getElementById('modalConfirm').addEventListener('click', () => { if (onConfirm) onConfirm(); closeModal(); });
+  }
+  function closeModal(){ modalRoot.style.display = 'none'; modalRoot.innerHTML = ''; }
+
+  // Auth modal (centered, bounce, nicer UI)
+  function openAuthModal(){
+    const users = Object.keys(getUsersObj());
+    const usersListHtml = users.length ? `<div class="hint" style="margin-bottom:10px">Usuarios: ${users.join(', ')}</div>` : '';
+    modalRoot.style.display = 'block';
+    modalRoot.innerHTML = `
+      <div class="modal-backdrop" id="modalBackdrop">
+        <div class="modal animate-bounce mode-neutral" id="authModal" role="dialog" aria-modal="true">
+          <h3 style="margin-top:0">Iniciar sesión / Registrar</h3>
+          ${usersListHtml}
+          <div class="tabBtns" id="tabBtns">
+            <button class="btn" id="tabLogin">Ingresar</button>
+            <button class="btn primary" id="tabRegister">Registrar</button>
+            <button class="btn" id="tabGuest">Invitado</button>
+          </div>
+          <div id="authBody" style="min-height:160px"></div>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px"><button class="btn muted" id="modalClose">Cerrar</button></div>
+        </div>
+      </div>
+    `;
+    const authBody = document.getElementById('authBody');
+    const tabLogin = document.getElementById('tabLogin');
+    const tabRegister = document.getElementById('tabRegister');
+    const tabGuest = document.getElementById('tabGuest');
+
+    function highlightTab(selected){
+      [tabLogin, tabRegister, tabGuest].forEach(t => {
+        t.classList.remove('tab-selected');
+        t.classList.remove('tab-dim');
+      });
+      // add selected
+      if (selected === 'login') tabLogin.classList.add('tab-selected');
+      if (selected === 'register') tabRegister.classList.add('tab-selected');
+      if (selected === 'guest') tabGuest.classList.add('tab-selected');
+      // dim the others
+      [tabLogin, tabRegister, tabGuest].forEach(t => {
+        if (!t.classList.contains('tab-selected')) t.classList.add('tab-dim');
+      });
+    }
+
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    tabLogin.addEventListener('click', () => { renderLogin(); highlightTab('login'); });
+    tabRegister.addEventListener('click', () => { renderRegister(); highlightTab('register'); });
+    tabGuest.addEventListener('click', () => { renderGuest(); highlightTab('guest'); });
+
+    renderLogin();
+    highlightTab('login');
+
+    function renderLogin(){
+      authBody.innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <input id="loginUser" placeholder="Usuario" autocomplete="username"/>
+          <div class="input-with-toggle">
+            <input id="loginPass" type="password" placeholder="Contraseña" autocomplete="current-password"/>
+            <button id="toggleLoginPass" title="Mostrar contraseña">👁️</button>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="btn primary" id="doLogin">Ingresar</button>
+            <button class="btn" id="useGuest">Usar como invitado</button>
+          </div>
+          <div class="auth-note">No uses tu email como nombre de usuario. Si no tienes cuenta, regístrate.</div>
+        </div>
+      `;
+      const toggle = document.getElementById('toggleLoginPass');
+      toggle.addEventListener('click', () => {
+        const p = document.getElementById('loginPass');
+        if (p.type === 'password') { p.type = 'text'; toggle.textContent = '🙈'; }
+        else { p.type = 'password'; toggle.textContent = '👁️'; }
+      });
+      document.getElementById('doLogin').addEventListener('click', async ()=>{
+        const name = (document.getElementById('loginUser').value||'').trim();
+        const pass = document.getElementById('loginPass').value||'';
+        if (!name || !pass) return alert('Escribe usuario y contraseña');
+        const users = getUsersObj();
+        if (!users[name]) return alert('Usuario no encontrado');
+        const h = await hashPassword(pass);
+        if (h !== users[name].hash) return alert('Contraseña incorrecta');
+        sessionStorage.setItem(CURRENT_KEY, name);
+        user = name; templates = loadTemplatesFor(user); shelf = loadShelfFor(user); updateUserUI(); render(); closeModal(); showToast('Sesión iniciada');
+      });
+      document.getElementById('useGuest').addEventListener('click', ()=>{ sessionStorage.setItem(CURRENT_KEY,'guest'); user='guest'; templates = loadTemplatesFor(user); shelf = loadShelfFor(user); updateUserUI(); render(); closeModal(); showToast('Invitado'); });
+    }
+
+    function renderRegister(){
+      authBody.innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <input id="regUser" placeholder="Nombre de usuario (no email)"/>
+          <div class="input-with-toggle">
+            <input id="regPass" type="password" placeholder="Contraseña (mín 6)"/>
+            <button id="toggleRegPass" title="Mostrar contraseña">👁️</button>
+          </div>
+          <div class="input-with-toggle">
+            <input id="regPass2" type="password" placeholder="Confirmar contraseña"/>
+            <button id="toggleRegPass2" title="Mostrar contraseña">👁️</button>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="btn primary" id="doRegister">Registrar</button>
+            <button class="btn" id="backLogin">Volver</button>
+          </div>
+          <div class="auth-note">Registro local, privado: tus plantillas quedarán en este navegador.</div>
+        </div>
+      `;
+      document.getElementById('toggleRegPass').addEventListener('click', () => {
+        const p = document.getElementById('regPass'); p.type = p.type === 'password' ? 'text' : 'password';
+      });
+      document.getElementById('toggleRegPass2').addEventListener('click', () => {
+        const p = document.getElementById('regPass2'); p.type = p.type === 'password' ? 'text' : 'password';
+      });
+      document.getElementById('doRegister').addEventListener('click', async ()=>{
+        const name = (document.getElementById('regUser').value||'').trim();
+        const pass = document.getElementById('regPass').value||'';
+        const pass2 = document.getElementById('regPass2').value||'';
+        if (!name || !pass || !pass2) return alert('Completa todos los campos');
+        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(name)) return alert('No uses correo como usuario');
+        if (pass.length < 6) return alert('Contraseña mínima 6');
+        if (pass !== pass2) return alert('Contraseñas no coinciden');
+        const users = getUsersObj();
+        if (users[name]) return alert('Usuario en uso');
+        const h = await hashPassword(pass);
+        users[name] = { hash: h, createdAt: new Date().toISOString() };
+        saveUsersObj(users);
+        localStorage.setItem(TEMPL_KEY(name), JSON.stringify([]));
+        sessionStorage.setItem(CURRENT_KEY, name);
+        user = name; templates = loadTemplatesFor(user); shelf = loadShelfFor(user); updateUserUI(); render(); closeModal(); showToast('Registrado e iniciado');
+      });
+      document.getElementById('backLogin').addEventListener('click', renderLogin);
+    }
+
+    function renderGuest(){
+      authBody.innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="auth-note">Usar como invitado guarda solo en esta pestaña. Se perderá al cerrar.</div>
+          <div style="display:flex;gap:8px">
+            <button class="btn primary" id="useGuestNow">Usar como invitado</button>
+            <button class="btn" id="backLogin2">Volver</button>
+          </div>
+        </div>
+      `;
+      document.getElementById('useGuestNow').addEventListener('click', ()=>{ sessionStorage.setItem(CURRENT_KEY,'guest'); user='guest'; templates = loadTemplatesFor(user); shelf = loadShelfFor(user); updateUserUI(); render(); closeModal(); showToast('Invitado'); });
+      document.getElementById('backLogin2').addEventListener('click', renderLogin);
+    }
+  }
+
+  // Shelf modal (restore multiple without closing)
+  function openShelfModal(){
+    renderShelfModal();
+    function renderShelfModal(){
+      const listHtml = shelf.length ? shelf.map(s => `<li data-id="${s.id}" style="margin-bottom:10px;padding:8px;border-radius:8px;background:rgba(255,255,255,0.02)"><strong>${escapeHtml(s.title||'(sin título)')}</strong><div style="margin-top:6px">${escapeHtml((s.content||'').slice(0,200))}${(s.content||'').length>200?'…':''}</div><div style="margin-top:8px"><button class="btn small restore">Restaurar</button> <button class="btn small danger del">Eliminar</button></div></li>`).join('') : '<div class="hint">No hay plantillas en la estantería.</div>';
+      openModal({ title:'Estantería', body:`<div style="display:flex;justify-content:space-between;align-items:center"><div class="hint">Plantillas guardadas</div><div><button class="btn" id="shelfHome">Inicio</button></div></div><div style="max-height:50vh;overflow:auto;padding-right:6px;margin-top:10px"><ul style="list-style:none;padding:0;margin:0">${listHtml}</ul></div>`, cancelText:'Cerrar', confirmText:'Cerrar', onConfirm:null });
+      setTimeout(()=> {
+        const shelfHome = document.getElementById('shelfHome');
+        if (shelfHome) shelfHome.addEventListener('click', ()=> { closeModal(); window.scrollTo({top:0, behavior:'smooth'}); showToast('Inicio'); });
+
+        const modalRootEl = document.getElementById('modalRoot');
+        modalRootEl.querySelectorAll('.restore').forEach(btn => {
+          btn.addEventListener('click', (ev) => {
+            const li = ev.target.closest('li'); if (!li) return;
+            const itemId = li.getAttribute('data-id');
+            const idx = shelf.findIndex(x => x.id === itemId);
+            if (idx === -1) return;
+            const item = shelf.splice(idx,1)[0];
+            const restored = { id: id(), title: item.title, content: item.content, modified: Date.now(), pinned:false };
+            templates.unshift(restored);
+            saveShelf(); saveTemplates();
+            li.parentNode.removeChild(li);
+            showToast('Restaurada al inicio');
+            setTimeout(()=> {
+              const el = document.querySelector(`.card[data-id="${restored.id}"]`);
+              if (el) { el.classList.add('new-item'); setTimeout(()=> el.classList.remove('new-item'),420); el.scrollIntoView({behavior:'smooth', block:'center'}); setActiveCard(restored.id); }
+            }, 80);
+          });
+        });
+        modalRootEl.querySelectorAll('.del').forEach(btn => {
+          btn.addEventListener('click', (ev) => {
+            const li = ev.target.closest('li'); if (!li) return;
+            const itemId = li.getAttribute('data-id');
+            shelf = shelf.filter(x => x.id !== itemId);
+            saveShelf();
+            li.parentNode.removeChild(li);
+            showToast('Eliminada de la estantería');
+          });
+        });
+      }, 40);
+    }
+  }
+
+  // export/import
+  function exportJSON(){
+    const exportData = { exportedAt: new Date().toISOString(), user: user, templates: templates, shelf: shelf };
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = (user==='guest' ? 'plantillas-guest' : 'plantillas-' + user) + '.json'; a.click(); URL.revokeObjectURL(url); showToast('Exportado');
+  }
+  function openImportModal(){
+    openModal({ title:'Importar JSON', body:`<input type="file" id="importFile" accept=".json"/><div class="hint">Añadir o reemplazar plantillas. Si contiene "shelf", también se importará.</div>`, cancelText:'Cerrar', confirmText:'Cerrar', onConfirm:null });
+    setTimeout(()=> {
+      const fi = document.getElementById('importFile'); if(!fi) return;
+      fi.addEventListener('change', (e)=> {
+        const f = e.target.files[0]; if(!f) return;
+        const r = new FileReader();
+        r.onload = (ev)=> {
+          try {
+            const obj = JSON.parse(ev.target.result);
+            if (Array.isArray(obj.templates)) {
+              openModal({ title:'Importar', body:'¿Añadir o reemplazar?', cancelText:'Añadir', confirmText:'Reemplazar', onConfirm: ()=> {
+                templates = obj.templates.map(x=>({id: id(), title:x.title||'', content:x.content||'', modified:Date.now(), pinned:false}));
+                if (Array.isArray(obj.shelf)) shelf = obj.shelf.map(x=>({id:id(), title:x.title||'', content:x.content||'', modified:Date.now()}));
+                saveTemplates(); saveShelf(); render(); showToast('Reemplazado');
+              }});
+              setTimeout(()=> {
+                const cancelBtn=document.querySelector('#modalCancel');
+                if(cancelBtn) {
+                  cancelBtn.addEventListener('click', ()=> {
+                    const imported = obj.templates.map(x=>({id:id(),title:x.title||'',content:x.content||'',modified:Date.now(),pinned:false}));
+                    templates = imported.concat(templates);
+                    if (Array.isArray(obj.shelf)) shelf = obj.shelf.map(x=>({id:id(),title:x.title||'',content:x.content||'',modified:Date.now()})).concat(shelf);
+                    saveTemplates(); saveShelf(); render(); showToast('Añadido');
+                  }, {once:true});
+                }
+              }, 20);
+            } else alert('JSON inválido');
+          } catch(err){ alert('Error: '+err.message); }
+        };
+        r.readAsText(f); closeModal();
+      });
+    }, 40);
+  }
+
+  // toast
+  let toastTimer=null;
+  function showToast(txt){ toastRoot.style.display='block'; toastRoot.innerHTML = `<div class="toast show">${txt}</div>`; if(toastTimer) clearTimeout(toastTimer); toastTimer=setTimeout(()=>{ toastRoot.style.display='none'; toastRoot.innerHTML=''; },2600); }
+
+  // utils
+  function escapeHtml(s){ if (s==null) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function escapeAttr(s){ if (s==null) return ''; return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+  function formatDate(ts){ try{ return new Date(ts).toLocaleString(); }catch(e){return ''} }
+
+  // initial load
+  (function initial(){
+    templates = loadTemplatesFor(user) || [];
+    shelf = loadShelfFor(user) || [];
+    reorderPinned(); updateUserUI(); render();
+  })();
+
+  // expose for debugging
+  window.PlantillaBox = { addTemplate, getState: ()=>({user, templates, shelf}), saveTemplates, saveShelf };
+
+})();
+</script>
+</body>
+</html>
