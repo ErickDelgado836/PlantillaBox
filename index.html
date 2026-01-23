@@ -166,6 +166,10 @@
   }
 
   /* DISEÑO DE TARJETA */
+  /* Prevent accidental text-selection while dragging cards, but allow selection in inputs/textarea */
+  .card, .card * { -webkit-user-select: none; user-select: none; }
+  .card textarea, .card input.title, .card .tpl-select, .card .iconBtn, .card button { -webkit-user-select: text; user-select: text; }
+
   .card {
     position: relative;
     background: var(--card-bg);
@@ -470,6 +474,15 @@
   const selectedIds = new Set();
   function generateId() { return 'tpl_' + Math.random().toString(36).slice(2,9); }
 
+  // helper to detect interactive start targets
+  function isInteractiveNode(node) {
+    if (!node) return false;
+    try {
+      if (node.nodeType === 3) node = node.parentElement; // text node -> parent
+      return !!(node.closest && (node.closest('textarea, input, select, button, .tpl-select, .iconBtn') || node.isContentEditable));
+    } catch (e) { return false; }
+  }
+
   // initial UI
   updateUserUI();
   reorderPinned();
@@ -757,7 +770,52 @@
         <div class="meta"><span class="chars">${(t.content||'').length} caracteres</span><span class="modified">${t.modified ? 'Editado: ' + formatDate(t.modified) : ''}</span></div>
       `;
       templatesContainer.appendChild(card);
-      card.addEventListener('dragstart', (ev) => { ev.dataTransfer.setData('text/plain', t.id); card.classList.add('dragging'); });
+
+      // store the pointerdown initial target so dragstart can decide whether to allow a card-drag
+      card.addEventListener('pointerdown', (ev) => {
+        // keep the original event target (could be text node)
+        card.__dragStartTarget = ev.target;
+      }, {capture: true});
+      card.addEventListener('pointerup', () => { card.__dragStartTarget = null; }, {capture:true});
+      card.addEventListener('pointercancel', () => { card.__dragStartTarget = null; }, {capture:true});
+
+      card.addEventListener('dragstart', (ev) => {
+        // If the drag was initiated from an interactive element (input/textarea/checkbox/button, or a text selection inside textarea),
+        // cancel the card drag. This prevents the tpl_xxx token from being "selected/inserted" when user is just selecting text.
+        try {
+          const startTarget = card.__dragStartTarget || ev.target;
+          if (isInteractiveNode(startTarget)) {
+            ev.preventDefault();
+            return;
+          }
+
+          // Also check current selection: if selection is inside a textarea, cancel the card drag.
+          const sel = window.getSelection ? window.getSelection() : null;
+          if (sel && sel.rangeCount > 0) {
+            const range = sel.getRangeAt(0);
+            let anc = range.commonAncestorContainer;
+            let ancEl = (anc && anc.nodeType === 3) ? anc.parentElement : anc;
+            if (isInteractiveNode(ancEl) && ancEl.closest && ancEl.closest('textarea')) {
+              ev.preventDefault();
+              return;
+            }
+          }
+        } catch (err) {
+          // fallback to normal behavior if something unexpected happens
+        }
+
+        // normal card drag behavior: set id so drop on shelf works
+        ev.dataTransfer.setData('text/plain', t.id);
+        // hide native drag image to avoid browser showing selected text as ghost
+        try {
+          const crt = document.createElement('canvas');
+          crt.width = crt.height = 0;
+          ev.dataTransfer.setDragImage(crt, 0, 0);
+        } catch (err) {}
+        // clear any accidental text selection that may appear when starting a drag
+        setTimeout(()=>{ try { const s = window.getSelection(); if (s) s.removeAllRanges(); } catch(e){} }, 0);
+        card.classList.add('dragging');
+      });
       card.addEventListener('dragend', () => card.classList.remove('dragging'));
 
       const inp = card.querySelector('.title');
