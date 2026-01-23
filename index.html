@@ -21,6 +21,7 @@
     --primary-glow: rgba(45, 212, 191, 0.25);
     --secondary: #6366f1;     /* Indigo */
     --accent-gradient: linear-gradient(135deg, #2dd4bf 0%, #3b82f6 50%, #6366f1 100%);
+    --gold: #fbbf24;          /* Para el candado */
     
     /* Utilidades */
     --muted: #94a3b8;
@@ -202,6 +203,19 @@
     border-color: rgba(45, 212, 191, 0.4);
     box-shadow: 0 10px 40px rgba(0,0,0,0.4);
   }
+  
+  /* Estado BLOQUEADO */
+  .card.locked {
+    border-color: rgba(251, 191, 36, 0.2); /* Borde dorado sutil */
+  }
+  .card.locked textarea, .card.locked input.title {
+    opacity: 0.7;
+    cursor: default; /* Cursor normal, no de texto */
+  }
+  /* Indicador visual de inputs bloqueados */
+  .card.locked textarea:focus, .card.locked input.title:focus {
+    box-shadow: none; border-color: transparent;
+  }
 
   /* Animaciones */
   .card.slide-in { animation: smoothEntry 0.5s var(--ease-elastic); }
@@ -223,6 +237,7 @@
     border-bottom: 1px dashed transparent; transition: 0.2s;
   }
   input.title:focus { border-bottom-color: var(--primary); }
+  input.title[readonly] { border-bottom: 1px solid transparent; } /* Sin linea punteada al bloquear */
   input.title::placeholder { color: rgba(255,255,255,0.2); font-weight: 400; }
 
   textarea {
@@ -237,6 +252,7 @@
     transition: all 0.2s;
   }
   textarea:focus { background: rgba(0,0,0,0.35); border-color: rgba(255,255,255,0.12); }
+  textarea[readonly] { background: rgba(0,0,0,0.1); border-color: transparent; }
 
   .meta { display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 10px; font-family: monospace; }
 
@@ -260,6 +276,7 @@
     transition: all 0.2s;
   }
   .iconBtn:hover { background: var(--primary); color: #000; transform: scale(1.1); box-shadow: 0 4px 12px rgba(45,212,191,0.25); }
+  .iconBtn.btnLock:hover { background: var(--gold); } /* Color especial para el candado */
 
   .tpl-select {
     appearance: none; -webkit-appearance: none;
@@ -597,10 +614,21 @@
     }
   }
 
+  // Nueva función para bloqueo
+  function toggleLockById(id) {
+    const idx = templates.findIndex(t => t.id === id);
+    if (idx === -1) return;
+    const willLock = !templates[idx].locked;
+    templates[idx].locked = willLock;
+    saveTemplates(); render();
+    showToast(willLock ? 'Plantilla bloqueada' : 'Plantilla desbloqueada');
+  }
+
   function addTemplate(prefill = {title:'',content:''}, save=true){
     const existingCards = Array.from(document.querySelectorAll('.templates .card'));
     existingCards.forEach(c => c.classList.add('pre-push'));
-    const t = { id: id(), title: prefill.title || '', content: prefill.content || '', modified: Date.now(), pinned:false };
+    // Added locked: false
+    const t = { id: id(), title: prefill.title || '', content: prefill.content || '', modified: Date.now(), pinned:false, locked:false };
     templates.unshift(t);
     if (save) saveTemplates();
     render();
@@ -693,22 +721,30 @@
     const filtered = templates.filter(t => !q || (t.title||'').toLowerCase().includes(q) || (t.content||'').toLowerCase().includes(q));
     filtered.forEach(t => {
       const checked = selectedIds.has(t.id);
+      const isLocked = t.locked === true;
       const card = document.createElement('article');
       card.className = 'card';
       if (checked) card.classList.add('selected');
+      if (isLocked) card.classList.add('locked'); // visual class
       card.setAttribute('data-id', t.id);
       card.setAttribute('draggable', 'true');
+      
+      // Conditionally add readonly
+      const roAttr = isLocked ? 'readonly' : '';
+
       card.innerHTML = `
         <div class="row">
           <input type="checkbox" class="tpl-select" ${checked ? 'checked' : ''} aria-label="Seleccionar plantilla" />
-          <input class="title" placeholder="Título (opcional)" value="${escapeAttr(t.title||'')}" />
+          <input class="title" placeholder="Título (opcional)" value="${escapeAttr(t.title||'')}" ${roAttr} />
           <div style="display:flex;gap:8px;align-items:center">
             <div class="side-actions" aria-hidden>
+              <button class="iconBtn btnLock" title="${isLocked ? 'Desbloquear' : 'Bloquear'}">${isLocked ? '🔒' : '🔓'}</button>
               <button class="iconBtn btnPin" title="${t.pinned ? 'Desanclar' : 'Anclar'}">${t.pinned ? '📌' : '📍'}</button>
               <button class="iconBtn btnCopy" title="Copiar">📋</button>
               <button class="iconBtn btnMore" title="Más">⋯</button>
             </div>
             <div class="actions">
+              <button class="small muted btnLockInline">${isLocked ? '🔒 Desbloquear' : '🔓 Bloquear'}</button>
               <button class="small muted btnPinInline">${t.pinned ? '📌' : '📍'}</button>
               <button class="small small-ghost btnCopyInline">Copiar</button>
               <button class="small btnDupInline">Duplicar</button>
@@ -717,7 +753,7 @@
             </div>
           </div>
         </div>
-        <textarea placeholder="Escribe tu plantilla aquí..." spellcheck="false">${escapeHtml(t.content||'')}</textarea>
+        <textarea placeholder="Escribe tu plantilla aquí..." spellcheck="false" ${roAttr}>${escapeHtml(t.content||'')}</textarea>
         <div class="meta"><span class="chars">${(t.content||'').length} caracteres</span><span class="modified">${t.modified ? 'Editado: ' + formatDate(t.modified) : ''}</span></div>
       `;
       templatesContainer.appendChild(card);
@@ -728,6 +764,7 @@
       const ta = card.querySelector('textarea');
       const tplCheckbox = card.querySelector('.tpl-select');
       const btnPinEls = card.querySelectorAll('.btnPin, .btnPinInline');
+      const btnLockEls = card.querySelectorAll('.btnLock, .btnLockInline'); // new
       const btnCopyEls = card.querySelectorAll('.btnCopy, .btnCopyInline');
       const btnMore = card.querySelector('.btnMore');
       const btnDup = card.querySelector('.btnDupInline');
@@ -756,6 +793,7 @@
         const menu = document.createElement('div'); menu.className = 'moreMenu';
         menu.style.cssText = "position:absolute; top:40px; right:10px; background:#18181b; border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:6px; z-index:50; min-width:160px; box-shadow:0 10px 40px rgba(0,0,0,0.5);";
         menu.innerHTML = `
+          <button data-act="lock" style="width:100%;text-align:left;padding:10px;background:transparent;border:0;color:#94a3b8;cursor:pointer;display:flex;gap:8px">${t.locked ? '🔓 Desbloquear' : '🔒 Bloquear'}</button>
           <button data-act="copy" style="width:100%;text-align:left;padding:10px;background:transparent;border:0;color:#94a3b8;cursor:pointer;display:flex;gap:8px">📋 Copiar</button>
           <button data-act="dup" style="width:100%;text-align:left;padding:10px;background:transparent;border:0;color:#94a3b8;cursor:pointer;display:flex;gap:8px">✳️ Duplicar</button>
           <button data-act="pin" style="width:100%;text-align:left;padding:10px;background:transparent;border:0;color:#94a3b8;cursor:pointer;display:flex;gap:8px">${t.pinned ? '📌 Desanclar' : '📍 Anclar'}</button>
@@ -766,6 +804,7 @@
         menu.querySelectorAll('button').forEach(b => {
           b.addEventListener('click', async () => {
             const a = b.getAttribute('data-act');
+            if (a === 'lock') toggleLockById(t.id); // new
             if (a === 'copy') { b.classList.add('flash'); setTimeout(()=>b.classList.remove('flash'),460); await robustCopy(t.content||''); }
             if (a === 'dup') doDup();
             if (a === 'pin') togglePinById(t.id);
@@ -786,8 +825,10 @@
       function doShelf(){ shelf.unshift(Object.assign({}, t)); templates = templates.filter(x=>x.id !== t.id); saveShelf(); saveTemplates(); render(); showToast('Archivado'); }
       function doDel(){ confirmDelete(t.id); }
       function doPin(){ togglePinById(t.id); }
+      function doLock(){ toggleLockById(t.id); } // new
 
       btnPinEls.forEach(el => el.addEventListener('click', () => { doPin(); }));
+      btnLockEls.forEach(el => el.addEventListener('click', () => { doLock(); })); // new
       btnCopyEls.forEach(el => { el.addEventListener('click', async () => { el.classList.add('flash'); setTimeout(()=> el.classList.remove('flash'), 460); await robustCopy(t.content || ''); }); });
       if (btnDup) btnDup.addEventListener('click', doDup);
       if (btnDel) btnDel.addEventListener('click', doDel);
@@ -795,12 +836,18 @@
       if (btnMore) btnMore.addEventListener('click', openMoreMenu);
 
       card.addEventListener('pointerdown', ()=> { setActiveCard(t.id); try{ if (navigator.vibrate) navigator.vibrate(8); } catch(e){} });
-      inp.addEventListener('focus', ()=> setActiveCard(t.id));
-      ta.addEventListener('focus', ()=> setActiveCard(t.id));
+      // Only focus if not locked
+      if (!isLocked) {
+        inp.addEventListener('focus', ()=> setActiveCard(t.id));
+        ta.addEventListener('focus', ()=> setActiveCard(t.id));
+      }
+      
       card.addEventListener('focusin', () => card.classList.add('focus-outline'));
       card.addEventListener('focusout', () => { if (card.getAttribute('data-id') !== activeCardId) card.classList.remove('focus-outline'); });
-      inp.addEventListener('input', (e) => { t.title = e.target.value; t.modified = Date.now(); saveTemplates(); if (modEl) modEl.textContent = 'Editado: ' + formatDate(t.modified); });
-      ta.addEventListener('input', (e) => { t.content = e.target.value; t.modified = Date.now(); saveTemplates(); if (charsEl) charsEl.textContent = (t.content||'').length + ' caracteres'; if (modEl) modEl.textContent = 'Editado: ' + formatDate(t.modified); });
+      
+      inp.addEventListener('input', (e) => { if(isLocked) return; t.title = e.target.value; t.modified = Date.now(); saveTemplates(); if (modEl) modEl.textContent = 'Editado: ' + formatDate(t.modified); });
+      ta.addEventListener('input', (e) => { if(isLocked) return; t.content = e.target.value; t.modified = Date.now(); saveTemplates(); if (charsEl) charsEl.textContent = (t.content||'').length + ' caracteres'; if (modEl) modEl.textContent = 'Editado: ' + formatDate(t.modified); });
+      
       if (t.id === activeCardId) card.classList.add('active','focus-outline');
     });
     updateStats();
@@ -951,7 +998,7 @@
         users[name] = { hash: h, createdAt: new Date().toISOString() };
         saveUsersObj(users);
         try {
-          const userTemplates = Array.isArray(templates) && templates.length ? templates.map(x => ({ id: id(), title: x.title||'', content: x.content||'', modified: x.modified || Date.now(), pinned: !!x.pinned })) : [];
+          const userTemplates = Array.isArray(templates) && templates.length ? templates.map(x => ({ id: id(), title: x.title||'', content: x.content||'', modified: x.modified || Date.now(), pinned: !!x.pinned, locked:false })) : [];
           localStorage.setItem(TEMPL_KEY(name), JSON.stringify(userTemplates));
         } catch (err) { localStorage.setItem(TEMPL_KEY(name), JSON.stringify([])); }
         sessionStorage.setItem(CURRENT_KEY, name);
@@ -1001,7 +1048,7 @@
             const idx = shelf.findIndex(x => x.id === itemId);
             if (idx === -1) return;
             const item = shelf.splice(idx,1)[0];
-            const restored = { id: id(), title: item.title, content: item.content, modified: Date.now(), pinned:false };
+            const restored = { id: id(), title: item.title, content: item.content, modified: Date.now(), pinned:false, locked:false };
             templates.unshift(restored); // Al inicio
             saveShelf(); saveTemplates(); 
             
@@ -1050,7 +1097,7 @@
             const obj = JSON.parse(ev.target.result);
             if (Array.isArray(obj.templates)) {
               openModal({ title:'Importar', body:'¿Cómo quieres importar?', cancelText:'Añadir al final', confirmText:'Reemplazar todo', onConfirm: ()=> {
-                templates = obj.templates.map(x=>({id: id(), title:x.title||'', content:x.content||'', modified:Date.now(), pinned:false}));
+                templates = obj.templates.map(x=>({id: id(), title:x.title||'', content:x.content||'', modified:Date.now(), pinned:false, locked:false}));
                 if (Array.isArray(obj.shelf)) shelf = obj.shelf.map(x=>({id:id(), title:x.title||'', content:x.content||'', modified:Date.now()}));
                 saveTemplates(); saveShelf(); render(); showToast('Reemplazado');
               }});
@@ -1058,7 +1105,7 @@
                 const cancelBtn=document.querySelector('#modalCancel');
                 if(cancelBtn) {
                   cancelBtn.addEventListener('click', ()=> {
-                    const imported = obj.templates.map(x=>({id:id(),title:x.title||'',content:x.content||'',modified:Date.now(),pinned:false}));
+                    const imported = obj.templates.map(x=>({id:id(),title:x.title||'',content:x.content||'',modified:Date.now(),pinned:false,locked:false}));
                     templates = imported.concat(templates);
                     if (Array.isArray(obj.shelf)) shelf = obj.shelf.map(x=>({id:id(),title:x.title||'',content:x.content||'',modified:Date.now()})).concat(shelf);
                     saveTemplates(); saveShelf(); render(); showToast('Añadido');
