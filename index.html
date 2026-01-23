@@ -2,207 +2,356 @@
 <html lang="es">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>PlantillaBox — Plantillas rápidas</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" />
+<title>PlantillaBox — Espacio Creativo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
-  :root{
-    --bg:#0b0d11; --card:#0f1418; --muted:#9aa3b2; --accent:#6be3b1; --accent-2:#3ec6f5;
-    --danger:#ff6b6b; --glass: rgba(255,255,255,0.02);
-    --active-neon: var(--accent-2);
-    --active-neon-glow: rgba(62,198,245,0.10);
-    --focus-neon: rgba(62,198,245,0.09);
-    --trans-fast: 160ms;
-    --trans-medium: 260ms;
-    --trans-smooth: 360ms;
-    --compact-action-size: 36px;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    background: radial-gradient(800px 400px at 10% 10%, rgba(62,198,245,0.03), transparent 8%),
-                linear-gradient(180deg,#050607 0%, #0b0d11 70%);
-    color:#e6eef6; min-height:100vh; -webkit-font-smoothing:antialiased; padding-bottom:80px;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  header{
-    display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,0.02);
-    position:sticky;top:0;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);z-index:140;
-  }
-  .brand{display:flex;gap:12px;align-items:center}
-  .logo{
-    width:56px;height:56px;border-radius:12px;
-    background:linear-gradient(135deg,var(--accent),var(--accent-2));
-    display:flex;align-items:center;justify-content:center;font-weight:800;color:#012;
-    position:relative;box-shadow:0 10px 40px rgba(62,198,245,0.06);
-  }
-  .logoStrong{box-shadow:0 18px 80px rgba(62,198,245,0.12)}
-  .logoEmoji{
-    display:inline-flex;align-items:center;justify-content:center;font-size:22px;line-height:1;
-    width:40px;height:40px;border-radius:10px;
-    background: linear-gradient(90deg,#ffd89b,#ffb86b);
-    box-shadow: 0 10px 30px rgba(255,184,107,0.18), 0 2px 6px rgba(0,0,0,0.45);
-    transform: translateZ(0); transition: transform 220ms ease, box-shadow 220ms ease;
-  }
-  .logoEmoji:hover{ transform: translateY(-3px) scale(1.03); box-shadow: 0 16px 44px rgba(255,184,107,0.22), 0 4px 8px rgba(0,0,0,0.45); }
-  h1{font-size:18px;margin:0}
-  .hint{font-size:12px;color:var(--muted)}
-
-  .controls{display:flex;gap:10px;align-items:center}
-  .btn{background:var(--glass);color:var(--accent);border:1px solid rgba(255,255,255,0.03);padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:700;position:relative;overflow:hidden;transition: transform var(--trans-fast) ease, box-shadow var(--trans-fast) ease, filter var(--trans-fast) ease;}
-  .btn:hover{ transform: translateY(-3px); box-shadow: 0 12px 36px rgba(62,198,245,0.06) }
-  .btn:active{ transform: translateY(0) scale(.985); }
-  .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;border:0}
-  .btn.ghost{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04)}
-
-  main{padding:18px;max-width:1100px;margin:18px auto}
-  .topbar{display:flex;gap:12px;align-items:center;margin-bottom:14px}
-  .stats{color:var(--muted);font-size:13px}
-  .templates{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;transition: all 220ms ease;}
-
-  /* selection bar */
-  #selectionBar{ display:none; align-items:center; gap:10px; margin-bottom:12px; }
-  #selectionBar .count{ color:var(--accent-2); font-weight:700; margin-right:8px; }
-  #selectionBar .selectAllBtn{ background: linear-gradient(90deg,#2dd4bf,#60e8ff); color:#001; border-radius:8px; padding:8px; cursor:pointer; border:0; font-weight:700; }
-
-  /* Card */
-  .card{
-    position:relative;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.006));
-    padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);
-    display:flex;flex-direction:column;gap:8px;min-height:120px;
-    transition: transform var(--trans-medium) cubic-bezier(.2,.9,.3,1),
-                box-shadow var(--trans-medium),
-                border-color var(--trans-medium),
-                background-color var(--trans-medium);
-    will-change: transform, box-shadow, border-color;
-  }
-  .card:hover{ transform:translateY(-6px); box-shadow:0 18px 40px rgba(0,0,0,0.6) }
-
-  .card.selected { outline: 2px solid rgba(62,198,245,0.12); box-shadow: 0 12px 28px rgba(62,198,245,0.04); }
-
-  /* Chat-like active effect */
-  .card.active{
-    border: 1.5px solid rgba(62,198,245,0.95);
-    background: linear-gradient(180deg, rgba(8,12,16,0.92), rgba(10,14,18,0.95));
-    box-shadow: 0 8px 24px rgba(2,8,10,0.45);
+  :root {
+    /* Paleta Premium Dark Deep */
+    --bg-deep: #050507;
+    --bg-surface: #0e0e11;
+    --card-bg: rgba(20, 20, 25, 0.6);
+    --card-border: rgba(255, 255, 255, 0.08);
+    
+    /* Acentos Refinados */
+    --primary: #2dd4bf;       /* Teal */
+    --primary-glow: rgba(45, 212, 191, 0.25);
+    --secondary: #6366f1;     /* Indigo */
+    --accent-gradient: linear-gradient(135deg, #2dd4bf 0%, #3b82f6 50%, #6366f1 100%);
+    
+    /* Utilidades */
+    --muted: #94a3b8;
+    --text-main: #f8fafc;
+    --danger: #f43f5e;
+    --glass-border: 1px solid rgba(255, 255, 255, 0.06);
+    
+    /* Animaciones */
+    --ease-elastic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+    --trans-med: 300ms var(--ease-smooth);
   }
 
-  .card::after{
-    content: "";
-    position: absolute;
-    inset: -6px;
-    border-radius: 16px;
-    pointer-events: none;
-    background: radial-gradient(60% 40% at 50% 0%, rgba(62,198,245,0.10), transparent 40%);
-    opacity: 0;
-    transition: opacity 360ms ease, transform 360ms ease;
-    transform: scale(0.98);
-    filter: blur(6px);
-    mix-blend-mode: screen;
+  * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+  
+  html, body { height: 100%; }
+  
+  body {
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-deep);
+    /* Fondo sutil y elegante */
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(45, 212, 191, 0.04), transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(99, 102, 241, 0.06), transparent 40%);
+    background-attachment: fixed;
+    color: var(--text-main);
+    min-height: 100vh;
+    padding-bottom: 80px;
   }
-  .card.active::after{
-    opacity: 1;
-    transform: scale(1);
+
+  /* Scrollbar estético */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
+
+  /* HEADER Cristal */
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 28px;
+    position: sticky; top: 0;
+    background: rgba(5, 5, 7, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    z-index: 100;
   }
 
-  .card.removing{ transform: scale(.92) rotate(-4deg); opacity:0; filter:grayscale(.5) blur(.6px); transition: transform .42s cubic-bezier(.2,.9,.3,1), opacity .42s ease; }
-
-  @keyframes popIn {0%{transform:scale(.9);opacity:0}60%{transform:scale(1.03);opacity:1}100%{transform:scale(1);opacity:1}}
-  .card.new-item{ animation: popIn 320ms cubic-bezier(.2,.9,.3,1); }
-
-  /* New: slide-in animation for improved add transition */
-  @keyframes slideIn {
-    0% { transform: translateY(-18px) scale(.98); opacity:0; }
-    60% { transform: translateY(6px) scale(1.02); opacity:1; }
-    100% { transform: translateY(0) scale(1); opacity:1; }
+  .brand { display: flex; gap: 14px; align-items: center; }
+  
+  .logo {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: var(--accent-gradient);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 25px var(--primary-glow);
+    transition: transform 0.3s var(--ease-elastic);
   }
-  .card.slide-in { animation: slideIn 420ms cubic-bezier(.2,.9,.3,1); }
+  .logo:hover { transform: scale(1.05) rotate(3deg); }
+  .logoEmoji { font-size: 22px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
 
-  /* Pre-push used on existing items before insert, removed to animate back to position */
-  .pre-push { transform: translateY(10px); transition: transform 320ms cubic-bezier(.2,.9,.3,1); }
+  h1 { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; margin: 0; }
+  .hint { font-size: 12px; color: var(--muted); font-weight: 500; }
 
-  .row{display:flex;gap:8px;align-items:center}
-  input.title{background:transparent;border:1px dashed rgba(255,255,255,0.03);color:#dff7ee;padding:8px;border-radius:8px;flex:1;transition: box-shadow var(--trans-fast), border-color var(--trans-fast)}
-  input.title:focus{ box-shadow: 0 8px 30px rgba(62,198,245,0.04); border-color: rgba(62,198,245,0.10); outline:none }
-  textarea{ background:transparent;border:1px solid rgba(255,255,255,0.02); color:#eaf7f0;padding:10px;border-radius:8px; resize:vertical; min-height:72px; font-family:inherit; transition: box-shadow var(--trans-fast)}
-  textarea:focus{ box-shadow: 0 12px 40px rgba(62,198,245,0.04); border-color: rgba(62,198,245,0.10); outline:none }
-
-  .meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px;margin-top:6px}
-  .actions{display:flex;gap:8px;flex-wrap:wrap}
-  .small{padding:6px 8px;border-radius:8px}
-  .danger{background:linear-gradient(90deg,#ff6868,#ff4f4f);color:#fff;border:0}
-
-  /* side actions */
-  .side-actions{ position:absolute; top:10px; right:10px; display:flex; flex-direction:column; gap:8px; z-index:6; }
-  .iconBtn{ width:var(--compact-action-size); height:var(--compact-action-size); padding:6px; border-radius:8px; display:inline-flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.02); color:var(--muted); border:1px solid rgba(255,255,255,0.03); cursor:pointer; transition: transform var(--trans-fast), box-shadow var(--trans-fast) }
-  .iconBtn:hover{ transform: translateY(-4px); color:var(--accent-2); box-shadow: 0 10px 30px rgba(62,198,245,0.05) }
-
-  .moreMenu{ position:absolute; top:36px; right:10px; background:#071017; border-radius:8px; padding:8px; box-shadow:0 10px 40px rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.04); z-index:100; min-width:160px; }
-  .moreMenu button{ display:flex; gap:8px; align-items:center; width:100%; padding:8px; border-radius:8px; background:transparent; border:0; color:var(--muted); text-align:left; cursor:pointer; }
-  .moreMenu button:hover{ color:var(--accent-2); background:rgba(255,255,255,0.02) }
-
-  /* modal bounce */
-  @keyframes bounceIn { 0%{ transform: translateY(-30px) scale(.96); opacity:0 } 60%{ transform: translateY(6px) scale(1.02); opacity:1 } 100%{ transform: translateY(0) scale(1); opacity:1 } }
-  .modal.animate-bounce { animation: bounceIn 420ms cubic-bezier(.2,.9,.3,1); }
-
-  .modal-backdrop{position:fixed;inset:0;background:linear-gradient(180deg, rgba(2,4,6,0.6), rgba(2,4,6,0.55));display:flex;align-items:center;justify-content:center;z-index:200}
-  .modal{background:linear-gradient(180deg,#0e1518,#071017);padding:18px;border-radius:14px;max-width:640px;width:94%;border:1px solid rgba(255,255,255,0.04); box-shadow: 0 30px 120px rgba(2,6,10,0.7); position:relative; overflow:hidden}
-  .modal .accentBar{position:absolute; inset:auto 0 0 0; height:6px; background: linear-gradient(90deg,var(--accent),var(--accent-2)); opacity:0.98}
-  .tabBtns{display:flex;gap:8px;margin-bottom:12px}
-  .tabBtns .btn{ padding:8px 12px; font-weight:600 }
-  .tab-selected{ transform: translateY(-4px); box-shadow: 0 14px 40px rgba(0,0,0,0.45); border-radius:10px; }
-
-  /* Distinct colors for each tab when selected */
-  #tabLogin.tab-selected {
-    background: linear-gradient(90deg,#7c3aed,#a78bfa);
-    color: #fff;
-    box-shadow: 0 12px 30px rgba(124,58,237,0.08);
+  /* BOTONES */
+  .controls { display: flex; gap: 10px; align-items: center; }
+  
+  .btn {
+    background: rgba(255,255,255,0.03);
+    color: var(--text-main);
+    border: var(--glass-border);
+    padding: 9px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.2s ease;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    position: relative; overflow: hidden;
   }
-  #tabRegister.tab-selected {
-    background: linear-gradient(90deg,#34aef0,#60e8ff);
-    color: #012;
-    box-shadow: 0 12px 30px rgba(34,174,240,0.08);
+  .btn:hover { background: rgba(255,255,255,0.07); transform: translateY(-1px); border-color: rgba(255,255,255,0.1); }
+  .btn:active { transform: translateY(1px) scale(0.98); }
+
+  .btn.primary {
+    background: var(--accent-gradient);
+    color: #020617;
+    border: none;
+    box-shadow: 0 4px 15px rgba(45, 212, 191, 0.25);
   }
-  #tabGuest.tab-selected {
-    background: linear-gradient(90deg,#ffd89b,#ffb86b);
-    color: #042;
-    box-shadow: 0 12px 30px rgba(255,184,107,0.08);
+  .btn.primary:hover { box-shadow: 0 6px 20px rgba(45, 212, 191, 0.4); opacity: 0.95; }
+  
+  .btn.ghost { background: transparent; border-color: transparent; color: var(--muted); }
+  .btn.ghost:hover { color: #fff; background: rgba(255,255,255,0.03); }
+  
+  .btn.danger { background: rgba(244, 63, 94, 0.1); color: #fda4af; border: 1px solid rgba(244, 63, 94, 0.2); }
+  .btn.danger:hover { background: rgba(244, 63, 94, 0.2); border-color: rgba(244, 63, 94, 0.4); }
+
+  .chip {
+    padding: 6px 12px; border-radius: 20px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+    font-size: 12px; color: var(--muted); display: flex; align-items: center;
   }
-  .tab-dim { opacity: 0.55; filter: grayscale(0.06); transform: translateY(0); }
 
-  .input-with-toggle{ position:relative; display:flex; align-items:center; }
-  .input-with-toggle button{ position:absolute; right:8px; background:transparent; border:0; color:var(--muted); cursor:pointer; padding:6px; }
-
-  .toast{position:fixed;right:20px;bottom:20px;background:linear-gradient(90deg,#062421,#072b2a);padding:12px 16px;border-radius:10px;color:var(--accent);box-shadow:0 8px 40px rgba(2,8,10,0.6);z-index:260;transform:translateY(16px);opacity:0;transition:all var(--trans-medium)}
-  .toast.show{ transform:translateY(0); opacity:1 }
-
-  .search{padding:10px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.02);color:var(--muted);min-width:220px}
-  .empty{opacity:0.6;padding:18px;border-radius:12px;border:1px dashed rgba(255,255,255,0.03);text-align:center}
-
-  /* Pin bounce animation at end of pin flow */
-  @keyframes pinBounce {
-    0%   { transform: translateY(0) scale(1); }
-    45%  { transform: translateY(-10px) scale(1.03); }
-    70%  { transform: translateY(4px)  scale(.99); }
-    100% { transform: translateY(0)  scale(1); }
+  /* AREA PRINCIPAL */
+  main { padding: 32px 24px; max-width: 1200px; margin: 0 auto; }
+  
+  .topbar { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-bottom: 24px; }
+  .stats { color: var(--muted); font-size: 13px; font-weight: 500; letter-spacing: 0.02em; }
+  
+  .search {
+    padding: 12px 18px; border-radius: 12px;
+    background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08);
+    color: #fff; width: 300px; font-family: inherit; font-size: 14px;
+    transition: all 0.2s;
   }
-  .pin-bounce { animation: pinBounce 420ms cubic-bezier(.25,.9,.35,1); }
-
-  /* Copy flash animation */
-  @keyframes copyFlash {
-    0% { box-shadow: 0 6px 18px rgba(62,198,245,0.12); transform: translateY(0) scale(1); }
-    50% { box-shadow: 0 18px 40px rgba(62,198,245,0.18); transform: translateY(-3px) scale(1.02); }
-    100% { box-shadow: 0 6px 18px rgba(62,198,245,0.12); transform: translateY(0) scale(1); }
+  .search:focus {
+    background: rgba(0,0,0,0.4); border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.1);
   }
-  .flash { animation: copyFlash 420ms ease; }
 
-  /* checkbox styling */
-  .tpl-select { width:18px; height:18px; margin-right:8px; accent-color: var(--accent-2); }
+  /* BARRA DE SELECCION */
+  #selectionBar {
+    display: none; align-items: center; gap: 12px; margin-bottom: 24px;
+    background: linear-gradient(90deg, rgba(45, 212, 191, 0.05) 0%, transparent 100%);
+    border: 1px solid rgba(45, 212, 191, 0.15); border-left: 3px solid var(--primary);
+    padding: 12px 20px; border-radius: 12px;
+    animation: slideDown 0.3s var(--ease-elastic);
+  }
+  @keyframes slideDown { from { transform: translateY(-10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  
+  #selectionBar .count { color: var(--primary); font-weight: 700; font-size: 15px; margin-right: 8px; }
+  .selectAllBtn { 
+    background: transparent; color: var(--text-main); border: 1px solid rgba(255,255,255,0.15); 
+    padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 500;
+  }
 
-  @media (max-width:880px) { .card .actions{ display:none; } .side-actions{ display:flex; } }
-  @media (min-width:881px) { .side-actions{ display:none; } }
-  @media (max-width:640px){ header{flex-direction:column;align-items:flex-start;gap:8px} .templates{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px} }
+  /* GRID DE TARJETAS */
+  .templates {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px; padding-bottom: 40px;
+  }
+
+  /* DISEÑO DE TARJETA */
+  .card {
+    position: relative;
+    background: var(--card-bg);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 20px;
+    display: flex; flex-direction: column; gap: 12px;
+    min-height: 180px;
+    transition: transform var(--trans-med), box-shadow var(--trans-med), border-color 0.2s;
+    will-change: transform; overflow: hidden;
+  }
+  /* Brillo superior sutil */
+  .card::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 0), rgba(255,255,255,0.04), transparent 40%);
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .card:hover::after { opacity: 1; }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.08);
+    background: rgba(30, 30, 35, 0.75);
+    z-index: 5;
+  }
+
+  .card.selected {
+    border-color: var(--primary);
+    background: rgba(45, 212, 191, 0.04);
+    box-shadow: 0 0 0 1px var(--primary);
+  }
+  
+  .card.active {
+    border-color: rgba(45, 212, 191, 0.4);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  }
+
+  /* Animaciones */
+  .card.slide-in { animation: smoothEntry 0.5s var(--ease-elastic); }
+  @keyframes smoothEntry { 0% { opacity: 0; transform: translateY(30px) scale(0.96); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+  .card.removing { transform: scale(0.9) translateY(10px); opacity: 0; filter: blur(4px); transition: all 0.35s ease; }
+  
+  /* Animación para nuevo item (restaurado) */
+  .card.new-item { animation: highlightFlash 0.8s ease; }
+  @keyframes highlightFlash { 0% { box-shadow: 0 0 0 2px var(--primary); background: rgba(45,212,191,0.1); } 100% { box-shadow: 0 0 0 0 transparent; background: var(--card-bg); } }
+  
+  .pre-push { transform: translateY(60px); opacity: 0; transition: none; }
+
+  /* Inputs de Tarjeta */
+  .row { display: flex; gap: 12px; align-items: center; margin-bottom: 6px; }
+  
+  input.title {
+    background: transparent; border: none; color: #fff;
+    font-size: 16px; font-weight: 600; flex: 1; padding: 4px 0;
+    border-bottom: 1px dashed transparent; transition: 0.2s;
+  }
+  input.title:focus { border-bottom-color: var(--primary); }
+  input.title::placeholder { color: rgba(255,255,255,0.2); font-weight: 400; }
+
+  textarea {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.04);
+    color: #cbd5e1;
+    padding: 14px;
+    border-radius: 10px;
+    resize: none;
+    min-height: 100px;
+    font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.6;
+    transition: all 0.2s;
+  }
+  textarea:focus { background: rgba(0,0,0,0.35); border-color: rgba(255,255,255,0.12); }
+
+  .meta { display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 10px; font-family: monospace; }
+
+  /* Acciones */
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; opacity: 0; transform: translateY(5px); transition: all 0.25s ease; }
+  .card:hover .actions { opacity: 1; transform: translateY(0); }
+  
+  .small {
+    padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 500;
+    background: rgba(255,255,255,0.06); border: none; color: var(--muted);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .small:hover { background: rgba(255,255,255,0.12); color: #fff; }
+  .small.danger:hover { background: var(--danger); color: white; }
+
+  .side-actions { position: absolute; top: 16px; right: 16px; display: flex; flex-direction: column; gap: 8px; z-index: 10; }
+  .iconBtn {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: rgba(0,0,0,0.4); color: var(--muted); border: 1px solid rgba(255,255,255,0.05);
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .iconBtn:hover { background: var(--primary); color: #000; transform: scale(1.1); box-shadow: 0 4px 12px rgba(45,212,191,0.25); }
+
+  .tpl-select {
+    appearance: none; -webkit-appearance: none;
+    width: 20px; height: 20px; border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.2); background: transparent;
+    cursor: pointer; position: relative; transition: all 0.2s; display: grid; place-content: center;
+  }
+  .tpl-select:checked { background: var(--primary); border-color: var(--primary); }
+  .tpl-select:checked::after { content: '✔'; font-size: 12px; color: #000; font-weight: bold; }
+
+  /* MODAL */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
+    display: flex; align-items: center; justify-content: center; z-index: 200;
+    animation: fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal {
+    background: #101014; width: 94%; max-width: 550px;
+    border-radius: 24px; padding: 28px;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8);
+    position: relative; overflow: hidden;
+  }
+  .modal.animate-bounce { animation: modalUp 0.4s var(--ease-elastic); }
+  @keyframes modalUp { 0% { transform: translateY(40px) scale(0.95); opacity: 0; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
+  .modal .accentBar { position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--accent-gradient); }
+
+  /* Estilos específicos para ítems de la estantería */
+  .shelf-item {
+    margin-bottom: 12px;
+    padding: 16px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.04);
+    transition: 0.2s;
+  }
+  .shelf-item:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); }
+  .shelf-content { font-size: 13px; color: var(--muted); margin: 8px 0 12px 0; line-height: 1.5; }
+
+  /* Input group */
+  .input-with-toggle { position: relative; margin-bottom: 12px; }
+  .input-with-toggle input, .modal input {
+    width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
+    padding: 12px; border-radius: 10px; color: #fff; margin-bottom: 8px;
+    transition: 0.2s;
+  }
+  .input-with-toggle input:focus, .modal input:focus { border-color: var(--primary); background: rgba(0,0,0,0.5); }
+  .input-with-toggle button { position: absolute; right: 10px; top: 8px; background: transparent; border: none; cursor: pointer; opacity: 0.6; }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--primary); padding: 12px 24px; border-radius: 30px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6); font-weight: 600; font-size: 14px;
+    opacity: 0; transition: all 0.4s var(--ease-elastic); z-index: 300; pointer-events: none;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* Empty state */
+  .empty {
+    text-align: center; padding: 60px 20px; color: var(--muted);
+    border: 2px dashed rgba(255,255,255,0.05); border-radius: 20px; margin-top: 20px;
+    background: rgba(255,255,255,0.01);
+  }
+
+  /* Animaciones Extras */
+  .pin-bounce { animation: pinPop 0.5s var(--ease-elastic); }
+  @keyframes pinPop { 0% { transform: scale(1); } 50% { transform: scale(1.4); } 100% { transform: scale(1); } }
+  .flash { animation: flashGlow 0.4s ease; }
+  @keyframes flashGlow { 0% { box-shadow: 0 0 0 0 var(--primary); } 100% { box-shadow: 0 0 0 10px transparent; } }
+
+  footer { text-align: center; color: rgba(255,255,255,0.15); font-size: 11px; margin-top: 60px; }
+
+  /* Responsive */
+  @media (max-width: 880px) {
+    .card .actions { display: none; }
+    .side-actions { display: flex; }
+  }
+  @media (min-width: 881px) { .side-actions { display: none; } }
+  @media (max-width: 640px) {
+    header { flex-direction: column; gap: 16px; align-items: flex-start; padding: 20px; }
+    .controls { width: 100%; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
+    .templates { grid-template-columns: 1fr; }
+    .search { width: 100%; }
+    .topbar { flex-direction: column; align-items: stretch; }
+  }
 </style>
 </head>
 <body>
@@ -213,18 +362,19 @@
     </div>
     <div>
       <h1>PlantillaBox</h1>
-      <div class="hint">Plantillas rápidas — Copia y pega al instante</div>
+      <div class="hint">Tus respuestas rápidas, con estilo.</div>
     </div>
   </div>
 
   <div class="controls">
-    <div class="chip" id="currentUser"><span id="userDot" style="width:10px;height:10px;border-radius:999px;background:linear-gradient(180deg,var(--accent),var(--accent-2));display:inline-block;margin-right:8px"></span><span id="currentUserText">Invitado</span></div>
+    <div class="chip" id="currentUser"><span id="userDot" style="width:8px;height:8px;border-radius:99px;background:var(--primary);display:inline-block;margin-right:8px;box-shadow:0 0 8px var(--primary)"></span><span id="currentUserText">Invitado</span></div>
     <div style="display:flex;gap:8px;align-items:center">
-      <button class="btn" id="btnShelf" title="Estantería (arrastra aquí para guardar)">Estantería</button>
+      <button class="btn" id="btnShelf" title="Estantería">📁 Estantería</button>
       <button class="btn" id="btnExport">Exportar</button>
       <button class="btn" id="btnImport">Importar</button>
-      <button class="btn primary" id="btnNew">+ Añadir plantilla</button>
-      <button class="btn ghost" id="btnLogin">Iniciar / Registrar</button>
+      <button class="btn primary" id="btnNew">+ Nueva</button>
+      <button class="btn ghost" id="btnLogin">Entrar</button>
+      <button class="btn ghost" id="btnLogout" style="display:none">Salir</button>
     </div>
   </div>
 </header>
@@ -233,24 +383,29 @@
   <div class="topbar">
     <div class="stats" id="stats">0 plantillas</div>
     <div style="flex:1"></div>
-    <input class="search" id="searchInput" placeholder="Buscar título o contenido..." />
+    <input class="search" id="searchInput" placeholder="Buscar ideas..." />
   </div>
 
-  <!-- Selection bar (hidden until selection active) -->
   <div id="selectionBar">
-    <span class="count"><span id="selectedCount">0</span> seleccionada(s)</span>
+    <span class="count"><span id="selectedCount">0</span></span>
     <button id="selectAllBtn" class="selectAllBtn">Seleccionar todo</button>
-    <button id="shelfSelectedBtn" class="btn small">Guardar seleccionadas</button>
-    <button id="delSelectedBtn" class="btn small danger">Eliminar seleccionadas</button>
+    <div style="flex:1"></div>
+    <button id="shelfSelectedBtn" class="btn small">Archivar</button>
+    <button id="delSelectedBtn" class="btn small danger">Eliminar</button>
     <button id="clearSelectionBtn" class="btn small">Cancelar</button>
   </div>
 
   <section class="templates" id="templatesContainer"></section>
-  <div id="emptyState" class="empty" style="display:none;margin-top:14px">No tienes plantillas aún. Haz clic en "+ Añadir plantilla".</div>
+  <div id="emptyState" class="empty" style="display:none">
+    <div style="font-size: 48px; margin-bottom: 16px; opacity: 0.4;">✨</div>
+    <div style="font-size: 16px; font-weight: 500;">No tienes plantillas aún.</div>
+    <div style="font-size: 13px; margin-top: 8px;">Haz clic en <strong>+ Nueva</strong> para empezar a crear.</div>
+  </div>
 </main>
 
 <footer>
-  PlantillaBox — tus respuestas rápidas guardadas localmente. <span id="footerInfo"></span>
+  PlantillaBox — Almacenamiento local seguro y privado.
+  <span id="footerInfo"></span>
 </footer>
 
 <div id="modalRoot" style="display:none"></div>
@@ -274,6 +429,7 @@
   const btnExport = document.getElementById('btnExport');
   const btnImport = document.getElementById('btnImport');
   const btnShelf = document.getElementById('btnShelf');
+  const btnLogout = document.getElementById('btnLogout');
   const searchInput = document.getElementById('searchInput');
   const modalRoot = document.getElementById('modalRoot');
   const toastRoot = document.getElementById('toastRoot');
@@ -288,31 +444,42 @@
   const shelfSelectedBtn = document.getElementById('shelfSelectedBtn');
   const delSelectedBtn = document.getElementById('delSelectedBtn');
   const clearSelectionBtn = document.getElementById('clearSelectionBtn');
-
   // state
   let user = sessionStorage.getItem(CURRENT_KEY) || 'guest';
   if (!sessionStorage.getItem(CURRENT_KEY)) sessionStorage.setItem(CURRENT_KEY, 'guest');
   let templates = loadTemplatesFor(user);
   let shelf = loadShelfFor(user);
   let activeCardId = null;
-
-  // selection state
   const selectedIds = new Set();
-
-  // id generator
   function generateId() { return 'tpl_' + Math.random().toString(36).slice(2,9); }
 
   // initial UI
   updateUserUI();
   reorderPinned();
   render();
-
   // events
   btnNew.addEventListener('click', () => { btnNew.classList.add('pressed'); setTimeout(()=>btnNew.classList.remove('pressed'),160); addTemplate(); });
   btnLogin.addEventListener('click', openAuthModal);
   btnExport.addEventListener('click', exportJSON);
   btnImport.addEventListener('click', openImportModal);
   btnShelf.addEventListener('click', openShelfModal);
+  btnLogout.addEventListener('click', () => {
+    openModal({
+      title: 'Cerrar sesión',
+      body: `<p>¿Deseas cerrar la sesión actual?</p>`,
+      cancelText: 'Cancelar',
+      confirmText: 'Cerrar sesión',
+      onConfirm: () => {
+        sessionStorage.setItem(CURRENT_KEY, 'guest');
+        user = 'guest';
+        templates = loadTemplatesFor(user);
+        shelf = loadShelfFor(user);
+        updateUserUI();
+        render();
+        showToast('Sesión cerrada');
+      }
+    });
+  });
   searchInput.addEventListener('input', render);
 
   // selection bar events
@@ -320,7 +487,6 @@
   shelfSelectedBtn.addEventListener('click', () => { handleShelfSelected(); });
   delSelectedBtn.addEventListener('click', () => { handleDeleteSelected(); });
   clearSelectionBtn.addEventListener('click', () => { clearSelection(); });
-
   // allow drop to shelf
   btnShelf.addEventListener('dragover', (e) => { e.preventDefault(); btnShelf.classList.add('pressed'); });
   btnShelf.addEventListener('dragleave', () => { btnShelf.classList.remove('pressed'); });
@@ -335,23 +501,20 @@
     shelf.unshift(item);
     saveShelf(); saveTemplates(); render(); showToast('Guardada en estantería');
   });
-
-  // pressed feedback for buttons
+  // pressed feedback
   document.addEventListener('pointerdown', (e) => {
     const el = e.target.closest('.btn, button, .iconBtn');
     if (!el) return;
     el.classList.add('pressed');
     setTimeout(()=> el.classList.remove('pressed'), 160);
   });
-
-  // storage helpers
-  function getUsersObj(){ const s = localStorage.getItem(USERS_KEY); return s ? JSON.parse(s) : {}; }
-  function saveUsersObj(o){ localStorage.setItem(USERS_KEY, JSON.stringify(o)); }
-
-  function loadTemplatesFor(u){ if (u === 'guest'){ const s = sessionStorage.getItem(GUEST_KEY); return s ? JSON.parse(s) : []; } const s = localStorage.getItem(TEMPL_KEY(u)); return s ? JSON.parse(s) : []; }
+  
+  // Storage & Logic
+  function getUsersObj(){ const s = localStorage.getItem(USERS_KEY); try{ return s ? JSON.parse(s) : {}; }catch(e){ return {}; } }
+  function saveUsersObj(o){ try{ localStorage.setItem(USERS_KEY, JSON.stringify(o)); }catch(e){ console.warn('Err save users', e); } }
+  function loadTemplatesFor(u){ if (u === 'guest'){ const s = sessionStorage.getItem(GUEST_KEY); return s ? JSON.parse(s) : []; } const s = localStorage.getItem(TEMPL_KEY(u)); try{ return s ? JSON.parse(s) : []; } catch(e){ return []; } }
   function saveTemplates(){ if (user === 'guest') sessionStorage.setItem(GUEST_KEY, JSON.stringify(templates)); else localStorage.setItem(TEMPL_KEY(user), JSON.stringify(templates)); updateStats(); }
-
-  function loadShelfFor(u){ if (u === 'guest'){ const s = sessionStorage.getItem(SHELF_KEY('guest')); return s ? JSON.parse(s) : []; } const s = localStorage.getItem(SHELF_KEY(u)); return s ? JSON.parse(s) : []; }
+  function loadShelfFor(u){ if (u === 'guest'){ const s = sessionStorage.getItem(SHELF_KEY('guest')); return s ? JSON.parse(s) : []; } const s = localStorage.getItem(SHELF_KEY(u)); try{ return s ? JSON.parse(s) : []; } catch(e){ return []; } }
   function saveShelf(){ if (user === 'guest') sessionStorage.setItem(SHELF_KEY('guest'), JSON.stringify(shelf)); else localStorage.setItem(SHELF_KEY(user), JSON.stringify(shelf)); }
 
   async function hashPassword(password){
@@ -365,12 +528,14 @@
     let hex=''; for (let i=0;i<8;i++) hex += ('00000000'+((h ^ (i*2654435761))>>>0).toString(16)).slice(-8); return hex;
   }
 
-  // UI helpers
-  function updateUserUI(){ currentUserText.textContent = (user === 'guest') ? 'Invitado' : user; footerInfo.textContent = (user === 'guest') ? 'Modo invitado (no persistente al cerrar).' : 'Sesión guardada en este navegador.'; if (user === 'guest'){ userDot.style.opacity = '0.6'; logoEl.classList.remove('logoStrong'); } else { userDot.style.opacity = '1'; logoEl.classList.add('logoStrong'); } }
-  function updateStats(){ stats.textContent = templates.length + (templates.length === 1 ? ' plantilla' : ' plantillas'); emptyState.style.display = templates.length ? 'none' : 'block'; }
+  function updateUserUI(){ currentUserText.textContent = (user === 'guest') ? 'Invitado' : user;
+  footerInfo.textContent = (user === 'guest') ? 'Modo invitado (no persistente al cerrar).' : 'Sesión guardada en este navegador.';
+  if (user === 'guest'){ userDot.style.opacity = '0.6'; if (window.logoEl) logoEl.classList.remove('logoStrong'); btnLogout.style.display = 'none'; } else { userDot.style.opacity = '1';
+  if (window.logoEl) logoEl.classList.add('logoStrong'); btnLogout.style.display = 'inline-flex'; } }
+  function updateStats(){ stats.textContent = templates.length + (templates.length === 1 ? ' plantilla' : ' plantillas');
+  emptyState.style.display = templates.length ? 'none' : 'block'; }
   function id(){ return generateId(); }
 
-  // Robust copy helper with fallback and toast notifications
   async function robustCopy(text) {
     if (!text) { showToast('Nada para copiar'); return false; }
     try {
@@ -383,116 +548,67 @@
     try {
       const ta = document.createElement('textarea');
       ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.left = '-9999px';
-      document.body.appendChild(ta);
-      ta.select();
-      ta.setSelectionRange(0, ta.value.length);
-      const ok = document.execCommand('copy');
-      document.body.removeChild(ta);
+      ta.style.position = 'fixed'; ta.style.left = '-9999px';
+      document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, ta.value.length);
+      const ok = document.execCommand('copy'); document.body.removeChild(ta);
       if (ok) { showToast('Copiado (fallback)'); return true; }
     } catch (err) {}
-    showToast('No se pudo copiar');
-    return false;
+    showToast('No se pudo copiar'); return false;
   }
 
-  // helper animation: animate a card to the top of the templates container
   function animatePinToTop(cardEl) {
     return new Promise((resolve) => {
       try {
         const rect = cardEl.getBoundingClientRect();
         const targetRect = templatesContainer.getBoundingClientRect();
-        // destination: near top of templates container (padding 10)
         const destX = (targetRect.left + 12) - rect.left;
         const destY = (targetRect.top + 12) - rect.top;
-
-        // clone
         const clone = cardEl.cloneNode(true);
-        clone.style.position = 'fixed';
-        clone.style.left = rect.left + 'px';
-        clone.style.top = rect.top + 'px';
-        clone.style.width = rect.width + 'px';
-        clone.style.margin = '0';
-        clone.style.zIndex = 9999;
-        clone.style.pointerEvents = 'none';
+        clone.style.position = 'fixed'; clone.style.left = rect.left + 'px'; clone.style.top = rect.top + 'px';
+        clone.style.width = rect.width + 'px'; clone.style.margin = '0'; clone.style.zIndex = 9999; clone.style.pointerEvents = 'none';
         clone.style.transition = 'transform 520ms cubic-bezier(.2,.9,.3,1), opacity 520ms ease';
         document.body.appendChild(clone);
-
-        // dim original while animating
-        cardEl.style.transition = 'opacity 180ms ease';
-        cardEl.style.opacity = '0.28';
-
+        cardEl.style.transition = 'opacity 180ms ease'; cardEl.style.opacity = '0.28';
         requestAnimationFrame(() => {
           clone.style.transform = `translate(${destX}px, ${destY}px) scale(.95) rotate(-2deg)`;
           clone.style.opacity = '0.95';
         });
-
-        // cleanup after animation
         setTimeout(() => {
           clone.style.opacity = '0';
-          setTimeout(() => {
-            if (clone.parentNode) clone.parentNode.removeChild(clone);
-            cardEl.style.opacity = '';
-            resolve();
-          }, 140);
+          setTimeout(() => { if (clone.parentNode) clone.parentNode.removeChild(clone); cardEl.style.opacity = ''; resolve(); }, 140);
         }, 540);
-      } catch (err) {
-        // fallback immediately
-        resolve();
-      }
+      } catch (err) { resolve(); }
     });
   }
 
-  // CENTRAL pin toggler (fixes the "no fija" bug). Use this from card handlers.
   async function togglePinById(id) {
     const idx = templates.findIndex(t => t.id === id);
     if (idx === -1) return;
     const willPin = !templates[idx].pinned;
     const cardEl = document.querySelector(`.card[data-id="${id}"]`);
     if (willPin && cardEl) {
-      // animate current card moving to top, then set pinned and re-render with final bounce
-      await animatePinToTop(cardEl).catch(()=>{/*ignore*/});
-      templates[idx].pinned = true;
-      reorderPinned();
-      saveTemplates();
-      render();
-      // final bounce
+      await animatePinToTop(cardEl).catch(()=>{});
+      templates[idx].pinned = true; reorderPinned(); saveTemplates(); render();
       const newEl = document.querySelector(`.card[data-id="${id}"]`);
-      if (newEl) {
-        newEl.classList.add('pin-bounce');
-        setTimeout(()=> newEl.classList.remove('pin-bounce'), 520);
-      }
+      if (newEl) { newEl.classList.add('pin-bounce'); setTimeout(()=> newEl.classList.remove('pin-bounce'), 520); }
       showToast('Anclada');
     } else {
-      // unpin or couldn't animate; just toggle and re-render
-      templates[idx].pinned = false;
-      reorderPinned();
-      saveTemplates();
-      render();
-      showToast('Desanclada');
+      templates[idx].pinned = false; reorderPinned(); saveTemplates(); render(); showToast('Desanclada');
     }
   }
 
-  // add template - improved movement transitions:
   function addTemplate(prefill = {title:'',content:''}, save=true){
-    // mark existing cards for a "push" (pre-push) so we can animate them back into place
     const existingCards = Array.from(document.querySelectorAll('.templates .card'));
     existingCards.forEach(c => c.classList.add('pre-push'));
-
     const t = { id: id(), title: prefill.title || '', content: prefill.content || '', modified: Date.now(), pinned:false };
     templates.unshift(t);
     if (save) saveTemplates();
     render();
-
-    // after render, remove pre-push so they animate back, and apply slide-in to new card
     requestAnimationFrame(() => {
-      document.querySelectorAll('.pre-push').forEach(c => {
-        c.classList.remove('pre-push');
-      });
+      document.querySelectorAll('.pre-push').forEach(c => { c.classList.remove('pre-push'); });
       const el = document.querySelector(`.card[data-id="${t.id}"]`);
       if (el){
-        el.classList.add('slide-in');
-        setTimeout(()=> el.classList.remove('slide-in'), 520);
+        el.classList.add('slide-in'); setTimeout(()=> el.classList.remove('slide-in'), 520);
         const ta = el.querySelector('textarea');
         if(ta){ ta.focus(); setActiveCard(t.id); }
       }
@@ -510,16 +626,14 @@
     document.querySelectorAll('.card').forEach(c => { if (c.getAttribute('data-id') !== activeCardId) c.classList.remove('focus-outline'); });
   }
 
-  function reorderPinned(){ const pinned = templates.filter(t=>t.pinned); const rest = templates.filter(t=>!t.pinned); templates = pinned.concat(rest); }
+  function reorderPinned(){ const pinned = templates.filter(t=>t.pinned);
+  const rest = templates.filter(t=>!t.pinned); templates = pinned.concat(rest); }
 
-  // Selection helpers
   function updateSelectionBar(){
     const count = selectedIds.size;
-    if (count === 0) {
-      selectionBar.style.display = 'none';
-    } else {
+    if (count === 0) { selectionBar.style.display = 'none'; } else {
       selectionBar.style.display = 'flex';
-      selectedCountEl.textContent = String(count);
+      selectedCountEl.textContent = String(count) + ' seleccionada(s)';
       const visibleIds = Array.from(document.querySelectorAll('.card')).map(c => c.getAttribute('data-id'));
       const allVisibleSelected = visibleIds.every(id => selectedIds.has(id)) && visibleIds.length > 0;
       selectAllBtn.textContent = allVisibleSelected ? 'Deseleccionar todo' : 'Seleccionar todo';
@@ -534,11 +648,7 @@
     const visibleCards = Array.from(document.querySelectorAll('.card'));
     const visibleIds = visibleCards.map(c => c.getAttribute('data-id'));
     const allSelected = visibleIds.every(id => selectedIds.has(id)) && visibleIds.length>0;
-    if (allSelected) {
-      visibleIds.forEach(id => selectedIds.delete(id));
-    } else {
-      visibleIds.forEach(id => selectedIds.add(id));
-    }
+    if (allSelected) { visibleIds.forEach(id => selectedIds.delete(id)); } else { visibleIds.forEach(id => selectedIds.add(id)); }
     visibleCards.forEach(c => {
       const idv = c.getAttribute('data-id');
       if (selectedIds.has(idv)) c.classList.add('selected'); else c.classList.remove('selected');
@@ -551,10 +661,9 @@
   async function handleDeleteSelected(){
     if (selectedIds.size === 0) return;
     openModal({
-      title: 'Eliminar plantillas seleccionadas',
-      body: `<p>¿Eliminar ${selectedIds.size} plantilla(s)? Esta acción no se puede deshacer.</p>`,
-      cancelText: 'Cancelar',
-      confirmText: 'Eliminar',
+      title: 'Eliminar plantillas',
+      body: `<p>¿Eliminar ${selectedIds.size} plantilla(s)?</p>`,
+      cancelText: 'Cancelar', confirmText: 'Eliminar',
       onConfirm: () => {
         Array.from(selectedIds).forEach(idv => {
           const el = document.querySelector(`.card[data-id="${idv}"]`);
@@ -562,10 +671,7 @@
         });
         setTimeout(()=> {
           templates = templates.filter(t => !selectedIds.has(t.id));
-          saveTemplates();
-          clearSelection();
-          render();
-          showToast('Plantillas eliminadas');
+          saveTemplates(); clearSelection(); render(); showToast('Eliminado');
         }, 420);
       }
     });
@@ -577,13 +683,9 @@
     if (toMove.length === 0) return;
     shelf = toMove.concat(shelf);
     templates = templates.filter(t => !selectedIds.has(t.id));
-    saveShelf(); saveTemplates();
-    clearSelection();
-    render();
-    showToast('Guardadas en estantería');
+    saveShelf(); saveTemplates(); clearSelection(); render(); showToast('Archivado');
   }
 
-  // render templates
   function render(){
     templatesContainer.innerHTML = '';
     reorderPinned();
@@ -610,21 +712,18 @@
               <button class="small muted btnPinInline">${t.pinned ? '📌' : '📍'}</button>
               <button class="small small-ghost btnCopyInline">Copiar</button>
               <button class="small btnDupInline">Duplicar</button>
-              <button class="small muted btnShelfInline">🗄️ Guardar</button>
-              <button class="small danger btnDelInline">-</button>
+              <button class="small muted btnShelfInline">📁 Archivar</button>
+              <button class="small danger btnDelInline">Eliminar</button>
             </div>
           </div>
         </div>
-        <textarea placeholder="Escribe tu plantilla..." spellcheck="false">${escapeHtml(t.content||'')}</textarea>
-        <div class="meta"><span class="chars">${(t.content||'').length} caracteres</span><span class="modified">${t.modified ? 'Última: ' + formatDate(t.modified) : ''}</span></div>
+        <textarea placeholder="Escribe tu plantilla aquí..." spellcheck="false">${escapeHtml(t.content||'')}</textarea>
+        <div class="meta"><span class="chars">${(t.content||'').length} caracteres</span><span class="modified">${t.modified ? 'Editado: ' + formatDate(t.modified) : ''}</span></div>
       `;
       templatesContainer.appendChild(card);
-
-      // dragstart -> allow drop to shelf
       card.addEventListener('dragstart', (ev) => { ev.dataTransfer.setData('text/plain', t.id); card.classList.add('dragging'); });
       card.addEventListener('dragend', () => card.classList.remove('dragging'));
 
-      // elements
       const inp = card.querySelector('.title');
       const ta = card.querySelector('textarea');
       const tplCheckbox = card.querySelector('.tpl-select');
@@ -637,15 +736,12 @@
       const charsEl = card.querySelector('.chars');
       const modEl = card.querySelector('.modified');
 
-      // checkbox handling
       tplCheckbox.addEventListener('change', (e) => {
         const isChecked = e.target.checked;
         if (isChecked) selectedIds.add(t.id); else selectedIds.delete(t.id);
         if (isChecked) card.classList.add('selected'); else card.classList.remove('selected');
         updateSelectionBar();
       });
-
-      // clicking card selects it (not interfering with inputs)
       card.addEventListener('click', (ev) => {
         const ignore = ev.target.closest('input, textarea, button, .iconBtn, .moreMenu, .actions');
         if (ignore) return;
@@ -655,16 +751,16 @@
         updateSelectionBar();
       });
 
-      // more menu
       function openMoreMenu(){
         closeAllMoreMenus();
         const menu = document.createElement('div'); menu.className = 'moreMenu';
+        menu.style.cssText = "position:absolute; top:40px; right:10px; background:#18181b; border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:6px; z-index:50; min-width:160px; box-shadow:0 10px 40px rgba(0,0,0,0.5);";
         menu.innerHTML = `
-          <button data-act="copy">📋 Copiar</button>
-          <button data-act="dup">✳️ Duplicar</button>
-          <button data-act="pin">${t.pinned ? '📌 Desanclar' : '📍 Anclar'}</button>
-          <button data-act="shelf">🗄️ Guardar en estantería</button>
-          <button data-act="del" style="color:var(--danger)">🗑️ Eliminar</button>
+          <button data-act="copy" style="width:100%;text-align:left;padding:10px;background:transparent;border:0;color:#94a3b8;cursor:pointer;display:flex;gap:8px">📋 Copiar</button>
+          <button data-act="dup" style="width:100%;text-align:left;padding:10px;background:transparent;border:0;color:#94a3b8;cursor:pointer;display:flex;gap:8px">✳️ Duplicar</button>
+          <button data-act="pin" style="width:100%;text-align:left;padding:10px;background:transparent;border:0;color:#94a3b8;cursor:pointer;display:flex;gap:8px">${t.pinned ? '📌 Desanclar' : '📍 Anclar'}</button>
+          <button data-act="shelf" style="width:100%;text-align:left;padding:10px;background:transparent;border:0;color:#94a3b8;cursor:pointer;display:flex;gap:8px">📁 Archivar</button>
+          <button data-act="del" style="width:100%;text-align:left;padding:10px;background:transparent;border:0;color:#ef4444;cursor:pointer;display:flex;gap:8px">🗑️ Eliminar</button>
         `;
         card.appendChild(menu);
         menu.querySelectorAll('button').forEach(b => {
@@ -677,145 +773,104 @@
             if (a === 'del') doDel();
             closeAllMoreMenus();
           });
+          b.addEventListener('mouseenter', ()=> { b.style.color='#fff'; b.style.background='rgba(255,255,255,0.05)'; b.style.borderRadius='8px'; });
+          b.addEventListener('mouseleave', ()=> { b.style.color = b.getAttribute('data-act')==='del' ? '#ef4444' : '#94a3b8'; b.style.background='transparent'; });
         });
         setTimeout(()=> document.addEventListener('pointerdown', outsideHandler));
         function outsideHandler(ev){ if (!menu.contains(ev.target)) { menu.remove(); document.removeEventListener('pointerdown', outsideHandler); } }
       }
       function closeAllMoreMenus(){ document.querySelectorAll('.moreMenu').forEach(m=>m.remove()); }
 
-      // actions
       async function doCopy(el){ if (el){ el.classList.add('flash'); setTimeout(()=> el.classList.remove('flash'), 460); } await robustCopy(t.content||''); }
-      function doDup(){ addTemplate({title: t.title + ' (copia)', content: t.content}); showToast('Plantilla duplicada'); }
-      function doShelf(){ shelf.unshift(Object.assign({}, t)); templates = templates.filter(x=>x.id !== t.id); saveShelf(); saveTemplates(); render(); showToast('Guardada en estantería'); }
+      function doDup(){ addTemplate({title: t.title + ' (copia)', content: t.content}); showToast('Duplicada'); }
+      function doShelf(){ shelf.unshift(Object.assign({}, t)); templates = templates.filter(x=>x.id !== t.id); saveShelf(); saveTemplates(); render(); showToast('Archivado'); }
       function doDel(){ confirmDelete(t.id); }
-
-      // pin uses central toggler
       function doPin(){ togglePinById(t.id); }
 
-      // attach handlers to all pin elements
       btnPinEls.forEach(el => el.addEventListener('click', () => { doPin(); }));
-
-      // attach copy handlers
-      btnCopyEls.forEach(el => {
-        el.addEventListener('click', async (ev) => {
-          el.classList.add('flash');
-          setTimeout(()=> el.classList.remove('flash'), 460);
-          await robustCopy(t.content || '');
-        });
-      });
-
-      // attach other handlers
+      btnCopyEls.forEach(el => { el.addEventListener('click', async () => { el.classList.add('flash'); setTimeout(()=> el.classList.remove('flash'), 460); await robustCopy(t.content || ''); }); });
       if (btnDup) btnDup.addEventListener('click', doDup);
       if (btnDel) btnDel.addEventListener('click', doDel);
       if (btnShelfInline) btnShelfInline.addEventListener('click', doShelf);
       if (btnMore) btnMore.addEventListener('click', openMoreMenu);
 
-      // pointer/focus behavior
       card.addEventListener('pointerdown', ()=> { setActiveCard(t.id); try{ if (navigator.vibrate) navigator.vibrate(8); } catch(e){} });
       inp.addEventListener('focus', ()=> setActiveCard(t.id));
       ta.addEventListener('focus', ()=> setActiveCard(t.id));
       card.addEventListener('focusin', () => card.classList.add('focus-outline'));
       card.addEventListener('focusout', () => { if (card.getAttribute('data-id') !== activeCardId) card.classList.remove('focus-outline'); });
-
-      inp.addEventListener('input', (e) => { t.title = e.target.value; t.modified = Date.now(); saveTemplates(); if (modEl) modEl.textContent = 'Última: ' + formatDate(t.modified); });
-      ta.addEventListener('input', (e) => { t.content = e.target.value; t.modified = Date.now(); saveTemplates(); if (charsEl) charsEl.textContent = (t.content||'').length + ' caracteres'; if (modEl) modEl.textContent = 'Última: ' + formatDate(t.modified); });
-
+      inp.addEventListener('input', (e) => { t.title = e.target.value; t.modified = Date.now(); saveTemplates(); if (modEl) modEl.textContent = 'Editado: ' + formatDate(t.modified); });
+      ta.addEventListener('input', (e) => { t.content = e.target.value; t.modified = Date.now(); saveTemplates(); if (charsEl) charsEl.textContent = (t.content||'').length + ' caracteres'; if (modEl) modEl.textContent = 'Editado: ' + formatDate(t.modified); });
       if (t.id === activeCardId) card.classList.add('active','focus-outline');
     });
     updateStats();
     updateSelectionBar();
   }
 
-  // confirm delete centered bounce + animate removal
   function confirmDelete(tid){
     openModal({
       title: 'Eliminar plantilla',
-      body: `<p style="margin:0 0 8px 0">¿Estás seguro? Esta acción no se puede deshacer.</p><div style="text-align:center;font-size:28px;opacity:0.9">🗑️</div>`,
-      cancelText: 'Cancelar',
-      confirmText: 'Eliminar',
-      mode: 'register',
-      animation: 'bounce',
+      body: `<p style="margin:0 0 8px 0; color:var(--muted)">¿Estás seguro? Esta acción no se puede deshacer.</p><div style="text-align:center;font-size:32px;opacity:0.8;margin:10px 0;">🗑️</div>`,
+      cancelText: 'Cancelar', confirmText: 'Eliminar', mode: 'register', animation: 'bounce',
       onConfirm: () => {
         const cardEl = document.querySelector(`.card[data-id="${tid}"]`);
         if (cardEl) {
           cardEl.classList.add('removing');
           const rect = cardEl.getBoundingClientRect();
-          const trash = document.createElement('div');
-          trash.textContent = '🗑️';
-          trash.style.position = 'fixed';
-          trash.style.left = (rect.left + rect.width/2) + 'px';
-          trash.style.top = (rect.top + rect.height/2) + 'px';
-          trash.style.fontSize = '32px';
-          trash.style.zIndex = 9999;
-          trash.style.transition = 'transform 420ms ease, opacity 420ms';
+          const trash = document.createElement('div'); trash.textContent = '🗑️';
+          trash.style.cssText = `position:fixed; left:${rect.left + rect.width/2}px; top:${rect.top + rect.height/2}px; font-size:32px; z-index:9999; transition:transform 420ms ease, opacity 420ms;`;
           document.body.appendChild(trash);
-          requestAnimationFrame(()=> {
-            trash.style.transform = 'translateY(-140px) translateX(40px) rotate(30deg) scale(.6)';
-            trash.style.opacity = '0';
-          });
-          setTimeout(()=> { if (trash && trash.parentNode) trash.parentNode.removeChild(trash); }, 480);
-          setTimeout(()=> {
-            templates = templates.filter(x => x.id !== tid);
-            saveTemplates();
-            render();
-            showToast('Plantilla eliminada');
-          }, 420);
+          requestAnimationFrame(()=> { trash.style.transform = 'translateY(-140px) translateX(40px) rotate(30deg) scale(.6)'; trash.style.opacity = '0'; });
+          setTimeout(()=> { if (trash.parentNode) trash.parentNode.removeChild(trash); }, 480);
+          setTimeout(()=> { templates = templates.filter(x => x.id !== tid); saveTemplates(); render(); showToast('Eliminada'); }, 420);
         } else {
-          templates = templates.filter(x => x.id !== tid);
-          saveTemplates();
-          render();
-          showToast('Plantilla eliminada');
+          templates = templates.filter(x => x.id !== tid); saveTemplates(); render(); showToast('Eliminada');
         }
       }
     });
   }
 
-  // openModal center with optional bounce
   function openModal({title='Atención', body='', confirmText='Aceptar', cancelText='Cancelar', onConfirm=null, mode='neutral', animation=''}) {
     modalRoot.style.display = 'block';
+    let buttonsHtml = '<div style="display:flex;gap:12px;justify-content:flex-end;margin-top:24px">';
+    if (cancelText !== null) buttonsHtml += `<button class="btn ghost" id="modalCancel">${cancelText}</button>`;
+    if (confirmText !== null) buttonsHtml += `<button class="btn ${confirmText==='Eliminar'?'danger':'primary'}" id="modalConfirm">${confirmText}</button>`;
+    buttonsHtml += '</div>';
     modalRoot.innerHTML = `
       <div class="modal-backdrop" id="modalBackdrop">
         <div class="modal ${animation === 'bounce' ? 'animate-bounce' : ''} mode-${mode}" role="dialog" aria-modal="true">
-          <h3 style="margin-top:0">${title}</h3>
-          <div style="margin:12px 0">${body}</div>
-          <div style="display:flex;gap:8px;justify-content:flex-end">
-            <button class="btn muted" id="modalCancel">${cancelText}</button>
-            <button class="btn danger" id="modalConfirm">${confirmText}</button>
-          </div>
+          <h3 style="margin-top:0;font-size:20px;letter-spacing:-0.01em">${title}</h3>
+          <div style="margin:12px 0;font-size:14px;line-height:1.6">${body}</div>
+          ${buttonsHtml}
+          <div class="accentBar"></div>
         </div>
       </div>
     `;
-    const modalEl = modalRoot.querySelector('.modal');
-    const accent = document.createElement('div'); accent.className = 'accentBar';
-    if (mode === 'login') accent.style.background = 'linear-gradient(90deg,var(--accent-2), var(--accent))';
-    else if (mode === 'register') accent.style.background = 'linear-gradient(90deg,var(--accent), var(--accent-2))';
-    else if (mode === 'guest') accent.style.background = 'linear-gradient(90deg,#ffd89b,#ffb86b)';
-    else accent.style.background = 'linear-gradient(90deg,var(--accent),var(--accent-2))';
-    modalEl.appendChild(accent);
-
-    document.getElementById('modalCancel').addEventListener('click', closeModal);
+    const cancelEl = document.getElementById('modalCancel');
+    const confirmEl = document.getElementById('modalConfirm');
+    if (cancelEl) cancelEl.addEventListener('click', closeModal);
     document.getElementById('modalBackdrop').addEventListener('click', (e) => { if (e.target.id === 'modalBackdrop') closeModal(); });
-    document.getElementById('modalConfirm').addEventListener('click', () => { if (onConfirm) onConfirm(); closeModal(); });
+    if (confirmEl) confirmEl.addEventListener('click', () => { if (onConfirm) onConfirm(); closeModal(); });
   }
   function closeModal(){ modalRoot.style.display = 'none'; modalRoot.innerHTML = ''; }
 
-  // Auth modal (centered, bounce, nicer UI)
   function openAuthModal(){
     const users = Object.keys(getUsersObj());
-    const usersListHtml = users.length ? `<div class="hint" style="margin-bottom:10px">Usuarios: ${users.join(', ')}</div>` : '';
+    const usersListHtml = users.length ? `<div class="hint" style="margin-bottom:12px">Usuarios detectados: ${users.join(', ')}</div>` : '';
     modalRoot.style.display = 'block';
     modalRoot.innerHTML = `
       <div class="modal-backdrop" id="modalBackdrop">
         <div class="modal animate-bounce mode-neutral" id="authModal" role="dialog" aria-modal="true">
-          <h3 style="margin-top:0">Iniciar sesión / Registrar</h3>
+          <h3 style="margin-top:0;font-size:20px">Cuenta</h3>
           ${usersListHtml}
-          <div class="tabBtns" id="tabBtns">
-            <button class="btn" id="tabLogin">Ingresar</button>
-            <button class="btn primary" id="tabRegister">Registrar</button>
-            <button class="btn" id="tabGuest">Invitado</button>
+          <div style="display:flex; background:rgba(255,255,255,0.04); padding:4px; border-radius:12px; margin-bottom:20px;">
+            <button class="btn ghost" id="tabLogin" style="flex:1;border:0">Ingresar</button>
+            <button class="btn ghost" id="tabRegister" style="flex:1;border:0">Registrar</button>
+            <button class="btn ghost" id="tabGuest" style="flex:1;border:0">Invitado</button>
           </div>
           <div id="authBody" style="min-height:160px"></div>
-          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px"><button class="btn muted" id="modalClose">Cerrar</button></div>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:20px"><button class="btn ghost" id="modalClose">Cerrar</button></div>
+          <div class="accentBar"></div>
         </div>
       </div>
     `;
@@ -823,48 +878,38 @@
     const tabLogin = document.getElementById('tabLogin');
     const tabRegister = document.getElementById('tabRegister');
     const tabGuest = document.getElementById('tabGuest');
-
+    
     function highlightTab(selected){
-      [tabLogin, tabRegister, tabGuest].forEach(t => {
-        t.classList.remove('tab-selected');
-        t.classList.remove('tab-dim');
-      });
-      if (selected === 'login') tabLogin.classList.add('tab-selected');
-      if (selected === 'register') tabRegister.classList.add('tab-selected');
-      if (selected === 'guest') tabGuest.classList.add('tab-selected');
-      [tabLogin, tabRegister, tabGuest].forEach(t => {
-        if (!t.classList.contains('tab-selected')) t.classList.add('tab-dim');
-      });
+      [tabLogin, tabRegister, tabGuest].forEach(t => { t.style.background='transparent'; t.style.color='var(--muted)'; t.style.boxShadow='none'; });
+      const sel = selected==='login'?tabLogin:(selected==='register'?tabRegister:tabGuest);
+      sel.style.background='rgba(255,255,255,0.1)'; sel.style.color='#fff'; sel.style.boxShadow='0 2px 8px rgba(0,0,0,0.2)';
     }
 
     document.getElementById('modalClose').addEventListener('click', closeModal);
     tabLogin.addEventListener('click', () => { renderLogin(); highlightTab('login'); });
     tabRegister.addEventListener('click', () => { renderRegister(); highlightTab('register'); });
     tabGuest.addEventListener('click', () => { renderGuest(); highlightTab('guest'); });
-
-    renderLogin();
-    highlightTab('login');
+    renderLogin(); highlightTab('login');
 
     function renderLogin(){
       authBody.innerHTML = `
-        <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;flex-direction:column;gap:12px">
           <input id="loginUser" placeholder="Usuario" autocomplete="username"/>
           <div class="input-with-toggle">
             <input id="loginPass" type="password" placeholder="Contraseña" autocomplete="current-password"/>
             <button id="toggleLoginPass" title="Mostrar contraseña">👁️</button>
           </div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <button class="btn primary" id="doLogin">Ingresar</button>
-            <button class="btn" id="useGuest">Usar como invitado</button>
+          <div style="display:flex;gap:12px;align-items:center;margin-top:8px">
+            <button class="btn primary" id="doLogin" style="flex:1">Entrar</button>
+            <button class="btn" id="useGuest">Invitado</button>
           </div>
-          <div class="auth-note">No uses tu email como nombre de usuario. Si no tienes cuenta, regístrate.</div>
+          <div class="auth-note" style="font-size:12px;color:var(--muted);margin-top:10px">No uses email. Si no tienes cuenta, regístrate.</div>
         </div>
       `;
       const toggle = document.getElementById('toggleLoginPass');
       toggle.addEventListener('click', () => {
         const p = document.getElementById('loginPass');
-        if (p.type === 'password') { p.type = 'text'; toggle.textContent = '🙈'; }
-        else { p.type = 'password'; toggle.textContent = '👁️'; }
+        if (p.type === 'password') { p.type = 'text'; toggle.textContent = '🙈'; } else { p.type = 'password'; toggle.textContent = '👁️'; }
       });
       document.getElementById('doLogin').addEventListener('click', async ()=>{
         const name = (document.getElementById('loginUser').value||'').trim();
@@ -882,29 +927,16 @@
 
     function renderRegister(){
       authBody.innerHTML = `
-        <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;flex-direction:column;gap:12px">
           <input id="regUser" placeholder="Nombre de usuario (no email)"/>
-          <div class="input-with-toggle">
-            <input id="regPass" type="password" placeholder="Contraseña (mín 6)"/>
-            <button id="toggleRegPass" title="Mostrar contraseña">👁️</button>
-          </div>
-          <div class="input-with-toggle">
-            <input id="regPass2" type="password" placeholder="Confirmar contraseña"/>
-            <button id="toggleRegPass2" title="Mostrar contraseña">👁️</button>
-          </div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <button class="btn primary" id="doRegister">Registrar</button>
-            <button class="btn" id="backLogin">Volver</button>
-          </div>
-          <div class="auth-note">Registro local, privado: tus plantillas quedarán en este navegador.</div>
+          <div class="input-with-toggle"><input id="regPass" type="password" placeholder="Contraseña (mín 6)"/><button id="toggleRegPass">👁️</button></div>
+          <div class="input-with-toggle"><input id="regPass2" type="password" placeholder="Confirmar contraseña"/><button id="toggleRegPass2">👁️</button></div>
+          <div style="display:flex;gap:8px;align-items:center;margin-top:8px"><button class="btn primary" id="doRegister" style="flex:1">Crear cuenta</button></div>
+          <div class="auth-note" style="font-size:12px;color:var(--muted);margin-top:10px">Registro local y privado.</div>
         </div>
       `;
-      document.getElementById('toggleRegPass').addEventListener('click', () => {
-        const p = document.getElementById('regPass'); p.type = p.type === 'password' ? 'text' : 'password';
-      });
-      document.getElementById('toggleRegPass2').addEventListener('click', () => {
-        const p = document.getElementById('regPass2'); p.type = p.type === 'password' ? 'text' : 'password';
-      });
+      document.getElementById('toggleRegPass').addEventListener('click', () => { const p = document.getElementById('regPass'); p.type = p.type === 'password' ? 'text' : 'password'; });
+      document.getElementById('toggleRegPass2').addEventListener('click', () => { const p = document.getElementById('regPass2'); p.type = p.type === 'password' ? 'text' : 'password'; });
       document.getElementById('doRegister').addEventListener('click', async ()=>{
         const name = (document.getElementById('regUser').value||'').trim();
         const pass = document.getElementById('regPass').value||'';
@@ -918,37 +950,48 @@
         const h = await hashPassword(pass);
         users[name] = { hash: h, createdAt: new Date().toISOString() };
         saveUsersObj(users);
-        localStorage.setItem(TEMPL_KEY(name), JSON.stringify([]));
+        try {
+          const userTemplates = Array.isArray(templates) && templates.length ? templates.map(x => ({ id: id(), title: x.title||'', content: x.content||'', modified: x.modified || Date.now(), pinned: !!x.pinned })) : [];
+          localStorage.setItem(TEMPL_KEY(name), JSON.stringify(userTemplates));
+        } catch (err) { localStorage.setItem(TEMPL_KEY(name), JSON.stringify([])); }
         sessionStorage.setItem(CURRENT_KEY, name);
-        user = name; templates = loadTemplatesFor(user); shelf = loadShelfFor(user); updateUserUI(); render(); closeModal(); showToast('Registrado e iniciado');
+        user = name; templates = loadTemplatesFor(user); shelf = loadShelfFor(user); updateUserUI(); render(); closeModal(); showToast('Registrado');
       });
-      document.getElementById('backLogin').addEventListener('click', renderLogin);
     }
 
     function renderGuest(){
       authBody.innerHTML = `
-        <div style="display:flex;flex-direction:column;gap:10px">
-          <div class="auth-note">Usar como invitado guarda solo en esta pestaña. Se perderá al cerrar.</div>
-          <div style="display:flex;gap:8px">
-            <button class="btn primary" id="useGuestNow">Usar como invitado</button>
-            <button class="btn" id="backLogin2">Volver</button>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="auth-note" style="padding:15px;background:rgba(255,255,255,0.05);border-radius:10px;font-size:14px;color:var(--text-main)">
+          El modo invitado guarda tus plantillas solo temporalmente en esta pestaña. Se perderán al cerrar.
           </div>
+          <div style="display:flex;gap:8px;margin-top:10px"><button class="btn primary" id="useGuestNow" style="width:100%">Entrar como Invitado</button></div>
         </div>
       `;
       document.getElementById('useGuestNow').addEventListener('click', ()=>{ sessionStorage.setItem(CURRENT_KEY,'guest'); user='guest'; templates = loadTemplatesFor(user); shelf = loadShelfFor(user); updateUserUI(); render(); closeModal(); showToast('Invitado'); });
-      document.getElementById('backLogin2').addEventListener('click', renderLogin);
     }
   }
 
-  // Shelf modal (restore multiple without closing)
+  // Shelf modal (fixed restore)
   function openShelfModal(){
     renderShelfModal();
     function renderShelfModal(){
-      const listHtml = shelf.length ? shelf.map(s => `<li data-id="${s.id}" style="margin-bottom:10px;padding:8px;border-radius:8px;background:rgba(255,255,255,0.02)"><strong>${escapeHtml(s.title||'(sin título)')}</strong><div style="margin-top:6px">${escapeHtml((s.content||'').slice(0,200))}${(s.content||'').length>200?'…':''}</div><div style="margin-top:8px"><button class="btn small restore">Restaurar</button> <button class="btn small danger del">Eliminar</button></div></li>`).join('') : '<div class="hint">No hay plantillas en la estantería.</div>';
-      openModal({ title:'Estantería', body:`<div style="display:flex;justify-content:space-between;align-items:center"><div class="hint">Plantillas guardadas</div><div><button class="btn" id="shelfHome">Inicio</button></div></div><div style="max-height:50vh;overflow:auto;padding-right:6px;margin-top:10px"><ul style="list-style:none;padding:0;margin:0">${listHtml}</ul></div>`, cancelText:'Cerrar', confirmText:'Cerrar', onConfirm:null });
+      const listHtml = shelf.length ?
+      shelf.map(s => `
+        <li class="shelf-item" data-id="${s.id}">
+          <div style="font-weight:600;color:#fff">${escapeHtml(s.title||'(Sin título)')}</div>
+          <div class="shelf-content">${escapeHtml((s.content||'').slice(0,180))}${(s.content||'').length>180?'…':''}</div>
+          <div style="display:flex;gap:10px">
+            <button class="btn small restore" style="background:rgba(45,212,191,0.1);color:var(--primary)">Restaurar</button> 
+            <button class="btn small danger del">Eliminar</button>
+          </div>
+        </li>`).join('') : '<div class="hint" style="text-align:center;padding:30px">La estantería está vacía.</div>';
+      
+      openModal({ title:'Estantería', body:`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div class="hint">Archivados</div><button class="btn ghost small" id="shelfHome">Ir al inicio</button></div><div style="max-height:50vh;overflow-y:auto;padding-right:6px;margin-top:10px"><ul style="list-style:none;padding:0;margin:0">${listHtml}</ul></div>`, cancelText: null, confirmText:'Cerrar', onConfirm:null });
+      
       setTimeout(()=> {
         const shelfHome = document.getElementById('shelfHome');
-        if (shelfHome) shelfHome.addEventListener('click', ()=> { closeModal(); window.scrollTo({top:0, behavior:'smooth'}); showToast('Inicio'); });
+        if (shelfHome) shelfHome.addEventListener('click', ()=> { closeModal(); window.scrollTo({top:0, behavior:'smooth'}); });
 
         const modalRootEl = document.getElementById('modalRoot');
         modalRootEl.querySelectorAll('.restore').forEach(btn => {
@@ -959,14 +1002,20 @@
             if (idx === -1) return;
             const item = shelf.splice(idx,1)[0];
             const restored = { id: id(), title: item.title, content: item.content, modified: Date.now(), pinned:false };
-            templates.unshift(restored);
-            saveShelf(); saveTemplates();
+            templates.unshift(restored); // Al inicio
+            saveShelf(); saveTemplates(); 
+            
+            // FIX: Renderizado inmediato para que aparezca en el fondo
+            render(); 
+
             li.parentNode.removeChild(li);
-            showToast('Restaurada al inicio');
+            showToast('Restaurada');
+            
+            // Scroll al nuevo elemento
             setTimeout(()=> {
               const el = document.querySelector(`.card[data-id="${restored.id}"]`);
-              if (el) { el.classList.add('new-item'); setTimeout(()=> el.classList.remove('new-item'),420); el.scrollIntoView({behavior:'smooth', block:'center'}); setActiveCard(restored.id); }
-            }, 80);
+              if (el) { el.classList.add('new-item'); setTimeout(()=> el.classList.remove('new-item'),600); el.scrollIntoView({behavior:'smooth', block:'center'}); setActiveCard(restored.id); }
+            }, 100);
           });
         });
         modalRootEl.querySelectorAll('.del').forEach(btn => {
@@ -976,21 +1025,21 @@
             shelf = shelf.filter(x => x.id !== itemId);
             saveShelf();
             li.parentNode.removeChild(li);
-            showToast('Eliminada de la estantería');
+            showToast('Eliminada definitivamente');
           });
         });
       }, 40);
     }
   }
 
-  // export/import
   function exportJSON(){
     const exportData = { exportedAt: new Date().toISOString(), user: user, templates: templates, shelf: shelf };
     const blob = new Blob([JSON.stringify(exportData, null, 2)], {type:'application/json'});
-    const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = (user==='guest' ? 'plantillas-guest' : 'plantillas-' + user) + '.json'; a.click(); URL.revokeObjectURL(url); showToast('Exportado');
+    const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url;
+    a.download = (user==='guest' ? 'plantillas-guest' : 'plantillas-' + user) + '.json'; a.click(); URL.revokeObjectURL(url); showToast('Exportado');
   }
   function openImportModal(){
-    openModal({ title:'Importar JSON', body:`<input type="file" id="importFile" accept=".json"/><div class="hint">Añadir o reemplazar plantillas. Si contiene "shelf", también se importará.</div>`, cancelText:'Cerrar', confirmText:'Cerrar', onConfirm:null });
+    openModal({ title:'Importar JSON', body:`<input type="file" id="importFile" accept=".json"/><div class="hint">Añadir o reemplazar plantillas.</div>`, cancelText:'Cerrar', confirmText:'Cerrar', onConfirm:null });
     setTimeout(()=> {
       const fi = document.getElementById('importFile'); if(!fi) return;
       fi.addEventListener('change', (e)=> {
@@ -1000,7 +1049,7 @@
           try {
             const obj = JSON.parse(ev.target.result);
             if (Array.isArray(obj.templates)) {
-              openModal({ title:'Importar', body:'¿Añadir o reemplazar?', cancelText:'Añadir', confirmText:'Reemplazar', onConfirm: ()=> {
+              openModal({ title:'Importar', body:'¿Cómo quieres importar?', cancelText:'Añadir al final', confirmText:'Reemplazar todo', onConfirm: ()=> {
                 templates = obj.templates.map(x=>({id: id(), title:x.title||'', content:x.content||'', modified:Date.now(), pinned:false}));
                 if (Array.isArray(obj.shelf)) shelf = obj.shelf.map(x=>({id:id(), title:x.title||'', content:x.content||'', modified:Date.now()}));
                 saveTemplates(); saveShelf(); render(); showToast('Reemplazado');
@@ -1024,25 +1073,16 @@
     }, 40);
   }
 
-  // toast
   let toastTimer=null;
-  function showToast(txt){ toastRoot.style.display='block'; toastRoot.innerHTML = `<div class="toast show">${txt}</div>`; if(toastTimer) clearTimeout(toastTimer); toastTimer=setTimeout(()=>{ toastRoot.style.display='none'; toastRoot.innerHTML=''; },2600); }
+  function showToast(txt){ toastRoot.style.display='block'; toastRoot.innerHTML = `<div class="toast show"><span>✨</span> ${txt}</div>`; if(toastTimer) clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>{ toastRoot.style.display='none'; toastRoot.innerHTML=''; },2600); }
 
-  // utils
   function escapeHtml(s){ if (s==null) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   function escapeAttr(s){ if (s==null) return ''; return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
-  function formatDate(ts){ try{ return new Date(ts).toLocaleString(); }catch(e){return ''} }
+  function formatDate(ts){ try{ return new Date(ts).toLocaleDateString('es-ES', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}); }catch(e){return ''} }
 
-  // initial load
-  (function initial(){
-    templates = loadTemplatesFor(user) || [];
-    shelf = loadShelfFor(user) || [];
-    reorderPinned(); updateUserUI(); render();
-  })();
-
-  // expose for debugging
-  window.PlantillaBox = { addTemplate, getState: ()=>({user, templates, shelf}), saveTemplates, saveShelf };
-
+  // expose
+  window.PlantillaBox = { addTemplate, getState: ()=>({user, templates, shelf}) };
 })();
 </script>
 </body>
