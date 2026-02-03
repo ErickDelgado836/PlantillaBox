@@ -760,6 +760,7 @@
               <button class="small muted btnLockInline">${isLocked ? '🔒 Desbloquear' : '🔓 Bloquear'}</button>
               <button class="small muted btnPinInline">${t.pinned ? '📌' : '📍'}</button>
               <button class="small small-ghost btnCopyInline">Copiar</button>
+              <button class="small muted btnClearInline">Borrar</button>
               <button class="small btnDupInline">Duplicar</button>
               <button class="small muted btnShelfInline">📁 Archivar</button>
               <button class="small danger btnDelInline">Eliminar</button>
@@ -828,6 +829,7 @@
       const btnDup = card.querySelector('.btnDupInline');
       const btnDel = card.querySelector('.btnDelInline');
       const btnShelfInline = card.querySelector('.btnShelfInline');
+      const btnClearInline = card.querySelector('.btnClearInline');
       const charsEl = card.querySelector('.chars');
       const modEl = card.querySelector('.modified');
 
@@ -853,6 +855,7 @@
         menu.innerHTML = `
           <button data-act="lock" style="width:100%;text-align:left;padding:10px;background:transparent;border:0;color:#94a3b8;cursor:pointer;display:flex;gap:8px">${t.locked ? '🔓 Desbloquear' : '🔒 Bloquear'}</button>
           <button data-act="copy" style="width:100%;text-align:left;padding:10px;background:transparent;border:0;color:#94a3b8;cursor:pointer;display:flex;gap:8px">📋 Copiar</button>
+          <button data-act="clear" style="width:100%;text-align:left;padding:10px;background:transparent;border:0;color:#94a3b8;cursor:pointer;display:flex;gap:8px">🧹 Vaciar contenido</button>
           <button data-act="dup" style="width:100%;text-align:left;padding:10px;background:transparent;border:0;color:#94a3b8;cursor:pointer;display:flex;gap:8px">✳️ Duplicar</button>
           <button data-act="pin" style="width:100%;text-align:left;padding:10px;background:transparent;border:0;color:#94a3b8;cursor:pointer;display:flex;gap:8px">${t.pinned ? '📌 Desanclar' : '📍 Anclar'}</button>
           <button data-act="shelf" style="width:100%;text-align:left;padding:10px;background:transparent;border:0;color:#94a3b8;cursor:pointer;display:flex;gap:8px">📁 Archivar</button>
@@ -864,6 +867,7 @@
             const a = b.getAttribute('data-act');
             if (a === 'lock') toggleLockById(t.id); // new
             if (a === 'copy') { b.classList.add('flash'); setTimeout(()=>b.classList.remove('flash'),460); await robustCopy(t.content||''); }
+            if (a === 'clear') { doClear(); }
             if (a === 'dup') doDup();
             if (a === 'pin') togglePinById(t.id);
             if (a === 'shelf') doShelf();
@@ -885,6 +889,16 @@
       function doPin(){ togglePinById(t.id); }
       function doLock(){ toggleLockById(t.id); } // new
 
+      // New: clear content of a single template
+      function doClear(){
+        if (t.locked) { showToast('Plantilla bloqueada'); return; }
+        t.content = '';
+        t.modified = Date.now();
+        saveTemplates();
+        render();
+        showToast('Contenido borrado');
+      }
+
       btnPinEls.forEach(el => el.addEventListener('click', () => { doPin(); }));
       btnLockEls.forEach(el => el.addEventListener('click', () => { doLock(); })); // new
       btnCopyEls.forEach(el => { el.addEventListener('click', async () => { el.classList.add('flash'); setTimeout(()=> el.classList.remove('flash'), 460); await robustCopy(t.content || ''); }); });
@@ -892,6 +906,7 @@
       if (btnDel) btnDel.addEventListener('click', doDel);
       if (btnShelfInline) btnShelfInline.addEventListener('click', doShelf);
       if (btnMore) btnMore.addEventListener('click', openMoreMenu);
+      if (btnClearInline) btnClearInline.addEventListener('click', doClear);
 
       card.addEventListener('pointerdown', ()=> { setActiveCard(t.id); try{ if (navigator.vibrate) navigator.vibrate(8); } catch(e){} });
       // Only focus if not locked
