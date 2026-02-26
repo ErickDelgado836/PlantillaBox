@@ -15,20 +15,18 @@
     --bg-surface: #0e0e11;
     --card-bg: rgba(20, 20, 25, 0.6);
     --card-border: rgba(255, 255, 255, 0.08);
-    
     /* Acentos Refinados */
     --primary: #2dd4bf;       /* Teal */
     --primary-glow: rgba(45, 212, 191, 0.25);
     --secondary: #6366f1;     /* Indigo */
     --accent-gradient: linear-gradient(135deg, #2dd4bf 0%, #3b82f6 50%, #6366f1 100%);
-    --gold: #fbbf24;          /* Para el candado */
+    --gold: #fbbf24;
     
     /* Utilidades */
     --muted: #94a3b8;
     --text-main: #f8fafc;
     --danger: #f43f5e;
     --glass-border: 1px solid rgba(255, 255, 255, 0.06);
-    
     /* Animaciones */
     --ease-elastic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
     --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
@@ -61,7 +59,8 @@
 
   /* HEADER Cristal */
   header {
-    display: flex; align-items: center; justify-content: space-between;
+    display: flex;
+    align-items: center; justify-content: space-between;
     padding: 18px 28px;
     position: sticky; top: 0;
     background: rgba(5, 5, 7, 0.85);
@@ -76,7 +75,8 @@
   .logo {
     width: 44px; height: 44px; border-radius: 12px;
     background: var(--accent-gradient);
-    display: flex; align-items: center; justify-content: center;
+    display: flex;
+    align-items: center; justify-content: center;
     box-shadow: 0 0 25px var(--primary-glow);
     transition: transform 0.3s var(--ease-elastic);
   }
@@ -100,7 +100,8 @@
     font-size: 13px;
     transition: all 0.2s ease;
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    position: relative; overflow: hidden;
+    position: relative;
+    overflow: hidden;
   }
   .btn:hover { background: rgba(255,255,255,0.07); transform: translateY(-1px); border-color: rgba(255,255,255,0.1); }
   .btn:active { transform: translateY(1px) scale(0.98); }
@@ -121,7 +122,8 @@
 
   .chip {
     padding: 6px 12px; border-radius: 20px;
-    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
     font-size: 12px; color: var(--muted); display: flex; align-items: center;
   }
 
@@ -138,15 +140,18 @@
     transition: all 0.2s;
   }
   .search:focus {
-    background: rgba(0,0,0,0.4); border-color: var(--primary);
+    background: rgba(0,0,0,0.4);
+    border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.1);
   }
 
   /* BARRA DE SELECCION */
   #selectionBar {
-    display: none; align-items: center; gap: 12px; margin-bottom: 24px;
+    display: none; align-items: center; gap: 12px;
+    margin-bottom: 24px;
     background: linear-gradient(90deg, rgba(45, 212, 191, 0.05) 0%, transparent 100%);
-    border: 1px solid rgba(45, 212, 191, 0.15); border-left: 3px solid var(--primary);
+    border: 1px solid rgba(45, 212, 191, 0.15);
+    border-left: 3px solid var(--primary);
     padding: 12px 20px; border-radius: 12px;
     animation: slideDown 0.3s var(--ease-elastic);
   }
@@ -155,7 +160,8 @@
   #selectionBar .count { color: var(--primary); font-weight: 700; font-size: 15px; margin-right: 8px; }
   .selectAllBtn { 
     background: transparent; color: var(--text-main); border: 1px solid rgba(255,255,255,0.15); 
-    padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 500;
   }
 
   /* GRID DE TARJETAS */
@@ -166,7 +172,6 @@
   }
 
   /* DISEÑO DE TARJETA */
-  /* Prevent accidental text-selection while dragging cards, but allow selection in inputs/textarea */
   .card, .card * { -webkit-user-select: none; user-select: none; }
   .card textarea, .card input.title, .card .tpl-select, .card .iconBtn, .card button { -webkit-user-select: text; user-select: text; }
 
@@ -182,11 +187,12 @@
     transition: transform var(--trans-med), box-shadow var(--trans-med), border-color 0.2s;
     will-change: transform; overflow: hidden;
   }
-  /* Brillo superior sutil */
   .card::after {
-    content: ''; position: absolute; inset: 0; pointer-events: none;
+    content: '';
+    position: absolute; inset: 0; pointer-events: none;
     background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 0), rgba(255,255,255,0.04), transparent 40%);
-    opacity: 0; transition: opacity 0.4s;
+    opacity: 0;
+    transition: opacity 0.4s;
   }
   .card:hover::after { opacity: 1; }
 
@@ -208,25 +214,22 @@
     box-shadow: 0 10px 40px rgba(0,0,0,0.4);
   }
   
-  /* Estado BLOQUEADO */
   .card.locked {
-    border-color: rgba(251, 191, 36, 0.2); /* Borde dorado sutil */
+    border-color: rgba(251, 191, 36, 0.2);
   }
   .card.locked textarea, .card.locked input.title {
     opacity: 0.7;
-    cursor: default; /* Cursor normal, no de texto */
+    cursor: default;
   }
-  /* Indicador visual de inputs bloqueados */
   .card.locked textarea:focus, .card.locked input.title:focus {
-    box-shadow: none; border-color: transparent;
+    box-shadow: none;
+    border-color: transparent;
   }
 
-  /* Animaciones */
   .card.slide-in { animation: smoothEntry 0.5s var(--ease-elastic); }
   @keyframes smoothEntry { 0% { opacity: 0; transform: translateY(30px) scale(0.96); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
   .card.removing { transform: scale(0.9) translateY(10px); opacity: 0; filter: blur(4px); transition: all 0.35s ease; }
   
-  /* Animación para nuevo item (restaurado) */
   .card.new-item { animation: highlightFlash 0.8s ease; }
   @keyframes highlightFlash { 0% { box-shadow: 0 0 0 2px var(--primary); background: rgba(45,212,191,0.1); } 100% { box-shadow: 0 0 0 0 transparent; background: var(--card-bg); } }
   
@@ -237,11 +240,12 @@
   
   input.title {
     background: transparent; border: none; color: #fff;
-    font-size: 16px; font-weight: 600; flex: 1; padding: 4px 0;
+    font-size: 16px;
+    font-weight: 600; flex: 1; padding: 4px 0;
     border-bottom: 1px dashed transparent; transition: 0.2s;
   }
   input.title:focus { border-bottom-color: var(--primary); }
-  input.title[readonly] { border-bottom: 1px solid transparent; } /* Sin linea punteada al bloquear */
+  input.title[readonly] { border-bottom: 1px solid transparent; }
   input.title::placeholder { color: rgba(255,255,255,0.2); font-weight: 400; }
 
   textarea {
@@ -266,7 +270,8 @@
   
   .small {
     padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 500;
-    background: rgba(255,255,255,0.06); border: none; color: var(--muted);
+    background: rgba(255,255,255,0.06);
+    border: none; color: var(--muted);
     cursor: pointer; transition: all 0.2s;
   }
   .small:hover { background: rgba(255,255,255,0.12); color: #fff; }
@@ -280,13 +285,14 @@
     transition: all 0.2s;
   }
   .iconBtn:hover { background: var(--primary); color: #000; transform: scale(1.1); box-shadow: 0 4px 12px rgba(45,212,191,0.25); }
-  .iconBtn.btnLock:hover { background: var(--gold); } /* Color especial para el candado */
+  .iconBtn.btnLock:hover { background: var(--gold); }
 
   .tpl-select {
     appearance: none; -webkit-appearance: none;
     width: 20px; height: 20px; border-radius: 6px;
     border: 1px solid rgba(255,255,255,0.2); background: transparent;
-    cursor: pointer; position: relative; transition: all 0.2s; display: grid; place-content: center;
+    cursor: pointer; position: relative;
+    transition: all 0.2s; display: grid; place-content: center;
   }
   .tpl-select:checked { background: var(--primary); border-color: var(--primary); }
   .tpl-select:checked::after { content: '✔'; font-size: 12px; color: #000; font-weight: bold; }
@@ -313,8 +319,7 @@
 
   /* Estilos específicos para ítems de la estantería */
   .shelf-item {
-    margin-bottom: 12px;
-    padding: 16px;
+    margin-bottom: 12px; padding: 16px;
     border-radius: 12px;
     background: rgba(255,255,255,0.02);
     border: 1px solid rgba(255,255,255,0.04);
@@ -327,7 +332,8 @@
   .input-with-toggle { position: relative; margin-bottom: 12px; }
   .input-with-toggle input, .modal input {
     width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
-    padding: 12px; border-radius: 10px; color: #fff; margin-bottom: 8px;
+    padding: 12px;
+    border-radius: 10px; color: #fff; margin-bottom: 8px;
     transition: 0.2s;
   }
   .input-with-toggle input:focus, .modal input:focus { border-color: var(--primary); background: rgba(0,0,0,0.5); }
@@ -360,6 +366,59 @@
 
   footer { text-align: center; color: rgba(255,255,255,0.15); font-size: 11px; margin-top: 60px; }
 
+  /* Estilos Calculadora Flotante */
+  .calc-widget {
+    position: fixed;
+    top: 100px; left: 100px;
+    width: 240px;
+    background: var(--card-bg);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    z-index: 500;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    user-select: none;
+  }
+  .calc-widget:focus {
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 0 2px var(--primary);
+  }
+  .calc-header {
+    padding: 10px 14px;
+    background: rgba(0,0,0,0.3);
+    cursor: grab;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 12px; font-weight: 600; color: var(--muted);
+    touch-action: none;
+  }
+  .calc-header:active { cursor: grabbing; }
+  .calc-close { cursor: pointer; color: var(--danger); font-size: 14px; background:none; border:none; padding:0; transition: 0.2s; z-index: 10; }
+  .calc-close:hover { transform: scale(1.2); }
+  .calc-display {
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    font-size: 24px; text-align: right;
+    padding: 16px 14px;
+    border: none; width: 100%; box-sizing: border-box;
+    font-family: monospace; outline: none;
+  }
+  .calc-keys {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1px; background: rgba(255,255,255,0.05);
+  }
+  .calc-btn {
+    background: transparent; border: none; padding: 14px 0;
+    font-size: 16px; color: #f8fafc; cursor: pointer;
+    transition: background 0.1s;
+  }
+  .calc-btn:hover { background: rgba(255,255,255,0.1); }
+  .calc-btn.op { color: var(--primary); font-weight: 600; background: rgba(45, 212, 191, 0.05); }
+  .calc-btn.op:hover { background: rgba(45, 212, 191, 0.15); }
+  .calc-btn.eq { background: var(--primary); color: #000; font-weight: bold; }
+  .calc-btn.eq:hover { background: #22a998; }
+
   /* Responsive */
   @media (max-width: 880px) {
     .card .actions { display: none; }
@@ -390,6 +449,7 @@
   <div class="controls">
     <div class="chip" id="currentUser"><span id="userDot" style="width:8px;height:8px;border-radius:99px;background:var(--primary);display:inline-block;margin-right:8px;box-shadow:0 0 8px var(--primary)"></span><span id="currentUserText">Invitado</span></div>
     <div style="display:flex;gap:8px;align-items:center">
+      <button class="btn" id="btnCalc" title="Abrir Calculadora">🧮 Calculadora</button>
       <button class="btn" id="btnShelf" title="Estantería">📁 Estantería</button>
       <button class="btn" id="btnExport">Exportar</button>
       <button class="btn" id="btnImport">Importar</button>
@@ -446,6 +506,7 @@
   const stats = document.getElementById('stats');
   const emptyState = document.getElementById('emptyState');
   const btnNew = document.getElementById('btnNew');
+  const btnCalc = document.getElementById('btnCalc');
   const btnLogin = document.getElementById('btnLogin');
   const btnExport = document.getElementById('btnExport');
   const btnImport = document.getElementById('btnImport');
@@ -465,6 +526,7 @@
   const shelfSelectedBtn = document.getElementById('shelfSelectedBtn');
   const delSelectedBtn = document.getElementById('delSelectedBtn');
   const clearSelectionBtn = document.getElementById('clearSelectionBtn');
+
   // state
   let user = sessionStorage.getItem(CURRENT_KEY) || 'guest';
   if (!sessionStorage.getItem(CURRENT_KEY)) sessionStorage.setItem(CURRENT_KEY, 'guest');
@@ -487,8 +549,10 @@
   updateUserUI();
   reorderPinned();
   render();
+
   // events
   btnNew.addEventListener('click', () => { btnNew.classList.add('pressed'); setTimeout(()=>btnNew.classList.remove('pressed'),160); addTemplate(); });
+  btnCalc.addEventListener('click', () => { btnCalc.classList.add('pressed'); setTimeout(()=>btnCalc.classList.remove('pressed'),160); createCalculator(); });
   btnLogin.addEventListener('click', openAuthModal);
   btnExport.addEventListener('click', exportJSON);
   btnImport.addEventListener('click', openImportModal);
@@ -517,6 +581,7 @@
   shelfSelectedBtn.addEventListener('click', () => { handleShelfSelected(); });
   delSelectedBtn.addEventListener('click', () => { handleDeleteSelected(); });
   clearSelectionBtn.addEventListener('click', () => { clearSelection(); });
+
   // allow drop to shelf
   btnShelf.addEventListener('dragover', (e) => { e.preventDefault(); btnShelf.classList.add('pressed'); });
   btnShelf.addEventListener('dragleave', () => { btnShelf.classList.remove('pressed'); });
@@ -531,6 +596,7 @@
     shelf.unshift(item);
     saveShelf(); saveTemplates(); render(); showToast('Guardada en estantería');
   });
+
   // pressed feedback
   document.addEventListener('pointerdown', (e) => {
     const el = e.target.closest('.btn, button, .iconBtn');
@@ -538,7 +604,7 @@
     el.classList.add('pressed');
     setTimeout(()=> el.classList.remove('pressed'), 160);
   });
-  
+
   // Storage & Logic
   function getUsersObj(){ const s = localStorage.getItem(USERS_KEY); try{ return s ? JSON.parse(s) : {}; }catch(e){ return {}; } }
   function saveUsersObj(o){ try{ localStorage.setItem(USERS_KEY, JSON.stringify(o)); }catch(e){ console.warn('Err save users', e); } }
@@ -559,9 +625,12 @@
   }
 
   function updateUserUI(){ currentUserText.textContent = (user === 'guest') ? 'Invitado' : user;
-  footerInfo.textContent = (user === 'guest') ? 'Modo invitado (no persistente al cerrar).' : 'Sesión guardada en este navegador.';
-  if (user === 'guest'){ userDot.style.opacity = '0.6'; if (window.logoEl) logoEl.classList.remove('logoStrong'); btnLogout.style.display = 'none'; } else { userDot.style.opacity = '1';
-  if (window.logoEl) logoEl.classList.add('logoStrong'); btnLogout.style.display = 'inline-flex'; } }
+  footerInfo.textContent = (user === 'guest') ?
+  'Modo invitado (no persistente al cerrar).' : 'Sesión guardada en este navegador.';
+  if (user === 'guest'){ userDot.style.opacity = '0.6';
+  if (window.logoEl) logoEl.classList.remove('logoStrong'); btnLogout.style.display = 'none'; } else { userDot.style.opacity = '1';
+  if (window.logoEl) logoEl.classList.add('logoStrong'); btnLogout.style.display = 'inline-flex';
+  } }
   function updateStats(){ stats.textContent = templates.length + (templates.length === 1 ? ' plantilla' : ' plantillas');
   emptyState.style.display = templates.length ? 'none' : 'block'; }
   function id(){ return generateId(); }
@@ -583,7 +652,8 @@
       const ok = document.execCommand('copy'); document.body.removeChild(ta);
       if (ok) { showToast('Copiado (fallback)'); return true; }
     } catch (err) {}
-    showToast('No se pudo copiar'); return false;
+    showToast('No se pudo copiar');
+    return false;
   }
 
   function animatePinToTop(cardEl) {
@@ -594,7 +664,8 @@
         const destX = (targetRect.left + 12) - rect.left;
         const destY = (targetRect.top + 12) - rect.top;
         const clone = cardEl.cloneNode(true);
-        clone.style.position = 'fixed'; clone.style.left = rect.left + 'px'; clone.style.top = rect.top + 'px';
+        clone.style.position = 'fixed'; clone.style.left = rect.left + 'px'; 
+        clone.style.top = rect.top + 'px';
         clone.style.width = rect.width + 'px'; clone.style.margin = '0'; clone.style.zIndex = 9999; clone.style.pointerEvents = 'none';
         clone.style.transition = 'transform 520ms cubic-bezier(.2,.9,.3,1), opacity 520ms ease';
         document.body.appendChild(clone);
@@ -627,7 +698,6 @@
     }
   }
 
-  // Nueva función para bloqueo
   function toggleLockById(id) {
     const idx = templates.findIndex(t => t.id === id);
     if (idx === -1) return;
@@ -640,7 +710,6 @@
   function addTemplate(prefill = {title:'',content:''}, save=true){
     const existingCards = Array.from(document.querySelectorAll('.templates .card'));
     existingCards.forEach(c => c.classList.add('pre-push'));
-    // Added locked: false
     const t = { id: id(), title: prefill.title || '', content: prefill.content || '', modified: Date.now(), pinned:false, locked:false };
     templates.unshift(t);
     if (save) saveTemplates();
@@ -738,11 +807,10 @@
       const card = document.createElement('article');
       card.className = 'card';
       if (checked) card.classList.add('selected');
-      if (isLocked) card.classList.add('locked'); // visual class
+      if (isLocked) card.classList.add('locked');
       card.setAttribute('data-id', t.id);
       card.setAttribute('draggable', 'true');
       
-      // Conditionally add readonly
       const roAttr = isLocked ? 'readonly' : '';
 
       card.innerHTML = `
@@ -771,26 +839,18 @@
         <div class="meta"><span class="chars">${(t.content||'').length} caracteres</span><span class="modified">${t.modified ? 'Editado: ' + formatDate(t.modified) : ''}</span></div>
       `;
       templatesContainer.appendChild(card);
-
-      // store the pointerdown initial target so dragstart can decide whether to allow a card-drag
       card.addEventListener('pointerdown', (ev) => {
-        // keep the original event target (could be text node)
         card.__dragStartTarget = ev.target;
       }, {capture: true});
       card.addEventListener('pointerup', () => { card.__dragStartTarget = null; }, {capture:true});
       card.addEventListener('pointercancel', () => { card.__dragStartTarget = null; }, {capture:true});
-
       card.addEventListener('dragstart', (ev) => {
-        // If the drag was initiated from an interactive element (input/textarea/checkbox/button, or a text selection inside textarea),
-        // cancel the card drag. This prevents the tpl_xxx token from being "selected/inserted" when user is just selecting text.
         try {
           const startTarget = card.__dragStartTarget || ev.target;
           if (isInteractiveNode(startTarget)) {
             ev.preventDefault();
             return;
           }
-
-          // Also check current selection: if selection is inside a textarea, cancel the card drag.
           const sel = window.getSelection ? window.getSelection() : null;
           if (sel && sel.rangeCount > 0) {
             const range = sel.getRangeAt(0);
@@ -801,19 +861,13 @@
               return;
             }
           }
-        } catch (err) {
-          // fallback to normal behavior if something unexpected happens
-        }
-
-        // normal card drag behavior: set id so drop on shelf works
+        } catch (err) {}
         ev.dataTransfer.setData('text/plain', t.id);
-        // hide native drag image to avoid browser showing selected text as ghost
         try {
           const crt = document.createElement('canvas');
           crt.width = crt.height = 0;
           ev.dataTransfer.setDragImage(crt, 0, 0);
         } catch (err) {}
-        // clear any accidental text selection that may appear when starting a drag
         setTimeout(()=>{ try { const s = window.getSelection(); if (s) s.removeAllRanges(); } catch(e){} }, 0);
         card.classList.add('dragging');
       });
@@ -823,7 +877,7 @@
       const ta = card.querySelector('textarea');
       const tplCheckbox = card.querySelector('.tpl-select');
       const btnPinEls = card.querySelectorAll('.btnPin, .btnPinInline');
-      const btnLockEls = card.querySelectorAll('.btnLock, .btnLockInline'); // new
+      const btnLockEls = card.querySelectorAll('.btnLock, .btnLockInline');
       const btnCopyEls = card.querySelectorAll('.btnCopy, .btnCopyInline');
       const btnMore = card.querySelector('.btnMore');
       const btnDup = card.querySelector('.btnDupInline');
@@ -832,7 +886,6 @@
       const btnClearInline = card.querySelector('.btnClearInline');
       const charsEl = card.querySelector('.chars');
       const modEl = card.querySelector('.modified');
-
       tplCheckbox.addEventListener('change', (e) => {
         const isChecked = e.target.checked;
         if (isChecked) selectedIds.add(t.id); else selectedIds.delete(t.id);
@@ -847,7 +900,6 @@
         else { selectedIds.add(t.id); card.classList.add('selected'); if (tplCheckbox) tplCheckbox.checked = true; }
         updateSelectionBar();
       });
-
       function openMoreMenu(){
         closeAllMoreMenus();
         const menu = document.createElement('div'); menu.className = 'moreMenu';
@@ -865,7 +917,7 @@
         menu.querySelectorAll('button').forEach(b => {
           b.addEventListener('click', async () => {
             const a = b.getAttribute('data-act');
-            if (a === 'lock') toggleLockById(t.id); // new
+            if (a === 'lock') toggleLockById(t.id);
             if (a === 'copy') { b.classList.add('flash'); setTimeout(()=>b.classList.remove('flash'),460); await robustCopy(t.content||''); }
             if (a === 'clear') { doClear(); }
             if (a === 'dup') doDup();
@@ -887,9 +939,8 @@
       function doShelf(){ shelf.unshift(Object.assign({}, t)); templates = templates.filter(x=>x.id !== t.id); saveShelf(); saveTemplates(); render(); showToast('Archivado'); }
       function doDel(){ confirmDelete(t.id); }
       function doPin(){ togglePinById(t.id); }
-      function doLock(){ toggleLockById(t.id); } // new
+      function doLock(){ toggleLockById(t.id); }
 
-      // New: clear content of a single template
       function doClear(){
         if (t.locked) { showToast('Plantilla bloqueada'); return; }
         t.content = '';
@@ -900,16 +951,14 @@
       }
 
       btnPinEls.forEach(el => el.addEventListener('click', () => { doPin(); }));
-      btnLockEls.forEach(el => el.addEventListener('click', () => { doLock(); })); // new
+      btnLockEls.forEach(el => el.addEventListener('click', () => { doLock(); }));
       btnCopyEls.forEach(el => { el.addEventListener('click', async () => { el.classList.add('flash'); setTimeout(()=> el.classList.remove('flash'), 460); await robustCopy(t.content || ''); }); });
       if (btnDup) btnDup.addEventListener('click', doDup);
       if (btnDel) btnDel.addEventListener('click', doDel);
       if (btnShelfInline) btnShelfInline.addEventListener('click', doShelf);
       if (btnMore) btnMore.addEventListener('click', openMoreMenu);
       if (btnClearInline) btnClearInline.addEventListener('click', doClear);
-
       card.addEventListener('pointerdown', ()=> { setActiveCard(t.id); try{ if (navigator.vibrate) navigator.vibrate(8); } catch(e){} });
-      // Only focus if not locked
       if (!isLocked) {
         inp.addEventListener('focus', ()=> setActiveCard(t.id));
         ta.addEventListener('focus', ()=> setActiveCard(t.id));
@@ -917,10 +966,8 @@
       
       card.addEventListener('focusin', () => card.classList.add('focus-outline'));
       card.addEventListener('focusout', () => { if (card.getAttribute('data-id') !== activeCardId) card.classList.remove('focus-outline'); });
-      
       inp.addEventListener('input', (e) => { if(isLocked) return; t.title = e.target.value; t.modified = Date.now(); saveTemplates(); if (modEl) modEl.textContent = 'Editado: ' + formatDate(t.modified); });
       ta.addEventListener('input', (e) => { if(isLocked) return; t.content = e.target.value; t.modified = Date.now(); saveTemplates(); if (charsEl) charsEl.textContent = (t.content||'').length + ' caracteres'; if (modEl) modEl.textContent = 'Editado: ' + formatDate(t.modified); });
-      
       if (t.id === activeCardId) card.classList.add('active','focus-outline');
     });
     updateStats();
@@ -998,7 +1045,6 @@
     const tabLogin = document.getElementById('tabLogin');
     const tabRegister = document.getElementById('tabRegister');
     const tabGuest = document.getElementById('tabGuest');
-    
     function highlightTab(selected){
       [tabLogin, tabRegister, tabGuest].forEach(t => { t.style.background='transparent'; t.style.color='var(--muted)'; t.style.boxShadow='none'; });
       const sel = selected==='login'?tabLogin:(selected==='register'?tabRegister:tabGuest);
@@ -1010,7 +1056,6 @@
     tabRegister.addEventListener('click', () => { renderRegister(); highlightTab('register'); });
     tabGuest.addEventListener('click', () => { renderGuest(); highlightTab('guest'); });
     renderLogin(); highlightTab('login');
-
     function renderLogin(){
       authBody.innerHTML = `
         <div style="display:flex;flex-direction:column;gap:12px">
@@ -1092,12 +1137,10 @@
     }
   }
 
-  // Shelf modal (fixed restore)
   function openShelfModal(){
     renderShelfModal();
     function renderShelfModal(){
-      const listHtml = shelf.length ?
-      shelf.map(s => `
+      const listHtml = shelf.length ? shelf.map(s => `
         <li class="shelf-item" data-id="${s.id}">
           <div style="font-weight:600;color:#fff">${escapeHtml(s.title||'(Sin título)')}</div>
           <div class="shelf-content">${escapeHtml((s.content||'').slice(0,180))}${(s.content||'').length>180?'…':''}</div>
@@ -1108,7 +1151,6 @@
         </li>`).join('') : '<div class="hint" style="text-align:center;padding:30px">La estantería está vacía.</div>';
       
       openModal({ title:'Estantería', body:`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div class="hint">Archivados</div><button class="btn ghost small" id="shelfHome">Ir al inicio</button></div><div style="max-height:50vh;overflow-y:auto;padding-right:6px;margin-top:10px"><ul style="list-style:none;padding:0;margin:0">${listHtml}</ul></div>`, cancelText: null, confirmText:'Cerrar', onConfirm:null });
-      
       setTimeout(()=> {
         const shelfHome = document.getElementById('shelfHome');
         if (shelfHome) shelfHome.addEventListener('click', ()=> { closeModal(); window.scrollTo({top:0, behavior:'smooth'}); });
@@ -1125,13 +1167,10 @@
             templates.unshift(restored); // Al inicio
             saveShelf(); saveTemplates(); 
             
-            // FIX: Renderizado inmediato para que aparezca en el fondo
-            render(); 
-
+            render();
             li.parentNode.removeChild(li);
             showToast('Restaurada');
             
-            // Scroll al nuevo elemento
             setTimeout(()=> {
               const el = document.querySelector(`.card[data-id="${restored.id}"]`);
               if (el) { el.classList.add('new-item'); setTimeout(()=> el.classList.remove('new-item'),600); el.scrollIntoView({behavior:'smooth', block:'center'}); setActiveCard(restored.id); }
@@ -1200,6 +1239,164 @@
   function escapeHtml(s){ if (s==null) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   function escapeAttr(s){ if (s==null) return ''; return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
   function formatDate(ts){ try{ return new Date(ts).toLocaleDateString('es-ES', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}); }catch(e){return ''} }
+
+  // LOGICA PARA CREAR CALCULADORAS FLOTANTES
+  let calcZIndex = 500;
+  function createCalculator() {
+    const calc = document.createElement('div');
+    calc.className = 'calc-widget';
+    calc.tabIndex = 0; // Permite que la calculadora reciba foco para el teclado
+    calc.style.outline = 'none';
+    
+    calcZIndex++;
+    calc.style.zIndex = calcZIndex;
+    
+    // Posicionamiento en cascada para múltiples ventanas
+    const offset = (document.querySelectorAll('.calc-widget').length * 25) % 150;
+    calc.style.top = (100 + offset) + 'px';
+    calc.style.left = (100 + offset) + 'px';
+
+    calc.innerHTML = `
+      <div class="calc-header">
+        <span>🧮 Calc</span>
+        <button class="calc-close" title="Cerrar">✖</button>
+      </div>
+      <input type="text" class="calc-display" value="0" readonly />
+      <div class="calc-keys">
+        <button class="calc-btn op" data-v="C">C</button>
+        <button class="calc-btn op" data-v="(">(</button>
+        <button class="calc-btn op" data-v=")">)</button>
+        <button class="calc-btn op" data-v="/">/</button>
+        
+        <button class="calc-btn" data-v="7">7</button>
+        <button class="calc-btn" data-v="8">8</button>
+        <button class="calc-btn" data-v="9">9</button>
+        <button class="calc-btn op" data-v="*">*</button>
+        
+        <button class="calc-btn" data-v="4">4</button>
+        <button class="calc-btn" data-v="5">5</button>
+        <button class="calc-btn" data-v="6">6</button>
+        <button class="calc-btn op" data-v="-">-</button>
+        
+        <button class="calc-btn" data-v="1">1</button>
+        <button class="calc-btn" data-v="2">2</button>
+        <button class="calc-btn" data-v="3">3</button>
+        <button class="calc-btn op" data-v="+">+</button>
+        
+        <button class="calc-btn" data-v="0" style="grid-column: span 2;">0</button>
+        <button class="calc-btn" data-v=".">.</button>
+        <button class="calc-btn eq" data-v="=">=</button>
+      </div>
+    `;
+
+    document.body.appendChild(calc);
+
+    const header = calc.querySelector('.calc-header');
+    const closeBtn = calc.querySelector('.calc-close');
+    const display = calc.querySelector('.calc-display');
+    const buttons = calc.querySelectorAll('.calc-btn');
+
+    // Traer al frente y hacer foco al hacer clic
+    calc.addEventListener('pointerdown', () => {
+      calcZIndex++;
+      calc.style.zIndex = calcZIndex;
+      calc.focus();
+    });
+
+    // Cerrar calculadora
+    closeBtn.addEventListener('pointerdown', (e) => {
+      e.stopPropagation(); // Evita que arrastrar "robe" el clic
+    });
+    closeBtn.addEventListener('click', () => {
+      calc.remove();
+    });
+
+    let expr = "";
+
+    function processInput(v) {
+      if (v === 'C' || v === 'c') {
+        expr = "";
+        display.value = "0";
+      } else if (v === '=' || v === 'Enter') {
+        try {
+          const sanitized = expr.replace(/[^0-9+\-*/.()]/g, '');
+          if(!sanitized) return;
+          const result = new Function('return ' + sanitized)();
+          display.value = result !== undefined ? result : "Error";
+          expr = result !== undefined ? String(result) : "";
+        } catch(e) {
+          display.value = "Error";
+          expr = "";
+        }
+      } else if (v === 'Backspace') {
+        expr = expr.slice(0, -1);
+        display.value = expr || "0";
+      } else {
+        expr += v;
+        display.value = expr;
+      }
+    }
+
+    // Clics de botones
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        processInput(btn.getAttribute('data-v'));
+      });
+    });
+
+    // Eventos del teclado (solo si esta calculadora específica está activa)
+    calc.addEventListener('keydown', (e) => {
+      const allowedKeys = ['0','1','2','3','4','5','6','7','8','9','.','+','-','*','/','(',')'];
+      
+      if (allowedKeys.includes(e.key)) {
+        e.preventDefault();
+        processInput(e.key);
+      } else if (e.key === 'Enter' || e.key === '=') {
+        e.preventDefault();
+        processInput('=');
+      } else if (e.key === 'Backspace') {
+        e.preventDefault();
+        processInput('Backspace');
+      } else if (e.key.toLowerCase() === 'c' || e.key === 'Escape') {
+        e.preventDefault();
+        processInput('C');
+      }
+    });
+
+    // Enfocar automáticamente al crearla para poder escribir de inmediato
+    setTimeout(() => calc.focus(), 0);
+
+    // Funcionalidad para arrastrar
+    let isDragging = false;
+    let startX, startY, initialLeft, initialTop;
+
+    header.addEventListener('pointerdown', (e) => {
+      if (e.target === closeBtn) return;
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      const rect = calc.getBoundingClientRect();
+      initialLeft = rect.left;
+      initialTop = rect.top;
+      header.setPointerCapture(e.pointerId);
+    });
+
+    header.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      calc.style.left = (initialLeft + dx) + 'px';
+      calc.style.top = (initialTop + dy) + 'px';
+    });
+
+    header.addEventListener('pointerup', (e) => {
+      isDragging = false;
+      header.releasePointerCapture(e.pointerId);
+    });
+    header.addEventListener('pointercancel', () => {
+      isDragging = false;
+    });
+  }
 
   // expose
   window.PlantillaBox = { addTemplate, getState: ()=>({user, templates, shelf}) };
