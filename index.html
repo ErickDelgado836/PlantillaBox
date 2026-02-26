@@ -21,7 +21,6 @@
     --secondary: #6366f1;     /* Indigo */
     --accent-gradient: linear-gradient(135deg, #2dd4bf 0%, #3b82f6 50%, #6366f1 100%);
     --gold: #fbbf24;
-    
     /* Utilidades */
     --muted: #94a3b8;
     --text-main: #f8fafc;
@@ -59,8 +58,7 @@
 
   /* HEADER Cristal */
   header {
-    display: flex;
-    align-items: center; justify-content: space-between;
+    display: flex; align-items: center; justify-content: space-between;
     padding: 18px 28px;
     position: sticky; top: 0;
     background: rgba(5, 5, 7, 0.85);
@@ -75,8 +73,7 @@
   .logo {
     width: 44px; height: 44px; border-radius: 12px;
     background: var(--accent-gradient);
-    display: flex;
-    align-items: center; justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     box-shadow: 0 0 25px var(--primary-glow);
     transition: transform 0.3s var(--ease-elastic);
   }
@@ -94,22 +91,18 @@
     color: var(--text-main);
     border: var(--glass-border);
     padding: 9px 16px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 13px;
+    border-radius: 10px; cursor: pointer;
+    font-weight: 600; font-size: 13px;
     transition: all 0.2s ease;
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    position: relative;
-    overflow: hidden;
+    position: relative; overflow: hidden;
   }
   .btn:hover { background: rgba(255,255,255,0.07); transform: translateY(-1px); border-color: rgba(255,255,255,0.1); }
   .btn:active { transform: translateY(1px) scale(0.98); }
 
   .btn.primary {
     background: var(--accent-gradient);
-    color: #020617;
-    border: none;
+    color: #020617; border: none;
     box-shadow: 0 4px 15px rgba(45, 212, 191, 0.25);
   }
   .btn.primary:hover { box-shadow: 0 6px 20px rgba(45, 212, 191, 0.4); opacity: 0.95; }
@@ -140,18 +133,15 @@
     transition: all 0.2s;
   }
   .search:focus {
-    background: rgba(0,0,0,0.4);
-    border-color: var(--primary);
+    background: rgba(0,0,0,0.4); border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.1);
   }
 
   /* BARRA DE SELECCION */
   #selectionBar {
-    display: none; align-items: center; gap: 12px;
-    margin-bottom: 24px;
+    display: none; align-items: center; gap: 12px; margin-bottom: 24px;
     background: linear-gradient(90deg, rgba(45, 212, 191, 0.05) 0%, transparent 100%);
-    border: 1px solid rgba(45, 212, 191, 0.15);
-    border-left: 3px solid var(--primary);
+    border: 1px solid rgba(45, 212, 191, 0.15); border-left: 3px solid var(--primary);
     padding: 12px 20px; border-radius: 12px;
     animation: slideDown 0.3s var(--ease-elastic);
   }
@@ -160,14 +150,12 @@
   #selectionBar .count { color: var(--primary); font-weight: 700; font-size: 15px; margin-right: 8px; }
   .selectAllBtn { 
     background: transparent; color: var(--text-main); border: 1px solid rgba(255,255,255,0.15); 
-    padding: 6px 14px;
-    border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 500;
+    padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 500;
   }
 
   /* GRID DE TARJETAS */
   .templates {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 20px; padding-bottom: 40px;
   }
 
@@ -176,55 +164,31 @@
   .card textarea, .card input.title, .card .tpl-select, .card .iconBtn, .card button { -webkit-user-select: text; user-select: text; }
 
   .card {
-    position: relative;
-    background: var(--card-bg);
+    position: relative; background: var(--card-bg);
     backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-    border: 1px solid var(--card-border);
-    border-radius: 18px;
-    padding: 20px;
-    display: flex; flex-direction: column; gap: 12px;
-    min-height: 180px;
+    border: 1px solid var(--card-border); border-radius: 18px;
+    padding: 20px; display: flex; flex-direction: column; gap: 12px; min-height: 180px;
     transition: transform var(--trans-med), box-shadow var(--trans-med), border-color 0.2s;
     will-change: transform; overflow: hidden;
   }
   .card::after {
-    content: '';
-    position: absolute; inset: 0; pointer-events: none;
+    content: ''; position: absolute; inset: 0; pointer-events: none;
     background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 0), rgba(255,255,255,0.04), transparent 40%);
-    opacity: 0;
-    transition: opacity 0.4s;
+    opacity: 0; transition: opacity 0.4s;
   }
   .card:hover::after { opacity: 1; }
 
   .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 35px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.08);
-    background: rgba(30, 30, 35, 0.75);
-    z-index: 5;
+    background: rgba(30, 30, 35, 0.75); z-index: 5;
   }
 
-  .card.selected {
-    border-color: var(--primary);
-    background: rgba(45, 212, 191, 0.04);
-    box-shadow: 0 0 0 1px var(--primary);
-  }
-  
-  .card.active {
-    border-color: rgba(45, 212, 191, 0.4);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-  }
-  
-  .card.locked {
-    border-color: rgba(251, 191, 36, 0.2);
-  }
-  .card.locked textarea, .card.locked input.title {
-    opacity: 0.7;
-    cursor: default;
-  }
-  .card.locked textarea:focus, .card.locked input.title:focus {
-    box-shadow: none;
-    border-color: transparent;
-  }
+  .card.selected { border-color: var(--primary); background: rgba(45, 212, 191, 0.04); box-shadow: 0 0 0 1px var(--primary); }
+  .card.active { border-color: rgba(45, 212, 191, 0.4); box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
+  .card.locked { border-color: rgba(251, 191, 36, 0.2); }
+  .card.locked textarea, .card.locked input.title { opacity: 0.7; cursor: default; }
+  .card.locked textarea:focus, .card.locked input.title:focus { box-shadow: none; border-color: transparent; }
 
   .card.slide-in { animation: smoothEntry 0.5s var(--ease-elastic); }
   @keyframes smoothEntry { 0% { opacity: 0; transform: translateY(30px) scale(0.96); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
@@ -240,8 +204,7 @@
   
   input.title {
     background: transparent; border: none; color: #fff;
-    font-size: 16px;
-    font-weight: 600; flex: 1; padding: 4px 0;
+    font-size: 16px; font-weight: 600; flex: 1; padding: 4px 0;
     border-bottom: 1px dashed transparent; transition: 0.2s;
   }
   input.title:focus { border-bottom-color: var(--primary); }
@@ -249,15 +212,9 @@
   input.title::placeholder { color: rgba(255,255,255,0.2); font-weight: 400; }
 
   textarea {
-    background: rgba(0,0,0,0.2);
-    border: 1px solid rgba(255,255,255,0.04);
-    color: #cbd5e1;
-    padding: 14px;
-    border-radius: 10px;
-    resize: none;
-    min-height: 100px;
-    font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.6;
-    transition: all 0.2s;
+    background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.04);
+    color: #cbd5e1; padding: 14px; border-radius: 10px; resize: none; min-height: 100px;
+    font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.6; transition: all 0.2s;
   }
   textarea:focus { background: rgba(0,0,0,0.35); border-color: rgba(255,255,255,0.12); }
   textarea[readonly] { background: rgba(0,0,0,0.1); border-color: transparent; }
@@ -270,8 +227,7 @@
   
   .small {
     padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 500;
-    background: rgba(255,255,255,0.06);
-    border: none; color: var(--muted);
+    background: rgba(255,255,255,0.06); border: none; color: var(--muted);
     cursor: pointer; transition: all 0.2s;
   }
   .small:hover { background: rgba(255,255,255,0.12); color: #fff; }
@@ -281,17 +237,14 @@
   .iconBtn {
     width: 34px; height: 34px; border-radius: 8px;
     background: rgba(0,0,0,0.4); color: var(--muted); border: 1px solid rgba(255,255,255,0.05);
-    display: flex; align-items: center; justify-content: center; cursor: pointer;
-    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;
   }
   .iconBtn:hover { background: var(--primary); color: #000; transform: scale(1.1); box-shadow: 0 4px 12px rgba(45,212,191,0.25); }
   .iconBtn.btnLock:hover { background: var(--gold); }
 
   .tpl-select {
-    appearance: none; -webkit-appearance: none;
-    width: 20px; height: 20px; border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.2); background: transparent;
-    cursor: pointer; position: relative;
+    appearance: none; -webkit-appearance: none; width: 20px; height: 20px; border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.2); background: transparent; cursor: pointer; position: relative;
     transition: all 0.2s; display: grid; place-content: center;
   }
   .tpl-select:checked { background: var(--primary); border-color: var(--primary); }
@@ -299,18 +252,14 @@
 
   /* MODAL */
   .modal-backdrop {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
-    display: flex; align-items: center; justify-content: center; z-index: 200;
-    animation: fadeIn 0.3s ease;
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
+    display: flex; align-items: center; justify-content: center; z-index: 200; animation: fadeIn 0.3s ease;
   }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
   .modal {
-    background: #101014; width: 94%; max-width: 550px;
-    border-radius: 24px; padding: 28px;
-    border: 1px solid rgba(255,255,255,0.08);
-    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8);
+    background: #101014; width: 94%; max-width: 550px; border-radius: 24px; padding: 28px;
+    border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8);
     position: relative; overflow: hidden;
   }
   .modal.animate-bounce { animation: modalUp 0.4s var(--ease-elastic); }
@@ -319,11 +268,8 @@
 
   /* Estilos específicos para ítems de la estantería */
   .shelf-item {
-    margin-bottom: 12px; padding: 16px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.04);
-    transition: 0.2s;
+    margin-bottom: 12px; padding: 16px; border-radius: 12px;
+    background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); transition: 0.2s;
   }
   .shelf-item:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); }
   .shelf-content { font-size: 13px; color: var(--muted); margin: 8px 0 12px 0; line-height: 1.5; }
@@ -332,9 +278,7 @@
   .input-with-toggle { position: relative; margin-bottom: 12px; }
   .input-with-toggle input, .modal input {
     width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
-    padding: 12px;
-    border-radius: 10px; color: #fff; margin-bottom: 8px;
-    transition: 0.2s;
+    padding: 12px; border-radius: 10px; color: #fff; margin-bottom: 8px; transition: 0.2s;
   }
   .input-with-toggle input:focus, .modal input:focus { border-color: var(--primary); background: rgba(0,0,0,0.5); }
   .input-with-toggle button { position: absolute; right: 10px; top: 8px; background: transparent; border: none; cursor: pointer; opacity: 0.6; }
@@ -342,8 +286,7 @@
   /* TOAST */
   .toast {
     position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
-    background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1);
     color: var(--primary); padding: 12px 24px; border-radius: 30px;
     box-shadow: 0 15px 40px rgba(0,0,0,0.6); font-weight: 600; font-size: 14px;
     opacity: 0; transition: all 0.4s var(--ease-elastic); z-index: 300; pointer-events: none;
@@ -366,57 +309,93 @@
 
   footer { text-align: center; color: rgba(255,255,255,0.15); font-size: 11px; margin-top: 60px; }
 
-  /* Estilos Calculadora Flotante */
+  /* ========================================================= */
+  /* ESTILOS DE CALCULADORA FLOTANTE MEJORADOS (CIENTÍFICA)    */
+  /* ========================================================= */
+  @keyframes calcPopIn {
+    0% { opacity: 0; transform: scale(0.8) translateY(20px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  @keyframes calcPopOut {
+    0% { opacity: 1; transform: scale(1) translateY(0); }
+    100% { opacity: 0; transform: scale(0.8) translateY(20px); }
+  }
+
   .calc-widget {
     position: fixed;
-    top: 100px; left: 100px;
-    width: 240px;
+    width: 330px; /* Más ancha para 5 columnas */
     background: var(--card-bg);
     backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--card-border);
     border-radius: 16px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    box-shadow: 0 15px 45px rgba(0,0,0,0.5);
     z-index: 500;
     display: flex; flex-direction: column;
     overflow: hidden;
     user-select: none;
   }
+  .calc-widget.opening {
+    animation: calcPopIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+  .calc-widget.closing {
+    animation: calcPopOut 0.25s ease forwards;
+  }
   .calc-widget:focus {
-    box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 0 2px var(--primary);
+    box-shadow: 0 15px 45px rgba(0,0,0,0.6), 0 0 0 2px var(--primary);
   }
   .calc-header {
-    padding: 10px 14px;
-    background: rgba(0,0,0,0.3);
+    padding: 12px 16px;
+    background: rgba(0,0,0,0.4);
     cursor: grab;
     display: flex; justify-content: space-between; align-items: center;
     border-bottom: 1px solid rgba(255,255,255,0.05);
-    font-size: 12px; font-weight: 600; color: var(--muted);
+    font-size: 13px; font-weight: 600; color: var(--muted);
     touch-action: none;
   }
   .calc-header:active { cursor: grabbing; }
-  .calc-close { cursor: pointer; color: var(--danger); font-size: 14px; background:none; border:none; padding:0; transition: 0.2s; z-index: 10; }
+  .calc-close { 
+    cursor: pointer; color: var(--danger); font-size: 16px; background:none; border:none; padding:0; transition: 0.2s; z-index: 10; font-weight: bold;
+  }
   .calc-close:hover { transform: scale(1.2); }
   .calc-display {
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.6);
     color: #fff;
-    font-size: 24px; text-align: right;
-    padding: 16px 14px;
+    font-size: 26px;
+    text-align: right;
+    padding: 18px 16px;
     border: none; width: 100%; box-sizing: border-box;
     font-family: monospace; outline: none;
+    letter-spacing: 1px;
+    overflow-x: auto;
   }
+  /* Ocultar barra de scroll en display */
+  .calc-display::-webkit-scrollbar { display: none; }
+  
   .calc-keys {
-    display: grid; grid-template-columns: repeat(4, 1fr);
+    display: grid; grid-template-columns: repeat(5, 1fr);
     gap: 1px; background: rgba(255,255,255,0.05);
   }
   .calc-btn {
-    background: transparent; border: none; padding: 14px 0;
+    background: transparent; border: none; padding: 15px 0;
     font-size: 16px; color: #f8fafc; cursor: pointer;
-    transition: background 0.1s;
+    transition: background 0.1s, transform 0.1s;
   }
   .calc-btn:hover { background: rgba(255,255,255,0.1); }
+  .calc-btn:active { transform: scale(0.92); }
+  
+  /* Botones operadores principales */
   .calc-btn.op { color: var(--primary); font-weight: 600; background: rgba(45, 212, 191, 0.05); }
   .calc-btn.op:hover { background: rgba(45, 212, 191, 0.15); }
-  .calc-btn.eq { background: var(--primary); color: #000; font-weight: bold; }
+  
+  /* Botones científicos avanzados */
+  .calc-btn.sci { color: var(--secondary); font-size: 14px; background: rgba(99, 102, 241, 0.04); font-weight: 500; }
+  .calc-btn.sci:hover { background: rgba(99, 102, 241, 0.12); }
+  
+  /* Botones peligro / borrar */
+  .calc-btn.danger-text { color: var(--danger); font-weight: bold; background: rgba(244, 63, 94, 0.05); }
+  .calc-btn.danger-text:hover { background: rgba(244, 63, 94, 0.15); }
+  
+  .calc-btn.eq { background: var(--primary); color: #000; font-weight: bold; font-size: 20px;}
   .calc-btn.eq:hover { background: #22a998; }
 
   /* Responsive */
@@ -518,7 +497,7 @@
   const currentUserText = document.getElementById('currentUserText');
   const userDot = document.getElementById('userDot');
   const footerInfo = document.getElementById('footerInfo');
-
+  
   // selection bar elements
   const selectionBar = document.getElementById('selectionBar');
   const selectedCountEl = document.getElementById('selectedCount');
@@ -549,7 +528,7 @@
   updateUserUI();
   reorderPinned();
   render();
-
+  
   // events
   btnNew.addEventListener('click', () => { btnNew.classList.add('pressed'); setTimeout(()=>btnNew.classList.remove('pressed'),160); addTemplate(); });
   btnCalc.addEventListener('click', () => { btnCalc.classList.add('pressed'); setTimeout(()=>btnCalc.classList.remove('pressed'),160); createCalculator(); });
@@ -581,7 +560,7 @@
   shelfSelectedBtn.addEventListener('click', () => { handleShelfSelected(); });
   delSelectedBtn.addEventListener('click', () => { handleDeleteSelected(); });
   clearSelectionBtn.addEventListener('click', () => { clearSelection(); });
-
+  
   // allow drop to shelf
   btnShelf.addEventListener('dragover', (e) => { e.preventDefault(); btnShelf.classList.add('pressed'); });
   btnShelf.addEventListener('dragleave', () => { btnShelf.classList.remove('pressed'); });
@@ -596,7 +575,7 @@
     shelf.unshift(item);
     saveShelf(); saveTemplates(); render(); showToast('Guardada en estantería');
   });
-
+  
   // pressed feedback
   document.addEventListener('pointerdown', (e) => {
     const el = e.target.closest('.btn, button, .iconBtn');
@@ -604,7 +583,7 @@
     el.classList.add('pressed');
     setTimeout(()=> el.classList.remove('pressed'), 160);
   });
-
+  
   // Storage & Logic
   function getUsersObj(){ const s = localStorage.getItem(USERS_KEY); try{ return s ? JSON.parse(s) : {}; }catch(e){ return {}; } }
   function saveUsersObj(o){ try{ localStorage.setItem(USERS_KEY, JSON.stringify(o)); }catch(e){ console.warn('Err save users', e); } }
@@ -625,8 +604,7 @@
   }
 
   function updateUserUI(){ currentUserText.textContent = (user === 'guest') ? 'Invitado' : user;
-  footerInfo.textContent = (user === 'guest') ?
-  'Modo invitado (no persistente al cerrar).' : 'Sesión guardada en este navegador.';
+  footerInfo.textContent = (user === 'guest') ? 'Modo invitado (no persistente al cerrar).' : 'Sesión guardada en este navegador.';
   if (user === 'guest'){ userDot.style.opacity = '0.6';
   if (window.logoEl) logoEl.classList.remove('logoStrong'); btnLogout.style.display = 'none'; } else { userDot.style.opacity = '1';
   if (window.logoEl) logoEl.classList.add('logoStrong'); btnLogout.style.display = 'inline-flex';
@@ -736,8 +714,7 @@
     document.querySelectorAll('.card').forEach(c => { if (c.getAttribute('data-id') !== activeCardId) c.classList.remove('focus-outline'); });
   }
 
-  function reorderPinned(){ const pinned = templates.filter(t=>t.pinned);
-  const rest = templates.filter(t=>!t.pinned); templates = pinned.concat(rest); }
+  function reorderPinned(){ const pinned = templates.filter(t=>t.pinned); const rest = templates.filter(t=>!t.pinned); templates = pinned.concat(rest); }
 
   function updateSelectionBar(){
     const count = selectedIds.size;
@@ -867,7 +844,7 @@
           const crt = document.createElement('canvas');
           crt.width = crt.height = 0;
           ev.dataTransfer.setDragImage(crt, 0, 0);
-        } catch (err) {}
+         } catch (err) {}
         setTimeout(()=>{ try { const s = window.getSelection(); if (s) s.removeAllRanges(); } catch(e){} }, 0);
         card.classList.add('dragging');
       });
@@ -1170,7 +1147,6 @@
             render();
             li.parentNode.removeChild(li);
             showToast('Restaurada');
-            
             setTimeout(()=> {
               const el = document.querySelector(`.card[data-id="${restored.id}"]`);
               if (el) { el.classList.add('new-item'); setTimeout(()=> el.classList.remove('new-item'),600); el.scrollIntoView({behavior:'smooth', block:'center'}); setActiveCard(restored.id); }
@@ -1240,11 +1216,13 @@
   function escapeAttr(s){ if (s==null) return ''; return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
   function formatDate(ts){ try{ return new Date(ts).toLocaleDateString('es-ES', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}); }catch(e){return ''} }
 
-  // LOGICA PARA CREAR CALCULADORAS FLOTANTES
+  // =========================================================================
+  // LOGICA PARA CREAR CALCULADORAS FLOTANTES (MEJORADA - CIENTIFICA)
+  // =========================================================================
   let calcZIndex = 500;
   function createCalculator() {
     const calc = document.createElement('div');
-    calc.className = 'calc-widget';
+    calc.className = 'calc-widget opening'; // Añadida clase de animación de entrada
     calc.tabIndex = 0; // Permite que la calculadora reciba foco para el teclado
     calc.style.outline = 'none';
     
@@ -1258,37 +1236,48 @@
 
     calc.innerHTML = `
       <div class="calc-header">
-        <span>🧮 Calc</span>
+        <span>🧮 Calc Científica</span>
         <button class="calc-close" title="Cerrar">✖</button>
       </div>
       <input type="text" class="calc-display" value="0" readonly />
       <div class="calc-keys">
-        <button class="calc-btn op" data-v="C">C</button>
-        <button class="calc-btn op" data-v="(">(</button>
-        <button class="calc-btn op" data-v=")">)</button>
+        <button class="calc-btn sci" data-v="sin(">sin</button>
+        <button class="calc-btn sci" data-v="cos(">cos</button>
+        <button class="calc-btn sci" data-v="tan(">tan</button>
+        <button class="calc-btn danger-text" data-v="C" title="Suprimir/Esc">C</button>
+        <button class="calc-btn danger-text" data-v="Backspace" title="Retroceso">⌫</button>
+
+        <button class="calc-btn sci" data-v="log(">log</button>
+        <button class="calc-btn sci" data-v="ln(">ln</button>
+        <button class="calc-btn sci" data-v="√(">√</button>
+        <button class="calc-btn sci" data-v="^">^</button>
         <button class="calc-btn op" data-v="/">/</button>
-        
+
+        <button class="calc-btn sci" data-v="π">π</button>
         <button class="calc-btn" data-v="7">7</button>
         <button class="calc-btn" data-v="8">8</button>
         <button class="calc-btn" data-v="9">9</button>
         <button class="calc-btn op" data-v="*">*</button>
-        
+
+        <button class="calc-btn sci" data-v="e">e</button>
         <button class="calc-btn" data-v="4">4</button>
         <button class="calc-btn" data-v="5">5</button>
         <button class="calc-btn" data-v="6">6</button>
         <button class="calc-btn op" data-v="-">-</button>
-        
+
+        <button class="calc-btn op" data-v="%">%</button>
         <button class="calc-btn" data-v="1">1</button>
         <button class="calc-btn" data-v="2">2</button>
         <button class="calc-btn" data-v="3">3</button>
         <button class="calc-btn op" data-v="+">+</button>
-        
-        <button class="calc-btn" data-v="0" style="grid-column: span 2;">0</button>
+
+        <button class="calc-btn op" data-v="(">(</button>
+        <button class="calc-btn op" data-v=")">)</button>
+        <button class="calc-btn" data-v="0">0</button>
         <button class="calc-btn" data-v=".">.</button>
         <button class="calc-btn eq" data-v="=">=</button>
       </div>
     `;
-
     document.body.appendChild(calc);
 
     const header = calc.querySelector('.calc-header');
@@ -1303,50 +1292,81 @@
       calc.focus();
     });
 
-    // Cerrar calculadora
-    closeBtn.addEventListener('pointerdown', (e) => {
-      e.stopPropagation(); // Evita que arrastrar "robe" el clic
-    });
+    // Cerrar calculadora (con animación de salida)
+    closeBtn.addEventListener('pointerdown', (e) => e.stopPropagation());
     closeBtn.addEventListener('click', () => {
-      calc.remove();
+      calc.classList.remove('opening');
+      calc.classList.add('closing');
+      setTimeout(() => calc.remove(), 250); // Esperar que termine la animación
     });
 
     let expr = "";
-
     function processInput(v) {
-      if (v === 'C' || v === 'c') {
+      if (v === 'C' || v === 'c' || v === 'Delete') {
         expr = "";
         display.value = "0";
       } else if (v === '=' || v === 'Enter') {
         try {
-          const sanitized = expr.replace(/[^0-9+\-*/.()]/g, '');
-          if(!sanitized) return;
-          const result = new Function('return ' + sanitized)();
-          display.value = result !== undefined ? result : "Error";
-          expr = result !== undefined ? String(result) : "";
+          if (!expr) return;
+          // Transformar sintaxis matemática a JavaScript
+          let evalStr = expr
+            .replace(/π/g, 'Math.PI')
+            .replace(/e/g, 'Math.E')
+            .replace(/sin\(/g, 'Math.sin(')
+            .replace(/cos\(/g, 'Math.cos(')
+            .replace(/tan\(/g, 'Math.tan(')
+            .replace(/log\(/g, 'Math.log10(')
+            .replace(/ln\(/g, 'Math.log(')
+            .replace(/√\(/g, 'Math.sqrt(')
+            .replace(/\^/g, '**')
+            .replace(/%/g, '/100');
+          
+          const result = new Function('return ' + evalStr)();
+          
+          // Limpiar el resultado para evitar decimales extraños (ej. 0.1 + 0.2 = 0.30000000000000004)
+          const cleanResult = Number.isInteger(result) ? result : parseFloat(result.toFixed(10));
+          
+          display.value = cleanResult !== undefined && !isNaN(cleanResult) ? cleanResult : "Error";
+          expr = display.value !== "Error" ? String(cleanResult) : "";
         } catch(e) {
           display.value = "Error";
           expr = "";
         }
       } else if (v === 'Backspace') {
-        expr = expr.slice(0, -1);
+        // Borrado inteligente (borra funciones enteras de un golpe si están al final)
+        const tokens = ['sin(', 'cos(', 'tan(', 'log(', 'ln(', '√('];
+        let deleted = false;
+        for (let t of tokens) {
+          if (expr.endsWith(t)) {
+            expr = expr.slice(0, -t.length);
+            deleted = true;
+            break;
+          }
+        }
+        if (!deleted) expr = expr.slice(0, -1);
         display.value = expr || "0";
       } else {
-        expr += v;
-        display.value = expr;
+        // Limitar largo de expresión
+        if (expr.length < 50) {
+          expr += v;
+          display.value = expr;
+        }
       }
+      
+      // Auto-scroll a la derecha
+      display.scrollLeft = display.scrollWidth;
     }
 
-    // Clics de botones
+    // Clics de botones visuales
     buttons.forEach(btn => {
       btn.addEventListener('click', () => {
         processInput(btn.getAttribute('data-v'));
       });
     });
 
-    // Eventos del teclado (solo si esta calculadora específica está activa)
+    // Soporte para Teclado Completo
     calc.addEventListener('keydown', (e) => {
-      const allowedKeys = ['0','1','2','3','4','5','6','7','8','9','.','+','-','*','/','(',')'];
+      const allowedKeys = ['0','1','2','3','4','5','6','7','8','9','.','+','-','*','/','(',')','%','^'];
       
       if (allowedKeys.includes(e.key)) {
         e.preventDefault();
@@ -1357,19 +1377,25 @@
       } else if (e.key === 'Backspace') {
         e.preventDefault();
         processInput('Backspace');
-      } else if (e.key.toLowerCase() === 'c' || e.key === 'Escape') {
+      } else if (e.key === 'Delete' || e.key.toLowerCase() === 'c' || e.key === 'Escape') {
         e.preventDefault();
         processInput('C');
+      } else {
+        // Accesos rápidos de teclado para funciones científicas
+        const shortcutMap = { 's':'sin(', 'c':'cos(', 't':'tan(', 'l':'log(', 'p':'π', 'e':'e', 'r':'√(' };
+        if (shortcutMap[e.key.toLowerCase()]) {
+          e.preventDefault();
+          processInput(shortcutMap[e.key.toLowerCase()]);
+        }
       }
     });
 
-    // Enfocar automáticamente al crearla para poder escribir de inmediato
+    // Enfocar automáticamente al crearla
     setTimeout(() => calc.focus(), 0);
 
     // Funcionalidad para arrastrar
     let isDragging = false;
     let startX, startY, initialLeft, initialTop;
-
     header.addEventListener('pointerdown', (e) => {
       if (e.target === closeBtn) return;
       isDragging = true;
@@ -1380,7 +1406,6 @@
       initialTop = rect.top;
       header.setPointerCapture(e.pointerId);
     });
-
     header.addEventListener('pointermove', (e) => {
       if (!isDragging) return;
       const dx = e.clientX - startX;
@@ -1388,7 +1413,6 @@
       calc.style.left = (initialLeft + dx) + 'px';
       calc.style.top = (initialTop + dy) + 'px';
     });
-
     header.addEventListener('pointerup', (e) => {
       isDragging = false;
       header.releasePointerCapture(e.pointerId);
