@@ -58,7 +58,8 @@
 
   /* HEADER Cristal */
   header {
-    display: flex; align-items: center; justify-content: space-between;
+    display: flex;
+    align-items: center; justify-content: space-between;
     padding: 18px 28px;
     position: sticky; top: 0;
     background: rgba(5, 5, 7, 0.85);
@@ -73,7 +74,8 @@
   .logo {
     width: 44px; height: 44px; border-radius: 12px;
     background: var(--accent-gradient);
-    display: flex; align-items: center; justify-content: center;
+    display: flex;
+    align-items: center; justify-content: center;
     box-shadow: 0 0 25px var(--primary-glow);
     transition: transform 0.3s var(--ease-elastic);
   }
@@ -96,7 +98,8 @@
     font-weight: 600; font-size: 13px;
     transition: all 0.2s ease;
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    position: relative; overflow: hidden;
+    position: relative;
+    overflow: hidden;
   }
   .btn:hover { background: rgba(255,255,255,0.07); transform: translateY(-1px); border-color: rgba(255,255,255,0.1); }
   .btn:active { transform: translateY(1px) scale(0.98); }
@@ -116,7 +119,8 @@
 
   .chip {
     padding: 6px 12px; border-radius: 20px;
-    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
     font-size: 12px; color: var(--muted); display: flex; align-items: center;
   }
 
@@ -133,15 +137,18 @@
     transition: all 0.2s;
   }
   .search:focus {
-    background: rgba(0,0,0,0.4); border-color: var(--primary);
+    background: rgba(0,0,0,0.4);
+    border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.1);
   }
 
   /* BARRA DE SELECCION */
   #selectionBar {
-    display: none; align-items: center; gap: 12px; margin-bottom: 24px;
+    display: none; align-items: center; gap: 12px;
+    margin-bottom: 24px;
     background: linear-gradient(90deg, rgba(45, 212, 191, 0.05) 0%, transparent 100%);
-    border: 1px solid rgba(45, 212, 191, 0.15); border-left: 3px solid var(--primary);
+    border: 1px solid rgba(45, 212, 191, 0.15);
+    border-left: 3px solid var(--primary);
     padding: 12px 20px; border-radius: 12px;
     animation: slideDown 0.3s var(--ease-elastic);
   }
@@ -150,12 +157,14 @@
   #selectionBar .count { color: var(--primary); font-weight: 700; font-size: 15px; margin-right: 8px; }
   .selectAllBtn { 
     background: transparent; color: var(--text-main); border: 1px solid rgba(255,255,255,0.15); 
-    padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 500;
   }
 
   /* GRID DE TARJETAS */
   .templates {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 20px; padding-bottom: 40px;
   }
 
@@ -166,7 +175,8 @@
   .card {
     position: relative; background: var(--card-bg);
     backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-    border: 1px solid var(--card-border); border-radius: 18px;
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
     padding: 20px; display: flex; flex-direction: column; gap: 12px; min-height: 180px;
     transition: transform var(--trans-med), box-shadow var(--trans-med), border-color 0.2s;
     will-change: transform; overflow: hidden;
@@ -204,7 +214,8 @@
   
   input.title {
     background: transparent; border: none; color: #fff;
-    font-size: 16px; font-weight: 600; flex: 1; padding: 4px 0;
+    font-size: 16px;
+    font-weight: 600; flex: 1; padding: 4px 0;
     border-bottom: 1px dashed transparent; transition: 0.2s;
   }
   input.title:focus { border-bottom-color: var(--primary); }
@@ -216,6 +227,7 @@
     color: #cbd5e1; padding: 14px; border-radius: 10px;
     resize: none; min-height: 100px;
     font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.6; transition: all 0.2s;
+    overflow-y: hidden; /* Permite que el autoajuste funcione mejor visualmente */
   }
   textarea:focus { background: rgba(0,0,0,0.35); border-color: rgba(255,255,255,0.12); }
   textarea[readonly] { background: rgba(0,0,0,0.1); border-color: transparent; }
@@ -228,7 +240,8 @@
   
   .small {
     padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 500;
-    background: rgba(255,255,255,0.06); border: none; color: var(--muted);
+    background: rgba(255,255,255,0.06);
+    border: none; color: var(--muted);
     cursor: pointer; transition: all 0.2s;
   }
   .small:hover { background: rgba(255,255,255,0.12); color: #fff; }
@@ -290,8 +303,7 @@
     background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1);
     color: var(--primary); padding: 12px 24px; border-radius: 30px;
     box-shadow: 0 15px 40px rgba(0,0,0,0.6); font-weight: 600; font-size: 14px;
-    opacity: 0; transition: all 0.4s var(--ease-elastic); z-index: 300; pointer-events: none;
-    display: flex; align-items: center; gap: 8px;
+    opacity: 0; transition: all 0.4s var(--ease-elastic); z-index: 300; pointer-events: none; display: flex; align-items: center; gap: 8px;
   }
   .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
@@ -325,9 +337,9 @@
   .calc-widget {
     position: fixed;
     width: 330px; 
-    min-width: 180px;  /* Reducido para permitir encogerla más */
-    min-height: 250px; /* Reducido para permitir encogerla más */
-    container-type: inline-size; /* Para adaptar fuentes si se hace diminuta */
+    min-width: 180px;
+    min-height: 250px;
+    container-type: inline-size;
     background: var(--card-bg);
     backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--card-border);
@@ -335,8 +347,7 @@
     box-shadow: 0 15px 45px rgba(0,0,0,0.5);
     z-index: 500;
     display: flex; flex-direction: column;
-    overflow: hidden; 
-    user-select: none;
+    overflow: hidden; user-select: none;
   }
   .calc-widget.opening {
     animation: calcPopIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
@@ -371,8 +382,7 @@
   }
   .calc-header:active { cursor: grabbing; }
   .calc-close { 
-    cursor: pointer; color: var(--danger); font-size: 16px; background:none; border:none; padding:0; transition: 0.2s;
-    z-index: 10; font-weight: bold;
+    cursor: pointer; color: var(--danger); font-size: 16px; background:none; border:none; padding:0; transition: 0.2s; z-index: 10; font-weight: bold;
   }
   .calc-close:hover { transform: scale(1.2); }
   
@@ -394,8 +404,7 @@
     position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
     background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,255,255,0.1);
-    color: #fff; padding: 6px; border-radius: 8px; cursor: pointer;
-    transition: all 0.2s; font-size: 16px; display: flex;
+    color: #fff; padding: 6px; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 16px; display: flex;
     align-items: center; justify-content: center; z-index: 10;
   }
   .calc-copy-btn:hover { background: var(--primary); color: #000; box-shadow: 0 4px 12px rgba(45,212,191,0.25); }
@@ -409,13 +418,11 @@
   }
   .calc-btn {
     background: transparent;
-    border: none; 
-    display: flex; align-items: center; justify-content: center;
+    border: none; display: flex; align-items: center; justify-content: center;
     width: 100%;
     height: 100%;
     font-size: 16px;
-    color: #f8fafc; cursor: pointer;
-    transition: background 0.1s, transform 0.1s;
+    color: #f8fafc; cursor: pointer; transition: background 0.1s, transform 0.1s;
   }
   .calc-btn:hover { background: rgba(255,255,255,0.1); }
   .calc-btn:active { transform: scale(0.92); }
@@ -540,7 +547,6 @@
   const currentUserText = document.getElementById('currentUserText');
   const userDot = document.getElementById('userDot');
   const footerInfo = document.getElementById('footerInfo');
-  
   // selection bar elements
   const selectionBar = document.getElementById('selectionBar');
   const selectedCountEl = document.getElementById('selectedCount');
@@ -571,7 +577,6 @@
   updateUserUI();
   reorderPinned();
   render();
-
   // events
   btnNew.addEventListener('click', () => { btnNew.classList.add('pressed'); setTimeout(()=>btnNew.classList.remove('pressed'),160); addTemplate(); });
   btnCalc.addEventListener('click', () => { btnCalc.classList.add('pressed'); setTimeout(()=>btnCalc.classList.remove('pressed'),160); createCalculator(); });
@@ -603,7 +608,6 @@
   shelfSelectedBtn.addEventListener('click', () => { handleShelfSelected(); });
   delSelectedBtn.addEventListener('click', () => { handleDeleteSelected(); });
   clearSelectionBtn.addEventListener('click', () => { clearSelection(); });
-
   // allow drop to shelf
   btnShelf.addEventListener('dragover', (e) => { e.preventDefault(); btnShelf.classList.add('pressed'); });
   btnShelf.addEventListener('dragleave', () => { btnShelf.classList.remove('pressed'); });
@@ -618,7 +622,6 @@
     shelf.unshift(item);
     saveShelf(); saveTemplates(); render(); showToast('Guardada en estantería');
   });
-
   // pressed feedback
   document.addEventListener('pointerdown', (e) => {
     const el = e.target.closest('.btn, button, .iconBtn');
@@ -626,7 +629,6 @@
     el.classList.add('pressed');
     setTimeout(()=> el.classList.remove('pressed'), 160);
   });
-
   // Storage & Logic
   function getUsersObj(){ const s = localStorage.getItem(USERS_KEY); try{ return s ? JSON.parse(s) : {}; }catch(e){ return {}; } }
   function saveUsersObj(o){ try{ localStorage.setItem(USERS_KEY, JSON.stringify(o)); }catch(e){ console.warn('Err save users', e); } }
@@ -657,11 +659,13 @@
     if (!text) { showToast('Nada para copiar'); return false; }
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(text); showToast('Copiado al portapapeles'); return true;
+        await navigator.clipboard.writeText(text);
+        showToast('Copiado al portapapeles'); return true;
       }
     } catch (e) {}
     try {
-      const ta = document.createElement('textarea'); ta.value = text;
+      const ta = document.createElement('textarea');
+      ta.value = text;
       ta.style.position = 'fixed'; ta.style.left = '-9999px';
       document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, ta.value.length);
       const ok = document.execCommand('copy'); document.body.removeChild(ta);
@@ -685,7 +689,8 @@
         document.body.appendChild(clone);
         cardEl.style.transition = 'opacity 180ms ease'; cardEl.style.opacity = '0.28';
         requestAnimationFrame(() => {
-          clone.style.transform = `translate(${destX}px, ${destY}px) scale(.95) rotate(-2deg)`; clone.style.opacity = '0.95';
+          clone.style.transform = `translate(${destX}px, ${destY}px) scale(.95) rotate(-2deg)`;
+          clone.style.opacity = '0.95';
         });
         setTimeout(() => {
           clone.style.opacity = '0';
@@ -716,11 +721,13 @@
     if (idx === -1) return;
     const willLock = !templates[idx].locked;
     templates[idx].locked = willLock;
-    saveTemplates(); render(); showToast(willLock ? 'Plantilla bloqueada' : 'Plantilla desbloqueada');
+    saveTemplates(); render();
+    showToast(willLock ? 'Plantilla bloqueada' : 'Plantilla desbloqueada');
   }
 
   function addTemplate(prefill = {title:'',content:''}, save=true){
-    const existingCards = Array.from(document.querySelectorAll('.templates .card')); existingCards.forEach(c => c.classList.add('pre-push'));
+    const existingCards = Array.from(document.querySelectorAll('.templates .card'));
+    existingCards.forEach(c => c.classList.add('pre-push'));
     const t = { id: id(), title: prefill.title || '', content: prefill.content || '', modified: Date.now(), pinned:false, locked:false };
     templates.unshift(t);
     if (save) saveTemplates();
@@ -752,7 +759,8 @@
   function updateSelectionBar(){
     const count = selectedIds.size;
     if (count === 0) { selectionBar.style.display = 'none'; } else {
-      selectionBar.style.display = 'flex'; selectedCountEl.textContent = String(count) + ' seleccionada(s)';
+      selectionBar.style.display = 'flex';
+      selectedCountEl.textContent = String(count) + ' seleccionada(s)';
       const visibleIds = Array.from(document.querySelectorAll('.card')).map(c => c.getAttribute('data-id'));
       const allVisibleSelected = visibleIds.every(id => selectedIds.has(id)) && visibleIds.length > 0;
       selectAllBtn.textContent = allVisibleSelected ? 'Deseleccionar todo' : 'Seleccionar todo';
@@ -883,12 +891,14 @@
       const btnClearInline = card.querySelector('.btnClearInline');
       const charsEl = card.querySelector('.chars');
       const modEl = card.querySelector('.modified');
+      
       tplCheckbox.addEventListener('change', (e) => {
         const isChecked = e.target.checked;
         if (isChecked) selectedIds.add(t.id); else selectedIds.delete(t.id);
         if (isChecked) card.classList.add('selected'); else card.classList.remove('selected');
         updateSelectionBar();
       });
+      
       card.addEventListener('click', (ev) => {
         const ignore = ev.target.closest('input, textarea, button, .iconBtn, .moreMenu, .actions');
         if (ignore) return;
@@ -897,6 +907,7 @@
         else { selectedIds.add(t.id); card.classList.add('selected'); if (tplCheckbox) tplCheckbox.checked = true; }
         updateSelectionBar();
       });
+      
       function openMoreMenu(){
         closeAllMoreMenus();
         const menu = document.createElement('div'); menu.className = 'moreMenu';
@@ -956,6 +967,7 @@
       if (btnMore) btnMore.addEventListener('click', openMoreMenu);
       if (btnClearInline) btnClearInline.addEventListener('click', doClear);
       card.addEventListener('pointerdown', ()=> { setActiveCard(t.id); try{ if (navigator.vibrate) navigator.vibrate(8); } catch(e){} });
+      
       if (!isLocked) {
         inp.addEventListener('focus', ()=> setActiveCard(t.id));
         ta.addEventListener('focus', ()=> setActiveCard(t.id));
@@ -963,8 +975,35 @@
       
       card.addEventListener('focusin', () => card.classList.add('focus-outline'));
       card.addEventListener('focusout', () => { if (card.getAttribute('data-id') !== activeCardId) card.classList.remove('focus-outline'); });
-      inp.addEventListener('input', (e) => { if(isLocked) return; t.title = e.target.value; t.modified = Date.now(); saveTemplates(); if (modEl) modEl.textContent = 'Editado: ' + formatDate(t.modified); });
-      ta.addEventListener('input', (e) => { if(isLocked) return; t.content = e.target.value; t.modified = Date.now(); saveTemplates(); if (charsEl) charsEl.textContent = (t.content||'').length + ' caracteres'; if (modEl) modEl.textContent = 'Editado: ' + formatDate(t.modified); });
+      
+      inp.addEventListener('input', (e) => { 
+        if(isLocked) return; 
+        t.title = e.target.value; 
+        t.modified = Date.now(); 
+        saveTemplates(); 
+        if (modEl) modEl.textContent = 'Editado: ' + formatDate(t.modified); 
+      });
+      
+      ta.addEventListener('input', (e) => { 
+        if(isLocked) return; 
+        
+        // --- MEJORA: Auto-ajuste de altura ---
+        e.target.style.height = 'auto';
+        e.target.style.height = (e.target.scrollHeight) + 'px';
+
+        t.content = e.target.value; 
+        t.modified = Date.now(); 
+        saveTemplates(); 
+        if (charsEl) charsEl.textContent = (t.content||'').length + ' caracteres'; 
+        if (modEl) modEl.textContent = 'Editado: ' + formatDate(t.modified); 
+      });
+
+      // Asegurar que las plantillas largas ya existentes se autoajusten al cargar la página
+      setTimeout(() => {
+        ta.style.height = 'auto';
+        ta.style.height = (ta.scrollHeight) + 'px';
+      }, 10);
+
       if (t.id === activeCardId) card.classList.add('active','focus-outline');
     });
     updateStats();
@@ -1053,6 +1092,7 @@
     tabRegister.addEventListener('click', () => { renderRegister(); highlightTab('register'); });
     tabGuest.addEventListener('click', () => { renderGuest(); highlightTab('guest'); });
     renderLogin(); highlightTab('login');
+    
     function renderLogin(){
       authBody.innerHTML = `
         <div style="display:flex;flex-direction:column;gap:12px">
@@ -1345,14 +1385,31 @@
       setTimeout(() => calc.remove(), 250);
     });
 
+    // === INICIO DE NUEVA LÓGICA DE CALCULADORA ===
     let expr = "";
+    let justEvaluated = false; // FLAG PARA ENCADENAMIENTO
+
+    // Función para formatear visualmente: 1550.5 -> 1.550,5
+    function formatExpression(exp) {
+      if (!exp) return "0";
+      return exp.replace(/\d+(\.\d*)?/g, (match) => {
+        let parts = match.split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Puntos para miles
+        return parts.length > 1 ? parts[0] + ',' + parts[1] : parts[0]; // Coma para decimales
+      }).replace(/\*/g, '×').replace(/\//g, '÷'); // Diseño más amigable
+    }
+
     function processInput(v) {
-      if (v === 'C' || v === 'c' || v === 'Delete') {
+      const operators = ['+', '-', '*', '/', '^', '%'];
+      const isOperator = operators.includes(v);
+
+      if (v === 'C' || v === 'c' || v === 'Delete' || v === 'Escape') {
         expr = "";
         display.value = "0";
+        justEvaluated = false;
       } else if (v === '=' || v === 'Enter') {
+        if (!expr) return;
         try {
-          if (!expr) return;
           let evalStr = expr
             .replace(/π/g, 'Math.PI')
             .replace(/e/g, 'Math.E')
@@ -1366,34 +1423,56 @@
             .replace(/%/g, '/100');
           
           const result = new Function('return ' + evalStr)();
+          if (result === undefined || isNaN(result) || !isFinite(result)) throw new Error("Invalid");
+
           const cleanResult = Number.isInteger(result) ? result : parseFloat(result.toFixed(10));
-          
-          display.value = cleanResult !== undefined && !isNaN(cleanResult) ? cleanResult : "Error";
-          expr = display.value !== "Error" ? String(cleanResult) : "";
+          expr = String(cleanResult);
+          display.value = formatExpression(expr);
+          justEvaluated = true;
         } catch(e) {
           display.value = "Error";
           expr = "";
+          justEvaluated = true;
         }
       } else if (v === 'Backspace') {
-        const tokens = ['sin(', 'cos(', 'tan(', 'log(', 'ln(', '√('];
-        let deleted = false;
-        for (let t of tokens) {
-          if (expr.endsWith(t)) {
-            expr = expr.slice(0, -t.length);
-            deleted = true;
-            break;
+        justEvaluated = false;
+        if (expr.length > 0) {
+          const tokens = ['sin(', 'cos(', 'tan(', 'log(', 'ln(', '√('];
+          let deleted = false;
+          for (let t of tokens) {
+            if (expr.endsWith(t)) {
+              expr = expr.slice(0, -t.length);
+              deleted = true; break;
+            }
+          }
+          if (!deleted) expr = expr.slice(0, -1);
+        }
+        display.value = expr ? formatExpression(expr) : "0";
+      } else {
+        
+        // LÓGICA DE ENCADENAMIENTO INFINITO
+        if (justEvaluated) {
+          if (isOperator) {
+            justEvaluated = false; 
+          } else {
+            expr = ""; 
+            justEvaluated = false;
           }
         }
-        if (!deleted) expr = expr.slice(0, -1);
-        display.value = expr || "0";
-      } else {
+
         if (expr.length < 50) {
+          // Prevenir escribir múltiples comas en el mismo número
+          if (v === '.') {
+            const match = expr.match(/\d+(\.\d*)?$/); 
+            if (match && match[0].includes('.')) return; 
+          }
           expr += v;
-          display.value = expr;
+          display.value = formatExpression(expr);
         }
       }
       display.scrollLeft = display.scrollWidth;
     }
+    // === FIN DE NUEVA LÓGICA DE CALCULADORA ===
 
     buttons.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -1463,7 +1542,6 @@
     let isResizing = false;
     let currentDir = null;
     let startW, startH, startX_r, startY_r, startCalcLeft, startCalcTop;
-
     calc.addEventListener('pointerdown', (e) => {
       if(e.target.classList.contains('resizer')) {
         isResizing = true;
@@ -1481,7 +1559,6 @@
         e.preventDefault(); 
       }
     });
-
     calc.addEventListener('pointermove', (e) => {
       if(!isResizing) return;
       
@@ -1490,24 +1567,20 @@
       
       let newW = startW, newH = startH, newL = startCalcLeft, newT = startCalcTop;
 
-      // Cálculo según hacia dónde estire
       if(currentDir.includes('e')) newW = startW + dx;
       if(currentDir.includes('s')) newH = startH + dy;
       if(currentDir.includes('w')) { newW = startW - dx; newL = startCalcLeft + dx; }
       if(currentDir.includes('n')) { newH = startH - dy; newT = startCalcTop + dy; }
 
-      // Límites para no desaparecerla completamente (coincide con el CSS)
       if (newW >= 180) { calc.style.width = newW + 'px'; calc.style.left = newL + 'px'; }
       if (newH >= 250) { calc.style.height = newH + 'px'; calc.style.top = newT + 'px'; }
     });
-
     calc.addEventListener('pointerup', (e) => {
       if(isResizing) {
         isResizing = false;
         calc.releasePointerCapture(e.pointerId);
       }
     });
-
     calc.addEventListener('pointercancel', (e) => {
       if(isResizing) {
         isResizing = false;
