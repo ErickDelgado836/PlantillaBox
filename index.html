@@ -58,8 +58,7 @@
 
   /* HEADER Cristal */
   header {
-    display: flex;
-    align-items: center; justify-content: space-between;
+    display: flex; align-items: center; justify-content: space-between;
     padding: 18px 28px;
     position: sticky; top: 0;
     background: rgba(5, 5, 7, 0.85);
@@ -74,8 +73,7 @@
   .logo {
     width: 44px; height: 44px; border-radius: 12px;
     background: var(--accent-gradient);
-    display: flex;
-    align-items: center; justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     box-shadow: 0 0 25px var(--primary-glow);
     transition: transform 0.3s var(--ease-elastic);
   }
@@ -93,21 +91,18 @@
     color: var(--text-main);
     border: var(--glass-border);
     padding: 9px 16px;
-    border-radius: 10px;
-    cursor: pointer;
+    border-radius: 10px; cursor: pointer;
     font-weight: 600; font-size: 13px;
     transition: all 0.2s ease;
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    position: relative;
-    overflow: hidden;
+    position: relative; overflow: hidden;
   }
   .btn:hover { background: rgba(255,255,255,0.07); transform: translateY(-1px); border-color: rgba(255,255,255,0.1); }
   .btn:active { transform: translateY(1px) scale(0.98); }
 
   .btn.primary {
     background: var(--accent-gradient);
-    color: #020617; border: none;
-    box-shadow: 0 4px 15px rgba(45, 212, 191, 0.25);
+    color: #020617; border: none; box-shadow: 0 4px 15px rgba(45, 212, 191, 0.25);
   }
   .btn.primary:hover { box-shadow: 0 6px 20px rgba(45, 212, 191, 0.4); opacity: 0.95; }
   
@@ -119,8 +114,7 @@
 
   .chip {
     padding: 6px 12px; border-radius: 20px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
     font-size: 12px; color: var(--muted); display: flex; align-items: center;
   }
 
@@ -137,18 +131,15 @@
     transition: all 0.2s;
   }
   .search:focus {
-    background: rgba(0,0,0,0.4);
-    border-color: var(--primary);
+    background: rgba(0,0,0,0.4); border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.1);
   }
 
   /* BARRA DE SELECCION */
   #selectionBar {
-    display: none; align-items: center; gap: 12px;
-    margin-bottom: 24px;
+    display: none; align-items: center; gap: 12px; margin-bottom: 24px;
     background: linear-gradient(90deg, rgba(45, 212, 191, 0.05) 0%, transparent 100%);
-    border: 1px solid rgba(45, 212, 191, 0.15);
-    border-left: 3px solid var(--primary);
+    border: 1px solid rgba(45, 212, 191, 0.15); border-left: 3px solid var(--primary);
     padding: 12px 20px; border-radius: 12px;
     animation: slideDown 0.3s var(--ease-elastic);
   }
@@ -157,14 +148,12 @@
   #selectionBar .count { color: var(--primary); font-weight: 700; font-size: 15px; margin-right: 8px; }
   .selectAllBtn { 
     background: transparent; color: var(--text-main); border: 1px solid rgba(255,255,255,0.15); 
-    padding: 6px 14px;
-    border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 500;
+    padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 500;
   }
 
   /* GRID DE TARJETAS */
   .templates {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 20px; padding-bottom: 40px;
   }
 
@@ -175,8 +164,7 @@
   .card {
     position: relative; background: var(--card-bg);
     backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-    border: 1px solid var(--card-border);
-    border-radius: 18px;
+    border: 1px solid var(--card-border); border-radius: 18px;
     padding: 20px; display: flex; flex-direction: column; gap: 12px; min-height: 180px;
     transition: transform var(--trans-med), box-shadow var(--trans-med), border-color 0.2s;
     will-change: transform; overflow: hidden;
@@ -214,8 +202,7 @@
   
   input.title {
     background: transparent; border: none; color: #fff;
-    font-size: 16px;
-    font-weight: 600; flex: 1; padding: 4px 0;
+    font-size: 16px; font-weight: 600; flex: 1; padding: 4px 0;
     border-bottom: 1px dashed transparent; transition: 0.2s;
   }
   input.title:focus { border-bottom-color: var(--primary); }
@@ -240,8 +227,7 @@
   
   .small {
     padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 500;
-    background: rgba(255,255,255,0.06);
-    border: none; color: var(--muted);
+    background: rgba(255,255,255,0.06); border: none; color: var(--muted);
     cursor: pointer; transition: all 0.2s;
   }
   .small:hover { background: rgba(255,255,255,0.12); color: #fff; }
@@ -303,7 +289,8 @@
     background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1);
     color: var(--primary); padding: 12px 24px; border-radius: 30px;
     box-shadow: 0 15px 40px rgba(0,0,0,0.6); font-weight: 600; font-size: 14px;
-    opacity: 0; transition: all 0.4s var(--ease-elastic); z-index: 300; pointer-events: none; display: flex; align-items: center; gap: 8px;
+    opacity: 0; transition: all 0.4s var(--ease-elastic); z-index: 300; pointer-events: none;
+    display: flex; align-items: center; gap: 8px;
   }
   .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
@@ -345,8 +332,7 @@
     border: 1px solid var(--card-border);
     border-radius: 16px;
     box-shadow: 0 15px 45px rgba(0,0,0,0.5);
-    z-index: 500;
-    display: flex; flex-direction: column;
+    z-index: 500; display: flex; flex-direction: column;
     overflow: hidden; user-select: none;
   }
   .calc-widget.opening {
@@ -382,7 +368,8 @@
   }
   .calc-header:active { cursor: grabbing; }
   .calc-close { 
-    cursor: pointer; color: var(--danger); font-size: 16px; background:none; border:none; padding:0; transition: 0.2s; z-index: 10; font-weight: bold;
+    cursor: pointer; color: var(--danger); font-size: 16px; background:none; border:none; padding:0; transition: 0.2s;
+    z-index: 10; font-weight: bold;
   }
   .calc-close:hover { transform: scale(1.2); }
   
@@ -404,7 +391,8 @@
     position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
     background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,255,255,0.1);
-    color: #fff; padding: 6px; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 16px; display: flex;
+    color: #fff; padding: 6px; border-radius: 8px; cursor: pointer;
+    transition: all 0.2s; font-size: 16px; display: flex;
     align-items: center; justify-content: center; z-index: 10;
   }
   .calc-copy-btn:hover { background: var(--primary); color: #000; box-shadow: 0 4px 12px rgba(45,212,191,0.25); }
@@ -418,11 +406,13 @@
   }
   .calc-btn {
     background: transparent;
-    border: none; display: flex; align-items: center; justify-content: center;
+    border: none;
+    display: flex; align-items: center; justify-content: center;
     width: 100%;
     height: 100%;
     font-size: 16px;
-    color: #f8fafc; cursor: pointer; transition: background 0.1s, transform 0.1s;
+    color: #f8fafc; cursor: pointer;
+    transition: background 0.1s, transform 0.1s;
   }
   .calc-btn:hover { background: rgba(255,255,255,0.1); }
   .calc-btn:active { transform: scale(0.92); }
@@ -547,6 +537,7 @@
   const currentUserText = document.getElementById('currentUserText');
   const userDot = document.getElementById('userDot');
   const footerInfo = document.getElementById('footerInfo');
+  
   // selection bar elements
   const selectionBar = document.getElementById('selectionBar');
   const selectedCountEl = document.getElementById('selectedCount');
@@ -577,6 +568,7 @@
   updateUserUI();
   reorderPinned();
   render();
+
   // events
   btnNew.addEventListener('click', () => { btnNew.classList.add('pressed'); setTimeout(()=>btnNew.classList.remove('pressed'),160); addTemplate(); });
   btnCalc.addEventListener('click', () => { btnCalc.classList.add('pressed'); setTimeout(()=>btnCalc.classList.remove('pressed'),160); createCalculator(); });
@@ -608,6 +600,7 @@
   shelfSelectedBtn.addEventListener('click', () => { handleShelfSelected(); });
   delSelectedBtn.addEventListener('click', () => { handleDeleteSelected(); });
   clearSelectionBtn.addEventListener('click', () => { clearSelection(); });
+
   // allow drop to shelf
   btnShelf.addEventListener('dragover', (e) => { e.preventDefault(); btnShelf.classList.add('pressed'); });
   btnShelf.addEventListener('dragleave', () => { btnShelf.classList.remove('pressed'); });
@@ -622,6 +615,7 @@
     shelf.unshift(item);
     saveShelf(); saveTemplates(); render(); showToast('Guardada en estantería');
   });
+
   // pressed feedback
   document.addEventListener('pointerdown', (e) => {
     const el = e.target.closest('.btn, button, .iconBtn');
@@ -629,6 +623,7 @@
     el.classList.add('pressed');
     setTimeout(()=> el.classList.remove('pressed'), 160);
   });
+
   // Storage & Logic
   function getUsersObj(){ const s = localStorage.getItem(USERS_KEY); try{ return s ? JSON.parse(s) : {}; }catch(e){ return {}; } }
   function saveUsersObj(o){ try{ localStorage.setItem(USERS_KEY, JSON.stringify(o)); }catch(e){ console.warn('Err save users', e); } }
@@ -659,13 +654,11 @@
     if (!text) { showToast('Nada para copiar'); return false; }
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(text);
-        showToast('Copiado al portapapeles'); return true;
+        await navigator.clipboard.writeText(text); showToast('Copiado al portapapeles'); return true;
       }
     } catch (e) {}
     try {
-      const ta = document.createElement('textarea');
-      ta.value = text;
+      const ta = document.createElement('textarea'); ta.value = text;
       ta.style.position = 'fixed'; ta.style.left = '-9999px';
       document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, ta.value.length);
       const ok = document.execCommand('copy'); document.body.removeChild(ta);
@@ -754,7 +747,8 @@
     document.querySelectorAll('.card').forEach(c => { if (c.getAttribute('data-id') !== activeCardId) c.classList.remove('focus-outline'); });
   }
 
-  function reorderPinned(){ const pinned = templates.filter(t=>t.pinned); const rest = templates.filter(t=>!t.pinned); templates = pinned.concat(rest); }
+  function reorderPinned(){ const pinned = templates.filter(t=>t.pinned);
+  const rest = templates.filter(t=>!t.pinned); templates = pinned.concat(rest); }
 
   function updateSelectionBar(){
     const count = selectedIds.size;
@@ -898,7 +892,6 @@
         if (isChecked) card.classList.add('selected'); else card.classList.remove('selected');
         updateSelectionBar();
       });
-      
       card.addEventListener('click', (ev) => {
         const ignore = ev.target.closest('input, textarea, button, .iconBtn, .moreMenu, .actions');
         if (ignore) return;
@@ -907,7 +900,6 @@
         else { selectedIds.add(t.id); card.classList.add('selected'); if (tplCheckbox) tplCheckbox.checked = true; }
         updateSelectionBar();
       });
-      
       function openMoreMenu(){
         closeAllMoreMenus();
         const menu = document.createElement('div'); menu.className = 'moreMenu';
@@ -967,7 +959,6 @@
       if (btnMore) btnMore.addEventListener('click', openMoreMenu);
       if (btnClearInline) btnClearInline.addEventListener('click', doClear);
       card.addEventListener('pointerdown', ()=> { setActiveCard(t.id); try{ if (navigator.vibrate) navigator.vibrate(8); } catch(e){} });
-      
       if (!isLocked) {
         inp.addEventListener('focus', ()=> setActiveCard(t.id));
         ta.addEventListener('focus', ()=> setActiveCard(t.id));
@@ -975,7 +966,6 @@
       
       card.addEventListener('focusin', () => card.classList.add('focus-outline'));
       card.addEventListener('focusout', () => { if (card.getAttribute('data-id') !== activeCardId) card.classList.remove('focus-outline'); });
-      
       inp.addEventListener('input', (e) => { 
         if(isLocked) return; 
         t.title = e.target.value; 
@@ -983,7 +973,6 @@
         saveTemplates(); 
         if (modEl) modEl.textContent = 'Editado: ' + formatDate(t.modified); 
       });
-      
       ta.addEventListener('input', (e) => { 
         if(isLocked) return; 
         
@@ -997,13 +986,11 @@
         if (charsEl) charsEl.textContent = (t.content||'').length + ' caracteres'; 
         if (modEl) modEl.textContent = 'Editado: ' + formatDate(t.modified); 
       });
-
       // Asegurar que las plantillas largas ya existentes se autoajusten al cargar la página
       setTimeout(() => {
         ta.style.height = 'auto';
         ta.style.height = (ta.scrollHeight) + 'px';
       }, 10);
-
       if (t.id === activeCardId) card.classList.add('active','focus-outline');
     });
     updateStats();
@@ -1092,7 +1079,6 @@
     tabRegister.addEventListener('click', () => { renderRegister(); highlightTab('register'); });
     tabGuest.addEventListener('click', () => { renderGuest(); highlightTab('guest'); });
     renderLogin(); highlightTab('login');
-    
     function renderLogin(){
       authBody.innerHTML = `
         <div style="display:flex;flex-direction:column;gap:12px">
@@ -1369,14 +1355,12 @@
         }, 1500);
       }
     });
-
     // Traer al frente y hacer foco al hacer clic
     calc.addEventListener('pointerdown', () => {
       calcZIndex++;
       calc.style.zIndex = calcZIndex;
       calc.focus();
     });
-
     // Cerrar calculadora
     closeBtn.addEventListener('pointerdown', (e) => e.stopPropagation());
     closeBtn.addEventListener('click', () => {
@@ -1384,10 +1368,10 @@
       calc.classList.add('closing');
       setTimeout(() => calc.remove(), 250);
     });
-
     // === INICIO DE NUEVA LÓGICA DE CALCULADORA ===
     let expr = "";
-    let justEvaluated = false; // FLAG PARA ENCADENAMIENTO
+    let justEvaluated = false;
+    // FLAG PARA ENCADENAMIENTO
 
     // Función para formatear visualmente: 1550.5 -> 1.550,5
     function formatExpression(exp) {
@@ -1466,6 +1450,23 @@
             const match = expr.match(/\d+(\.\d*)?$/); 
             if (match && match[0].includes('.')) return; 
           }
+
+          // >>> VALIDACIÓN: PREVENIR OPERADORES REPETIDOS <<<
+          if (isOperator) {
+            // No permitir iniciar con un operador (excepto el menos)
+            if (expr.length === 0 && v !== '-') return;
+            
+            const lastChar = expr.slice(-1);
+            // Si el último carácter ya es un operador, lo reemplazamos por el nuevo
+            if (operators.includes(lastChar)) {
+              expr = expr.slice(0, -1) + v;
+              display.value = formatExpression(expr);
+              display.scrollLeft = display.scrollWidth;
+              return;
+            }
+          }
+          // >>> FIN DE VALIDACIÓN <<<
+
           expr += v;
           display.value = formatExpression(expr);
         }
@@ -1479,7 +1480,6 @@
         processInput(btn.getAttribute('data-v'));
       });
     });
-
     calc.addEventListener('keydown', (e) => {
       const allowedKeys = ['0','1','2','3','4','5','6','7','8','9','.','+','-','*','/','(',')','%','^'];
       
@@ -1535,7 +1535,6 @@
     header.addEventListener('pointercancel', () => {
       isDragging = false;
     });
-
     // ==========================================
     // LÓGICA PARA REESCALAR DESDE LOS 8 LADOS
     // ==========================================
