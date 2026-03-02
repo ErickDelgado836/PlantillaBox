@@ -91,7 +91,8 @@
     color: var(--text-main);
     border: var(--glass-border);
     padding: 9px 16px;
-    border-radius: 10px; cursor: pointer;
+    border-radius: 10px;
+    cursor: pointer;
     font-weight: 600; font-size: 13px;
     transition: all 0.2s ease;
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
@@ -102,7 +103,8 @@
 
   .btn.primary {
     background: var(--accent-gradient);
-    color: #020617; border: none; box-shadow: 0 4px 15px rgba(45, 212, 191, 0.25);
+    color: #020617; border: none;
+    box-shadow: 0 4px 15px rgba(45, 212, 191, 0.25);
   }
   .btn.primary:hover { box-shadow: 0 6px 20px rgba(45, 212, 191, 0.4); opacity: 0.95; }
   
@@ -114,7 +116,8 @@
 
   .chip {
     padding: 6px 12px; border-radius: 20px;
-    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
     font-size: 12px; color: var(--muted); display: flex; align-items: center;
   }
 
@@ -214,7 +217,7 @@
     color: #cbd5e1; padding: 14px; border-radius: 10px;
     resize: none; min-height: 100px;
     font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.6; transition: all 0.2s;
-    overflow-y: hidden; /* Permite que el autoajuste funcione mejor visualmente */
+    overflow-y: hidden;
   }
   textarea:focus { background: rgba(0,0,0,0.35); border-color: rgba(255,255,255,0.12); }
   textarea[readonly] { background: rgba(0,0,0,0.1); border-color: transparent; }
@@ -310,7 +313,7 @@
   footer { text-align: center; color: rgba(255,255,255,0.15); font-size: 11px; margin-top: 60px; }
 
   /* ========================================================= */
-  /* ESTILOS DE CALCULADORA FLOTANTE CIENTÍFICA + RESIZE       */
+  /* ESTILOS DE CALCULADORA Y WIDGETS FLOTANTES                */
   /* ========================================================= */
   @keyframes calcPopIn {
     0% { opacity: 0; transform: scale(0.8) translateY(20px); }
@@ -332,18 +335,13 @@
     border: 1px solid var(--card-border);
     border-radius: 16px;
     box-shadow: 0 15px 45px rgba(0,0,0,0.5);
-    z-index: 500; display: flex; flex-direction: column;
+    z-index: 500;
+    display: flex; flex-direction: column;
     overflow: hidden; user-select: none;
   }
-  .calc-widget.opening {
-    animation: calcPopIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-  }
-  .calc-widget.closing {
-    animation: calcPopOut 0.25s ease forwards;
-  }
-  .calc-widget:focus {
-    box-shadow: 0 15px 45px rgba(0,0,0,0.6), 0 0 0 2px var(--primary);
-  }
+  .calc-widget.opening { animation: calcPopIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+  .calc-widget.closing { animation: calcPopOut 0.25s ease forwards; }
+  .calc-widget:focus { box-shadow: 0 15px 45px rgba(0,0,0,0.6), 0 0 0 2px var(--primary); }
 
   /* Zonas de anclaje invisibles para el Resize en 8 Direcciones */
   .resizer { position: absolute; z-index: 20; touch-action: none; }
@@ -363,8 +361,7 @@
     display: flex; justify-content: space-between; align-items: center;
     border-bottom: 1px solid rgba(255,255,255,0.05);
     font-size: 13px; font-weight: 600; color: var(--muted);
-    touch-action: none;
-    flex-shrink: 0;
+    touch-action: none; flex-shrink: 0;
   }
   .calc-header:active { cursor: grabbing; }
   .calc-close { 
@@ -374,44 +371,27 @@
   .calc-close:hover { transform: scale(1.2); }
   
   .calc-display {
-    background: rgba(0,0,0,0.6);
-    color: #fff;
-    font-size: 26px;
-    text-align: right;
-    padding: 18px 55px 18px 16px;
-    border: none;
-    width: 100%; box-sizing: border-box;
-    font-family: monospace; outline: none;
-    letter-spacing: 1px;
-    overflow-x: auto;
+    background: rgba(0,0,0,0.6); color: #fff; font-size: 26px; text-align: right;
+    padding: 18px 55px 18px 16px; border: none; width: 100%; box-sizing: border-box;
+    font-family: monospace; outline: none; letter-spacing: 1px; overflow-x: auto;
   }
   .calc-display::-webkit-scrollbar { display: none; }
   
   .calc-copy-btn {
     position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);
     color: #fff; padding: 6px; border-radius: 8px; cursor: pointer;
-    transition: all 0.2s; font-size: 16px; display: flex;
-    align-items: center; justify-content: center; z-index: 10;
+    transition: all 0.2s; font-size: 16px; display: flex; align-items: center; justify-content: center; z-index: 10;
   }
   .calc-copy-btn:hover { background: var(--primary); color: #000; box-shadow: 0 4px 12px rgba(45,212,191,0.25); }
 
   .calc-keys {
-    display: grid; 
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(6, 1fr);
-    gap: 1px; background: rgba(255,255,255,0.05);
-    flex: 1;
+    display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(6, 1fr);
+    gap: 1px; background: rgba(255,255,255,0.05); flex: 1;
   }
   .calc-btn {
-    background: transparent;
-    border: none;
-    display: flex; align-items: center; justify-content: center;
-    width: 100%;
-    height: 100%;
-    font-size: 16px;
-    color: #f8fafc; cursor: pointer;
+    background: transparent; border: none; display: flex; align-items: center; justify-content: center;
+    width: 100%; height: 100%; font-size: 16px; color: #f8fafc; cursor: pointer;
     transition: background 0.1s, transform 0.1s;
   }
   .calc-btn:hover { background: rgba(255,255,255,0.1); }
@@ -429,7 +409,6 @@
   .calc-btn.eq { background: var(--primary); color: #000; font-weight: bold; font-size: 20px;}
   .calc-btn.eq:hover { background: #22a998; }
 
-  /* Ajusta fuentes automáticamente cuando la haces muy pequeña */
   @container (max-width: 260px) {
     .calc-display { font-size: 18px; padding: 12px 40px 12px 10px; }
     .calc-btn { font-size: 13px; }
@@ -439,10 +418,7 @@
   }
 
   /* Responsive */
-  @media (max-width: 880px) {
-    .card .actions { display: none; }
-    .side-actions { display: flex; }
-  }
+  @media (max-width: 880px) { .card .actions { display: none; } .side-actions { display: flex; } }
   @media (min-width: 881px) { .side-actions { display: none; } }
   @media (max-width: 640px) {
     header { flex-direction: column; gap: 16px; align-items: flex-start; padding: 20px; }
@@ -468,6 +444,7 @@
   <div class="controls">
     <div class="chip" id="currentUser"><span id="userDot" style="width:8px;height:8px;border-radius:99px;background:var(--primary);display:inline-block;margin-right:8px;box-shadow:0 0 8px var(--primary)"></span><span id="currentUserText">Invitado</span></div>
     <div style="display:flex;gap:8px;align-items:center">
+      <button class="btn" id="btnGame" title="Abrir Minijuego">🎮 Jugar</button>
       <button class="btn" id="btnCalc" title="Abrir Calculadora">🧮 Calculadora</button>
       <button class="btn" id="btnShelf" title="Estantería">📁 Estantería</button>
       <button class="btn" id="btnExport">Exportar</button>
@@ -526,6 +503,7 @@
   const emptyState = document.getElementById('emptyState');
   const btnNew = document.getElementById('btnNew');
   const btnCalc = document.getElementById('btnCalc');
+  const btnGame = document.getElementById('btnGame'); // NUEVO BOTON JUEGO
   const btnLogin = document.getElementById('btnLogin');
   const btnExport = document.getElementById('btnExport');
   const btnImport = document.getElementById('btnImport');
@@ -537,7 +515,6 @@
   const currentUserText = document.getElementById('currentUserText');
   const userDot = document.getElementById('userDot');
   const footerInfo = document.getElementById('footerInfo');
-  
   // selection bar elements
   const selectionBar = document.getElementById('selectionBar');
   const selectedCountEl = document.getElementById('selectedCount');
@@ -555,11 +532,10 @@
   const selectedIds = new Set();
   function generateId() { return 'tpl_' + Math.random().toString(36).slice(2,9); }
 
-  // helper to detect interactive start targets
   function isInteractiveNode(node) {
     if (!node) return false;
     try {
-      if (node.nodeType === 3) node = node.parentElement; // text node -> parent
+      if (node.nodeType === 3) node = node.parentElement;
       return !!(node.closest && (node.closest('textarea, input, select, button, .tpl-select, .iconBtn') || node.isContentEditable));
     } catch (e) { return false; }
   }
@@ -568,10 +544,10 @@
   updateUserUI();
   reorderPinned();
   render();
-
   // events
   btnNew.addEventListener('click', () => { btnNew.classList.add('pressed'); setTimeout(()=>btnNew.classList.remove('pressed'),160); addTemplate(); });
   btnCalc.addEventListener('click', () => { btnCalc.classList.add('pressed'); setTimeout(()=>btnCalc.classList.remove('pressed'),160); createCalculator(); });
+  btnGame.addEventListener('click', () => { btnGame.classList.add('pressed'); setTimeout(()=>btnGame.classList.remove('pressed'),160); createGameWidget(); }); // EVENTO JUEGO
   btnLogin.addEventListener('click', openAuthModal);
   btnExport.addEventListener('click', exportJSON);
   btnImport.addEventListener('click', openImportModal);
@@ -600,7 +576,6 @@
   shelfSelectedBtn.addEventListener('click', () => { handleShelfSelected(); });
   delSelectedBtn.addEventListener('click', () => { handleDeleteSelected(); });
   clearSelectionBtn.addEventListener('click', () => { clearSelection(); });
-
   // allow drop to shelf
   btnShelf.addEventListener('dragover', (e) => { e.preventDefault(); btnShelf.classList.add('pressed'); });
   btnShelf.addEventListener('dragleave', () => { btnShelf.classList.remove('pressed'); });
@@ -615,7 +590,6 @@
     shelf.unshift(item);
     saveShelf(); saveTemplates(); render(); showToast('Guardada en estantería');
   });
-
   // pressed feedback
   document.addEventListener('pointerdown', (e) => {
     const el = e.target.closest('.btn, button, .iconBtn');
@@ -623,7 +597,6 @@
     el.classList.add('pressed');
     setTimeout(()=> el.classList.remove('pressed'), 160);
   });
-
   // Storage & Logic
   function getUsersObj(){ const s = localStorage.getItem(USERS_KEY); try{ return s ? JSON.parse(s) : {}; }catch(e){ return {}; } }
   function saveUsersObj(o){ try{ localStorage.setItem(USERS_KEY, JSON.stringify(o)); }catch(e){ console.warn('Err save users', e); } }
@@ -643,28 +616,43 @@
     let hex=''; for (let i=0;i<8;i++) hex += ('00000000'+((h ^ (i*2654435761))>>>0).toString(16)).slice(-8); return hex;
   }
 
-  function updateUserUI(){ currentUserText.textContent = (user === 'guest') ? 'Invitado' : user;
-  footerInfo.textContent = (user === 'guest') ? 'Modo invitado (no persistente al cerrar).' : 'Sesión guardada en este navegador.';
-  if (user === 'guest'){ userDot.style.opacity = '0.6'; if (window.logoEl) logoEl.classList.remove('logoStrong'); btnLogout.style.display = 'none'; } else { userDot.style.opacity = '1';
-  if (window.logoEl) logoEl.classList.add('logoStrong'); btnLogout.style.display = 'inline-flex'; } }
-  function updateStats(){ stats.textContent = templates.length + (templates.length === 1 ? ' plantilla' : ' plantillas'); emptyState.style.display = templates.length ? 'none' : 'block'; }
+  function updateUserUI(){ 
+    currentUserText.textContent = (user === 'guest') ? 'Invitado' : user;
+    footerInfo.textContent = (user === 'guest') ? 'Modo invitado (no persistente al cerrar).' : 'Sesión guardada en este navegador.';
+    if (user === 'guest'){ 
+      userDot.style.opacity = '0.6';
+      if (window.logoEl) logoEl.classList.remove('logoStrong'); btnLogout.style.display = 'none';
+    } else { 
+      userDot.style.opacity = '1';
+      if (window.logoEl) logoEl.classList.add('logoStrong'); btnLogout.style.display = 'inline-flex';
+    } 
+  }
+  
+  function updateStats(){ 
+    stats.textContent = templates.length + (templates.length === 1 ? ' plantilla' : ' plantillas');
+    emptyState.style.display = templates.length ? 'none' : 'block'; 
+  }
+  
   function id(){ return generateId(); }
 
   async function robustCopy(text) {
     if (!text) { showToast('Nada para copiar'); return false; }
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(text); showToast('Copiado al portapapeles'); return true;
+        await navigator.clipboard.writeText(text);
+        showToast('Copiado al portapapeles'); return true;
       }
     } catch (e) {}
     try {
-      const ta = document.createElement('textarea'); ta.value = text;
+      const ta = document.createElement('textarea');
+      ta.value = text;
       ta.style.position = 'fixed'; ta.style.left = '-9999px';
       document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, ta.value.length);
       const ok = document.execCommand('copy'); document.body.removeChild(ta);
       if (ok) { showToast('Copiado (fallback)'); return true; }
     } catch (err) {}
-    showToast('No se pudo copiar'); return false;
+    showToast('No se pudo copiar');
+    return false;
   }
 
   function animatePinToTop(cardEl) {
@@ -747,8 +735,10 @@
     document.querySelectorAll('.card').forEach(c => { if (c.getAttribute('data-id') !== activeCardId) c.classList.remove('focus-outline'); });
   }
 
-  function reorderPinned(){ const pinned = templates.filter(t=>t.pinned);
-  const rest = templates.filter(t=>!t.pinned); templates = pinned.concat(rest); }
+  function reorderPinned(){ 
+    const pinned = templates.filter(t=>t.pinned);
+    const rest = templates.filter(t=>!t.pinned); templates = pinned.concat(rest); 
+  }
 
   function updateSelectionBar(){
     const count = selectedIds.size;
@@ -975,18 +965,14 @@
       });
       ta.addEventListener('input', (e) => { 
         if(isLocked) return; 
-        
-        // --- MEJORA: Auto-ajuste de altura ---
         e.target.style.height = 'auto';
         e.target.style.height = (e.target.scrollHeight) + 'px';
-
         t.content = e.target.value; 
         t.modified = Date.now(); 
         saveTemplates(); 
         if (charsEl) charsEl.textContent = (t.content||'').length + ' caracteres'; 
         if (modEl) modEl.textContent = 'Editado: ' + formatDate(t.modified); 
       });
-      // Asegurar que las plantillas largas ya existentes se autoajusten al cargar la página
       setTimeout(() => {
         ta.style.height = 'auto';
         ta.style.height = (ta.scrollHeight) + 'px';
@@ -1187,9 +1173,8 @@
             if (idx === -1) return;
             const item = shelf.splice(idx,1)[0];
             const restored = { id: id(), title: item.title, content: item.content, modified: Date.now(), pinned:false, locked:false };
-            templates.unshift(restored); // Al inicio
+            templates.unshift(restored); 
             saveShelf(); saveTemplates(); 
-            
             render();
             li.parentNode.removeChild(li);
             showToast('Restaurada');
@@ -1219,6 +1204,7 @@
     const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url;
     a.download = (user==='guest' ? 'plantillas-guest' : 'plantillas-' + user) + '.json'; a.click(); URL.revokeObjectURL(url); showToast('Exportado');
   }
+  
   function openImportModal(){
     openModal({ title:'Importar JSON', body:`<input type="file" id="importFile" accept=".json"/><div class="hint">Añadir o reemplazar plantillas.</div>`, cancelText:'Cerrar', confirmText:'Cerrar', onConfirm:null });
     setTimeout(()=> {
@@ -1263,7 +1249,7 @@
   function formatDate(ts){ try{ return new Date(ts).toLocaleDateString('es-ES', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}); }catch(e){return ''} }
 
   // =========================================================================
-  // LOGICA PARA CREAR CALCULADORAS FLOTANTES (CIENTÍFICA + RESIZE DE 8 LADOS)
+  // LOGICA PARA CREAR CALCULADORAS FLOTANTES
   // =========================================================================
   let calcZIndex = 500;
   function createCalculator() {
@@ -1275,7 +1261,6 @@
     calcZIndex++;
     calc.style.zIndex = calcZIndex;
     
-    // Posicionamiento en cascada
     const offset = (document.querySelectorAll('.calc-widget').length * 25) % 150;
     calc.style.top = (100 + offset) + 'px';
     calc.style.left = (100 + offset) + 'px';
@@ -1344,7 +1329,6 @@
     const buttons = calc.querySelectorAll('.calc-btn');
     const copyBtn = calc.querySelector('.calc-copy-btn');
 
-    // Botón de Copiar
     copyBtn.addEventListener('click', async () => {
       const val = display.value;
       if (val && val !== 'Error') {
@@ -1355,32 +1339,27 @@
         }, 1500);
       }
     });
-    // Traer al frente y hacer foco al hacer clic
     calc.addEventListener('pointerdown', () => {
       calcZIndex++;
       calc.style.zIndex = calcZIndex;
       calc.focus();
     });
-    // Cerrar calculadora
     closeBtn.addEventListener('pointerdown', (e) => e.stopPropagation());
     closeBtn.addEventListener('click', () => {
       calc.classList.remove('opening');
       calc.classList.add('closing');
       setTimeout(() => calc.remove(), 250);
     });
-    // === INICIO DE NUEVA LÓGICA DE CALCULADORA ===
     let expr = "";
     let justEvaluated = false;
-    // FLAG PARA ENCADENAMIENTO
 
-    // Función para formatear visualmente: 1550.5 -> 1.550,5
     function formatExpression(exp) {
       if (!exp) return "0";
       return exp.replace(/\d+(\.\d*)?/g, (match) => {
         let parts = match.split('.');
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Puntos para miles
-        return parts.length > 1 ? parts[0] + ',' + parts[1] : parts[0]; // Coma para decimales
-      }).replace(/\*/g, '×').replace(/\//g, '÷'); // Diseño más amigable
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, "."); 
+        return parts.length > 1 ? parts[0] + ',' + parts[1] : parts[0]; 
+      }).replace(/\*/g, '×').replace(/\//g, '÷');
     }
 
     function processInput(v) {
@@ -1433,8 +1412,6 @@
         }
         display.value = expr ? formatExpression(expr) : "0";
       } else {
-        
-        // LÓGICA DE ENCADENAMIENTO INFINITO
         if (justEvaluated) {
           if (isOperator) {
             justEvaluated = false; 
@@ -1445,19 +1422,14 @@
         }
 
         if (expr.length < 50) {
-          // Prevenir escribir múltiples comas en el mismo número
           if (v === '.') {
             const match = expr.match(/\d+(\.\d*)?$/); 
             if (match && match[0].includes('.')) return; 
           }
 
-          // >>> VALIDACIÓN: PREVENIR OPERADORES REPETIDOS <<<
           if (isOperator) {
-            // No permitir iniciar con un operador (excepto el menos)
             if (expr.length === 0 && v !== '-') return;
-            
             const lastChar = expr.slice(-1);
-            // Si el último carácter ya es un operador, lo reemplazamos por el nuevo
             if (operators.includes(lastChar)) {
               expr = expr.slice(0, -1) + v;
               display.value = formatExpression(expr);
@@ -1465,15 +1437,12 @@
               return;
             }
           }
-          // >>> FIN DE VALIDACIÓN <<<
-
           expr += v;
           display.value = formatExpression(expr);
         }
       }
       display.scrollLeft = display.scrollWidth;
     }
-    // === FIN DE NUEVA LÓGICA DE CALCULADORA ===
 
     buttons.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -1482,7 +1451,6 @@
     });
     calc.addEventListener('keydown', (e) => {
       const allowedKeys = ['0','1','2','3','4','5','6','7','8','9','.','+','-','*','/','(',')','%','^'];
-      
       if (allowedKeys.includes(e.key)) {
         e.preventDefault();
         processInput(e.key);
@@ -1506,9 +1474,6 @@
 
     setTimeout(() => calc.focus(), 0);
 
-    // ==========================================
-    // LÓGICA DE DRAG AND DROP DESDE EL HEADER
-    // ==========================================
     let isDragging = false;
     let startX, startY, initialLeft, initialTop;
     header.addEventListener('pointerdown', (e) => {
@@ -1532,12 +1497,8 @@
       isDragging = false;
       header.releasePointerCapture(e.pointerId);
     });
-    header.addEventListener('pointercancel', () => {
-      isDragging = false;
-    });
-    // ==========================================
-    // LÓGICA PARA REESCALAR DESDE LOS 8 LADOS
-    // ==========================================
+    header.addEventListener('pointercancel', () => { isDragging = false; });
+
     let isResizing = false;
     let currentDir = null;
     let startW, startH, startX_r, startY_r, startCalcLeft, startCalcTop;
@@ -1560,10 +1521,8 @@
     });
     calc.addEventListener('pointermove', (e) => {
       if(!isResizing) return;
-      
       const dx = e.clientX - startX_r;
       const dy = e.clientY - startY_r;
-      
       let newW = startW, newH = startH, newL = startCalcLeft, newT = startCalcTop;
 
       if(currentDir.includes('e')) newW = startW + dx;
@@ -1575,17 +1534,272 @@
       if (newH >= 250) { calc.style.height = newH + 'px'; calc.style.top = newT + 'px'; }
     });
     calc.addEventListener('pointerup', (e) => {
-      if(isResizing) {
-        isResizing = false;
-        calc.releasePointerCapture(e.pointerId);
-      }
+      if(isResizing) { isResizing = false; calc.releasePointerCapture(e.pointerId); }
     });
     calc.addEventListener('pointercancel', (e) => {
-      if(isResizing) {
-        isResizing = false;
-        calc.releasePointerCapture(e.pointerId);
-      }
+      if(isResizing) { isResizing = false; calc.releasePointerCapture(e.pointerId); }
     });
+  }
+
+  // =========================================================================
+  // LOGICA DEL MINIJUEGO DEL CAMELLO MEJORADO (DINOSAURIO STYLE)
+  // =========================================================================
+  function createGameWidget() {
+    const gameDiv = document.createElement('div');
+    gameDiv.className = 'calc-widget opening';
+    gameDiv.tabIndex = 0;
+    calcZIndex++;
+    gameDiv.style.zIndex = calcZIndex;
+    gameDiv.style.width = '440px';
+    gameDiv.style.minHeight = 'auto';
+    gameDiv.style.height = 'auto';
+    gameDiv.style.top = Math.max(20, (window.innerHeight - 250) / 2) + 'px';
+    gameDiv.style.left = Math.max(20, (window.innerWidth - 440) / 2) + 'px';
+    gameDiv.innerHTML = `
+      <div class="calc-header" style="cursor:grab">
+        <span>🎮 Runner Box</span>
+        <button class="calc-close" title="Cerrar">✖</button>
+      </div>
+      <div style="padding: 16px; background: rgba(0,0,0,0.6); display:flex; flex-direction:column; align-items:center;">
+        <div style="display:flex; justify-content:space-between; width:100%; margin-bottom:12px; font-family:monospace; color:var(--primary); font-size: 16px; font-weight: bold;">
+          <span>SCORE: <span id="gameScore">0</span></span>
+          <span>HI: <span id="gameHiScore">0</span></span>
+        </div>
+        <canvas id="gameCanvas" width="400" height="150" style="background:#111; border: 1px solid rgba(255,255,255,0.1); border-radius:8px; cursor:pointer; width: 100%; max-width: 400px;"></canvas>
+        <div style="font-size:12px; color:var(--muted); margin-top:12px; display:flex; gap: 15px;">
+          <span>⬆️ Espacio/Clic: Saltar</span>
+          <span>⬇️ Abajo: Agacharse / Caer rápido</span>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(gameDiv);
+
+    const canvas = gameDiv.querySelector('#gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const scoreEl = gameDiv.querySelector('#gameScore');
+    const hiScoreEl = gameDiv.querySelector('#gameHiScore');
+    const closeBtn = gameDiv.querySelector('.calc-close');
+    const header = gameDiv.querySelector('.calc-header');
+
+    let reqId;
+    let isPlaying = false;
+    let score = 0;
+    let hiScore = localStorage.getItem('plantillabox_hiscore') || 0;
+    hiScoreEl.textContent = Math.floor(hiScore);
+
+    let speed = 4.5;
+    let frame = 0;
+    let gameOver = false;
+
+    // Física: Camello base
+    const camel = { x: 40, baseY: 110, y: 110, w: 22, h: 30, dy: 0, jumpPower: -11.5, g: 0.8, grounded: true, ducking: false, deadType: '😵' };
+    let obstacles = [];
+
+    function reset() {
+      score = 0; speed = 4.5;
+      frame = 0; gameOver = false; obstacles = [];
+      camel.y = camel.baseY; camel.dy = 0; camel.grounded = true;
+      camel.ducking = false;
+      camel.deadType = '😵';
+      isPlaying = true;
+      loop();
+    }
+
+    function jump() {
+      if (!isPlaying || gameOver) { reset(); return; }
+      if (camel.grounded && !camel.ducking) { 
+        camel.dy = camel.jumpPower;
+        camel.grounded = false; 
+      }
+    }
+
+    canvas.addEventListener('pointerdown', (e) => { e.preventDefault(); gameDiv.focus(); jump(); });
+    const keydownHandler = (e) => {
+      // Evitar que el juego responda si escribimos en plantillas o buscador
+      if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) return;
+      if(e.code === 'Space' || e.code === 'ArrowUp') {
+        e.preventDefault();
+        if(gameDiv.parentNode) jump();
+      } else if (e.code === 'ArrowDown') {
+        e.preventDefault();
+        if (gameDiv.parentNode && isPlaying && !gameOver) {
+          if (camel.grounded) {
+            camel.ducking = true;
+          } else {
+            camel.dy += 6; // Fast drop mechanic
+          }
+        }
+      }
+    };
+    const keyupHandler = (e) => {
+      if (e.code === 'ArrowDown') {
+        camel.ducking = false;
+      }
+    };
+
+    document.addEventListener('keydown', keydownHandler);
+    document.addEventListener('keyup', keyupHandler);
+
+    function loop() {
+      if (!isPlaying) return;
+      reqId = requestAnimationFrame(loop);
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (!gameOver) {
+        // Altura de hitbox dinámica
+        camel.h = camel.ducking ? 16 : 30;
+        let targetY = camel.ducking ? camel.baseY + 14 : camel.baseY;
+
+        camel.dy += camel.g;
+        camel.y += camel.dy;
+        // Choque con el suelo
+        if (camel.y >= targetY) { 
+          camel.y = targetY;
+          camel.dy = 0; 
+          camel.grounded = true; 
+        } else {
+          camel.grounded = false;
+        }
+
+        // Generación dinámica, variada y con progresión de dificultad
+        let obstacleFrequency = Math.max(20, Math.floor(95 - speed * 6));
+        if (frame % obstacleFrequency === 0) {
+          let rand = Math.random();
+          let obsBase = { x: canvas.width, vx: speed };
+
+          if (rand < 0.30) {
+            // Cactus (Tierra)
+            obstacles.push({ ...obsBase, y: 112, w: 18, h: 28, emoji: '🌵' });
+          } else if (rand < 0.45) {
+            // Escorpión (Tierra)
+            obstacles.push({ ...obsBase, y: 125, w: 20, h: 15, emoji: '🦂' });
+          } else if (rand < 0.60) {
+            // Mina (Tierra) - Tienes que saltarla
+            obstacles.push({ ...obsBase, y: 125, w: 20, h: 15, emoji: '💣', type: 'boom' });
+          } else if (rand < 0.75) {
+            // Águila media (Hay que agacharse) - Y:100 pega arriba si estás de pie, pasa de largo si te agachas
+            obstacles.push({ ...obsBase, y: 100, w: 22, h: 20, emoji: '🦅' });
+          } else if (rand < 0.85) {
+            // Águila baja (Hay que saltar) - Pega aunque te agaches
+            obstacles.push({ ...obsBase, y: 120, w: 22, h: 18, emoji: '🦅' });
+          } else if (rand < 0.95) {
+            // Cohete (Rápido, hay que agacharse o saltarlo muy bien)
+            obstacles.push({ ...obsBase, y: 105, w: 24, h: 14, vx: speed * 1.4, emoji: '🚀', type: 'boom' });
+          } else {
+            // OVNI (Movimiento senoidal, impredecible)
+            obstacles.push({ ...obsBase, y: 90, baseY: 90, w: 22, h: 16, vx: speed * 1.1, emoji: '🛸', isSine: true, time: 0 });
+          }
+        }
+
+        for (let i = 0; i < obstacles.length; i++) {
+          let obs = obstacles[i];
+          if (obs.isSine) {
+              obs.time += 0.1;
+              obs.y = obs.baseY + Math.sin(obs.time) * 35; // Oscila hacia arriba y abajo
+          }
+          obs.x -= obs.vx;
+
+          // Hitbox perdonando unos píxeles (para que se sienta justo)
+          let pX = 4, pY = 4;
+          if (camel.x + pX < obs.x + obs.w && camel.x + camel.w - pX > obs.x &&
+              camel.y + pY < obs.y + obs.h && camel.y + camel.h - pY > obs.y) {
+            gameOver = true;
+            camel.deadType = obs.type === 'boom' ? '💥' : '😵'; // Cambia el emoji si es explosión
+            if (score > hiScore) { 
+              hiScore = Math.floor(score);
+              localStorage.setItem('plantillabox_hiscore', hiScore); 
+              hiScoreEl.textContent = hiScore; 
+            }
+          }
+        }
+        obstacles = obstacles.filter(o => o.x + o.w > 0);
+        score += 0.1;
+        speed += 0.002;
+        frame++;
+        scoreEl.textContent = Math.floor(score);
+      }
+
+      // Dibujar Suelo
+      ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+      ctx.beginPath(); ctx.moveTo(0, 140);
+      ctx.lineTo(canvas.width, 140); ctx.stroke();
+
+      // Dibujar Camello
+      ctx.save();
+      if (gameOver && camel.deadType === '💥') {
+        ctx.font = '36px Arial';
+        ctx.fillText('💥', camel.x - 8, camel.y + 28);
+      } else if (camel.ducking) {
+        ctx.translate(camel.x + 12, camel.y + 16);
+        ctx.scale(1.1, 0.6);
+        // Efecto visual de aplastado para agacharse
+        ctx.font = '30px Arial';
+        ctx.fillText(gameOver ? camel.deadType : '🐫', -16, 10);
+      } else {
+        ctx.font = '30px Arial';
+        ctx.fillText(gameOver ? camel.deadType : '🐫', camel.x - 4, camel.y + 26);
+      }
+      ctx.restore();
+
+      // Dibujar Obstáculos
+      for (let obs of obstacles) {
+        ctx.font = '24px Arial';
+        ctx.fillText(obs.emoji, obs.x - 2, obs.y + 22);
+      }
+
+      // Pantallas de texto
+      if (gameOver) {
+        ctx.fillStyle = 'rgba(0,0,0,0.7)';
+        ctx.fillRect(0,0,canvas.width, canvas.height);
+        ctx.fillStyle = '#f43f5e';
+        ctx.font = 'bold 20px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(camel.deadType === '💥' ? '¡EXPLOTASTE!' : '¡CAZADO!', canvas.width/2, canvas.height/2 - 10);
+        ctx.fillStyle = '#fff';
+        ctx.font = '14px Inter, sans-serif';
+        ctx.fillText('Pulsa Espacio o haz clic para reintentar', canvas.width/2, canvas.height/2 + 20);
+        ctx.textAlign = 'left';
+      }
+    }
+
+    // Pantalla de inicio
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 16px Inter, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('Pulsa Espacio o haz clic para empezar', canvas.width/2, canvas.height/2);
+    ctx.textAlign = 'left';
+
+    // Drag lógico
+    let isDragging = false;
+    let startX, startY, initialLeft, initialTop;
+    header.addEventListener('pointerdown', (e) => {
+      if (e.target === closeBtn) return;
+      isDragging = true; startX = e.clientX; startY = e.clientY;
+      const rect = gameDiv.getBoundingClientRect();
+      initialLeft = rect.left; initialTop = rect.top;
+      header.setPointerCapture(e.pointerId);
+    });
+    header.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      gameDiv.style.left = (initialLeft + (e.clientX - startX)) + 'px';
+      gameDiv.style.top = (initialTop + (e.clientY - startY)) + 'px';
+    });
+    header.addEventListener('pointerup', (e) => { isDragging = false; header.releasePointerCapture(e.pointerId); });
+    header.addEventListener('pointercancel', () => { isDragging = false; });
+    
+    // Z-Index control (Traer al frente)
+    gameDiv.addEventListener('pointerdown', () => { calcZIndex++; gameDiv.style.zIndex = calcZIndex; });
+    
+    // Cerrar ventana
+    closeBtn.addEventListener('click', () => {
+      isPlaying = false;
+      cancelAnimationFrame(reqId);
+      document.removeEventListener('keydown', keydownHandler);
+      document.removeEventListener('keyup', keyupHandler);
+      gameDiv.classList.remove('opening'); gameDiv.classList.add('closing');
+      setTimeout(() => gameDiv.remove(), 250);
+    });
+    gameDiv.focus();
   }
 
   // expose
