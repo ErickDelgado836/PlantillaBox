@@ -180,8 +180,7 @@
   .card:hover::after { opacity: 1; }
 
   .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.08);
+    transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.08);
     background: rgba(30, 30, 35, 0.75); z-index: 5;
   }
 
@@ -335,8 +334,7 @@
     border: 1px solid var(--card-border);
     border-radius: 16px;
     box-shadow: 0 15px 45px rgba(0,0,0,0.5);
-    z-index: 500;
-    display: flex; flex-direction: column;
+    z-index: 500; display: flex; flex-direction: column;
     overflow: hidden; user-select: none;
   }
   .calc-widget.opening { animation: calcPopIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
@@ -365,8 +363,7 @@
   }
   .calc-header:active { cursor: grabbing; }
   .calc-close { 
-    cursor: pointer; color: var(--danger); font-size: 16px; background:none; border:none; padding:0; transition: 0.2s;
-    z-index: 10; font-weight: bold;
+    cursor: pointer; color: var(--danger); font-size: 16px; background:none; border:none; padding:0; transition: 0.2s; z-index: 10; font-weight: bold;
   }
   .calc-close:hover { transform: scale(1.2); }
   
@@ -391,8 +388,7 @@
   }
   .calc-btn {
     background: transparent; border: none; display: flex; align-items: center; justify-content: center;
-    width: 100%; height: 100%; font-size: 16px; color: #f8fafc; cursor: pointer;
-    transition: background 0.1s, transform 0.1s;
+    width: 100%; height: 100%; font-size: 16px; color: #f8fafc; cursor: pointer; transition: background 0.1s, transform 0.1s;
   }
   .calc-btn:hover { background: rgba(255,255,255,0.1); }
   .calc-btn:active { transform: scale(0.92); }
@@ -502,6 +498,7 @@
   const stats = document.getElementById('stats');
   const emptyState = document.getElementById('emptyState');
   const btnNew = document.getElementById('btnNew');
+ 
   const btnCalc = document.getElementById('btnCalc');
   const btnGame = document.getElementById('btnGame'); // NUEVO BOTON JUEGO
   const btnLogin = document.getElementById('btnLogin');
@@ -1000,7 +997,8 @@
           setTimeout(()=> { if (trash.parentNode) trash.parentNode.removeChild(trash); }, 480);
           setTimeout(()=> { templates = templates.filter(x => x.id !== tid); saveTemplates(); render(); showToast('Eliminada'); }, 420);
         } else {
-          templates = templates.filter(x => x.id !== tid); saveTemplates(); render(); showToast('Eliminada');
+          templates = templates.filter(x => x.id !== tid); saveTemplates();
+          render(); showToast('Eliminada');
         }
       }
     });
@@ -1555,18 +1553,29 @@
     gameDiv.style.height = 'auto';
     gameDiv.style.top = Math.max(20, (window.innerHeight - 250) / 2) + 'px';
     gameDiv.style.left = Math.max(20, (window.innerWidth - 440) / 2) + 'px';
+
+    // AÑADIDO: Los resizers invisibles para poder escalar la ventana
     gameDiv.innerHTML = `
+      <div class="resizer n" data-dir="n"></div>
+      <div class="resizer s" data-dir="s"></div>
+      <div class="resizer e" data-dir="e"></div>
+      <div class="resizer w" data-dir="w"></div>
+      <div class="resizer ne" data-dir="ne"></div>
+      <div class="resizer nw" data-dir="nw"></div>
+      <div class="resizer se" data-dir="se"></div>
+      <div class="resizer sw" data-dir="sw"></div>
+
       <div class="calc-header" style="cursor:grab">
         <span>🎮 Runner Box</span>
         <button class="calc-close" title="Cerrar">✖</button>
       </div>
-      <div style="padding: 16px; background: rgba(0,0,0,0.6); display:flex; flex-direction:column; align-items:center;">
-        <div style="display:flex; justify-content:space-between; width:100%; margin-bottom:12px; font-family:monospace; color:var(--primary); font-size: 16px; font-weight: bold;">
+      <div style="flex: 1; padding: 16px; background: rgba(0,0,0,0.6); display:flex; flex-direction:column; align-items:center; overflow:hidden;">
+        <div style="display:flex; justify-content:space-between; width:100%; margin-bottom:12px; font-family:monospace; color:var(--primary); font-size: 16px; font-weight: bold; flex-shrink: 0;">
           <span>SCORE: <span id="gameScore">0</span></span>
           <span>HI: <span id="gameHiScore">0</span></span>
         </div>
-        <canvas id="gameCanvas" width="400" height="150" style="background:#111; border: 1px solid rgba(255,255,255,0.1); border-radius:8px; cursor:pointer; width: 100%; max-width: 400px;"></canvas>
-        <div style="font-size:12px; color:var(--muted); margin-top:12px; display:flex; gap: 15px;">
+        <canvas id="gameCanvas" width="400" height="150" style="background:#111; border: 1px solid rgba(255,255,255,0.1); border-radius:8px; cursor:pointer; width: 100%; height: 100%; object-fit: contain; min-height: 0;"></canvas>
+        <div style="font-size:12px; color:var(--muted); margin-top:12px; display:flex; gap: 15px; flex-shrink: 0;">
           <span>⬆️ Espacio/Clic: Saltar</span>
           <span>⬇️ Abajo: Agacharse / Caer rápido</span>
         </div>
@@ -1596,6 +1605,9 @@
     let obstacles = [];
 
     function reset() {
+      // CORRECCIÓN DE VELOCIDAD EXTREMA: Detener la animación anterior antes de reiniciar el loop.
+      cancelAnimationFrame(reqId); 
+      
       score = 0; speed = 4.5;
       frame = 0; gameOver = false; obstacles = [];
       camel.y = camel.baseY; camel.dy = 0; camel.grounded = true;
@@ -1699,7 +1711,6 @@
               obs.y = obs.baseY + Math.sin(obs.time) * 35; // Oscila hacia arriba y abajo
           }
           obs.x -= obs.vx;
-
           // Hitbox perdonando unos píxeles (para que se sienta justo)
           let pX = 4, pY = 4;
           if (camel.x + pX < obs.x + obs.w && camel.x + camel.w - pX > obs.x &&
@@ -1741,7 +1752,6 @@
         ctx.fillText(gameOver ? camel.deadType : '🐫', camel.x - 4, camel.y + 26);
       }
       ctx.restore();
-
       // Dibujar Obstáculos
       for (let obs of obstacles) {
         ctx.font = '24px Arial';
@@ -1786,10 +1796,8 @@
     });
     header.addEventListener('pointerup', (e) => { isDragging = false; header.releasePointerCapture(e.pointerId); });
     header.addEventListener('pointercancel', () => { isDragging = false; });
-    
     // Z-Index control (Traer al frente)
     gameDiv.addEventListener('pointerdown', () => { calcZIndex++; gameDiv.style.zIndex = calcZIndex; });
-    
     // Cerrar ventana
     closeBtn.addEventListener('click', () => {
       isPlaying = false;
@@ -1799,6 +1807,49 @@
       gameDiv.classList.remove('opening'); gameDiv.classList.add('closing');
       setTimeout(() => gameDiv.remove(), 250);
     });
+
+    // AÑADIDO: Lógica de Resize (Redimensionamiento) heredada de la calculadora
+    let isResizing = false;
+    let currentDir = null;
+    let startW, startH, startX_r, startY_r, startGameLeft, startGameTop;
+    gameDiv.addEventListener('pointerdown', (e) => {
+      if(e.target.classList.contains('resizer')) {
+        isResizing = true;
+        currentDir = e.target.dataset.dir;
+        startX_r = e.clientX;
+        startY_r = e.clientY;
+        
+        const rect = gameDiv.getBoundingClientRect();
+        startW = rect.width;
+        startH = rect.height;
+        startGameLeft = rect.left;
+        startGameTop = rect.top;
+        
+        gameDiv.setPointerCapture(e.pointerId);
+        e.preventDefault(); 
+      }
+    });
+    gameDiv.addEventListener('pointermove', (e) => {
+      if(!isResizing) return;
+      const dx = e.clientX - startX_r;
+      const dy = e.clientY - startY_r;
+      let newW = startW, newH = startH, newL = startGameLeft, newT = startGameTop;
+
+      if(currentDir.includes('e')) newW = startW + dx;
+      if(currentDir.includes('s')) newH = startH + dy;
+      if(currentDir.includes('w')) { newW = startW - dx; newL = startGameLeft + dx; }
+      if(currentDir.includes('n')) { newH = startH - dy; newT = startGameTop + dy; }
+
+      if (newW >= 300) { gameDiv.style.width = newW + 'px'; gameDiv.style.left = newL + 'px'; }
+      if (newH >= 200) { gameDiv.style.height = newH + 'px'; gameDiv.style.top = newT + 'px'; }
+    });
+    gameDiv.addEventListener('pointerup', (e) => {
+      if(isResizing) { isResizing = false; gameDiv.releasePointerCapture(e.pointerId); }
+    });
+    gameDiv.addEventListener('pointercancel', (e) => {
+      if(isResizing) { isResizing = false; gameDiv.releasePointerCapture(e.pointerId); }
+    });
+
     gameDiv.focus();
   }
 
